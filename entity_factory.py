@@ -1,5 +1,4 @@
 import requests
-from wikidata.client import Client
 from entity import Entity
 
 API_URL = "https://en.wikipedia.org/w/api.php"
@@ -22,11 +21,15 @@ def wiki_text(en_wiki):
     res = requests.get(API_URL, params=params).json()
     page = next(iter(res["query"]["pages"].values())) #see below the dictionary, we create an iterable and pick the first and only item
     extract = page.get("extract", "")
-    return " ".join(extract.split())[:1000].lower()  # we get the "extract field"
+    # we get the "extract field"
+    # removing new lines and extra whitespaces
+    # lowercasing it - taking the first 1000 elements
+    # usually the most representative
+    return " ".join(extract.split())[:1000].lower()
 
 class EntityFactory:
-    def __init__(self):
-        self.client = Client()
+    def __init__(self, client):
+        self.client = client
 
     def create(self, item):
         entity_id = extract_entity_id(item['item'])
