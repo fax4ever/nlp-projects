@@ -1,7 +1,8 @@
 from dataset import DataSet
 
 def main():
-    dataset = DataSet(10, 10)
+    dataset = DataSet()
+    print("dataset loaded: " + str(dataset))
     pass
 
 if __name__ == "__main__":
