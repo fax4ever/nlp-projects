@@ -1,7 +1,7 @@
 import os, requests
 from wikidata.client import Client
 from datasets import load_dataset
-from feature import Feature
+from entity import Entity
 
 API_URL = "https://en.wikipedia.org/w/api.php"
 
@@ -33,7 +33,8 @@ class DataAccess:
         }
         res = requests.get(API_URL, params=params).json()
         page = next(iter(res["query"]["pages"].values())) #see below the dictionary, we create an iterable and pick the first and only item
-        return page.get("extract", "") # we get the "extract field"
+        extract = page.get("extract", "")
+        return " ".join(extract.split())[:1000].lower()  # we get the "extract field"
 
     def feature(self, index):
         train = self.train(index)
@@ -41,7 +42,7 @@ class DataAccess:
         entity = self.entity(entity_id)
         sitelinks = entity.data.get("sitelinks", {})
         enwiki = sitelinks.get("enwiki")
-        return Feature(entity_id, train, entity, self.wiki_text(enwiki))
+        return Entity(entity_id, train, entity, self.wiki_text(enwiki))
 
 
 
