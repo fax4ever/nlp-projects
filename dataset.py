@@ -8,7 +8,7 @@ from entity_factory import EntityFactory
 TRAINING_FILE_NAME = "training.bin"
 VALIDATION_FILE_NAME = "validation.bin"
 
-class DataSet:
+class Dataset:
     def __init__(self, training_limit=None, validation_limit=None, force_reload=False):
         if not(os.path.exists(TRAINING_FILE_NAME)) or not(os.path.exists(VALIDATION_FILE_NAME)) or force_reload:
             # remove dump files if present
