@@ -19,13 +19,11 @@ def wiki_text(en_wiki):
         "redirects": 1
     }
     res = requests.get(API_URL, params=params).json()
-    page = next(iter(res["query"]["pages"].values())) #see below the dictionary, we create an iterable and pick the first and only item
-    extract = page.get("extract", "")
-    # we get the "extract field"
-    # removing new lines and extra whitespaces
-    # lowercasing it - taking the first 1000 elements
-    # usually the most representative
-    return " ".join(extract.split())[:1000].lower()
+    page = next(iter(res["query"]["pages"].values()))
+    # Keep the original text as it is.
+    # The text will be processed in other methods,
+    # such as processed_dataset#tokenize().
+    return page.get("extract", "")
 
 class EntityFactory:
     def __init__(self, client):
