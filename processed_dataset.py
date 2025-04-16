@@ -3,6 +3,7 @@ import nltk, string
 from dataset import Dataset
 from dictonary import Dictionary
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 from processed_entity import ProcessedEntity
 
 VOCAB_SIZE = 4_000
@@ -15,7 +16,7 @@ def tokenize(text):
     if text is None:
         return result
     for sentence in nltk.sent_tokenize(text.lower()):
-        result.extend([i for i in nltk.word_tokenize(sentence) if i not in stop])
+        result.extend([WordNetLemmatizer().lemmatize(i) for i in nltk.word_tokenize(sentence) if i not in stop])
     return result
 
 class ProcessedDataset(Dataset):

@@ -16,17 +16,20 @@ def create_set_and_dump(dataset, factory, limit, file_name):
     if limit is None:
         limit = len(dataset)
     result = []
-    for item in islice(dataset, limit):
+    for index, item in enumerate(islice(dataset, limit)):
         result.append(factory.create(item))
+        if (index + 1) % 10 == 0:
+            print("creating", file_name, index + 1, "/", limit)
     # save files for the next time!
     with open(file_name, 'wb') as file:
+        print("dumping", file_name)
         # noinspection PyTypeChecker
         pickle.dump(result, file)
     return result
 
 class Dataset:
     def __init__(self, training_limit=None, validation_limit=None, force_reload=False):
-        if not(os.path.exists(TRAINING_FILE_NAME)) or not(os.path.exists(VALIDATION_FILE_NAME)) or force_reload:
+        if not (os.path.exists(TRAINING_FILE_NAME)) or not (os.path.exists(VALIDATION_FILE_NAME)) or force_reload:
             # load the project dataset
             dataset = load_dataset('sapienzanlp/nlp2025_hw1_cultural_dataset', token=os.environ['HUGGINGFACE_TOKEN'])
             # a factory object is used to create our entities
@@ -37,9 +40,11 @@ class Dataset:
         else:
             # by default load the dataset from a local dump
             with open(TRAINING_FILE_NAME, 'rb') as file:
+                print("loading", TRAINING_FILE_NAME)
                 # noinspection PyTypeChecker
                 self.training_set = pickle.load(file)
             with open(VALIDATION_FILE_NAME, 'rb') as file:
+                print("loading", VALIDATION_FILE_NAME)
                 # noinspection PyTypeChecker
                 self.validation_set = pickle.load(file)
 
