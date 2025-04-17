@@ -182,6 +182,4 @@ machine-learning-project/documentation/*.synctex.gz
 
 wiki.10K.txt
 output_folder/
-
-training.bin
-validation.bin
+*.bin

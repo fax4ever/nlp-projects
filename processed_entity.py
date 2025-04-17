@@ -1,7 +1,6 @@
 class ProcessedEntity:
     def __init__(self, base_entity, description, wiki_text):
-        # extension by composition
-        self.base_entity = base_entity
+        self.base_entity = str(base_entity)
         # processed fields
         self.description = description
         self.wiki_text = wiki_text
@@ -10,7 +9,7 @@ class ProcessedEntity:
         self.wiki_vector = None
 
     def __str__(self):
-        return str(self.base_entity) + " < " + str(len(self.description)) + ", " + str(len(self.wiki_text)) + " >"
+        return self.base_entity + " < " + str(len(self.description)) + ", " + str(len(self.wiki_text)) + " >"
 
     def text_to_vector(self, desc_dictionary, wiki_dictionary):
         self.desc_vector = desc_dictionary.words_to_vector(self.description)

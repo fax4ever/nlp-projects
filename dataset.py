@@ -1,6 +1,6 @@
 import os, pickle
 from itertools import islice
-
+from file_util import dump, load
 from datasets import load_dataset
 from wikidata.client import Client
 from entity_factory import EntityFactory
@@ -8,10 +8,7 @@ from entity_factory import EntityFactory
 TRAINING_FILE_NAME = "training.bin"
 VALIDATION_FILE_NAME = "validation.bin"
 
-def create_set_and_dump(dataset, factory, limit, file_name):
-    # remove dump files if present
-    if os.path.exists(file_name):
-        os.remove(file_name)
+def create_set(dataset, factory, limit, file_name):
     # apply the limits
     if limit is None:
         limit = len(dataset)
@@ -20,11 +17,6 @@ def create_set_and_dump(dataset, factory, limit, file_name):
         result.append(factory.create(item))
         if (index + 1) % 10 == 0:
             print("creating", file_name, index + 1, "/", limit)
-    # save files for the next time!
-    with open(file_name, 'wb') as file:
-        print("dumping", file_name)
-        # noinspection PyTypeChecker
-        pickle.dump(result, file)
     return result
 
 class Dataset:
@@ -35,18 +27,14 @@ class Dataset:
             # a factory object is used to create our entities
             factory = EntityFactory(Client())
 
-            self.training_set = create_set_and_dump(dataset['train'], factory, training_limit, TRAINING_FILE_NAME)
-            self.validation_set = create_set_and_dump(dataset['validation'], factory, validation_limit, VALIDATION_FILE_NAME)
+            self.training_set = create_set(dataset['train'], factory, training_limit, TRAINING_FILE_NAME)
+            self.validation_set = create_set(dataset['validation'], factory, validation_limit, VALIDATION_FILE_NAME)
+            dump(TRAINING_FILE_NAME, self.training_set)
+            dump(VALIDATION_FILE_NAME, self.validation_set)
         else:
             # by default load the dataset from a local dump
-            with open(TRAINING_FILE_NAME, 'rb') as file:
-                print("loading", TRAINING_FILE_NAME)
-                # noinspection PyTypeChecker
-                self.training_set = pickle.load(file)
-            with open(VALIDATION_FILE_NAME, 'rb') as file:
-                print("loading", VALIDATION_FILE_NAME)
-                # noinspection PyTypeChecker
-                self.validation_set = pickle.load(file)
+            self.training_set = load(TRAINING_FILE_NAME)
+            self.validation_set = load(VALIDATION_FILE_NAME)
 
     def __str__(self):
         return "training: " + str(len(self.training_set)) + ". validation: " + str(len(self.validation_set))
