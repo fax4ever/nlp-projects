@@ -13,6 +13,8 @@ class ProcessedEntity:
         # Using map to denote a Python dictionary,
         # since the dictionary is already use for a word (term) dictionary
         self.claims_map = base.claims
+        self.subcategory = base.subcategory
+        self.category = base.category
 
         # build later (then the dictionaries are finalized)
         self.desc_vector = None
@@ -22,6 +24,11 @@ class ProcessedEntity:
         self.aliases_vector = None
         self.pages_vector = None
         self.claims_vector = None
+        # it includes implicitly the category
+        # since the subcategory values have been ordered by category
+        self.subcategory_scalar = None
+        # in this case we can assume that we have only two types (entity vs concept)
+        self.type_boolean = (base.type == 'entity')
 
     def __str__(self):
         return self.base_entity + " < " + str(len(self.desc_text)) + ", " + str(len(self.wiki_text)) + " >"

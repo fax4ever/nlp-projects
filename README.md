@@ -45,9 +45,18 @@ Frequency vectors having the size of the vocabulary of the languages codes
 
 Frequency vector having the size of the vocabulary of the claims (relation types)
 
-6. Categorical inputs for type / category / subcategories
+6. Categorical inputs for category > subcategories
 
-We can map those as numbers bet 0 and the size of all possible values - 1
+We can map those as numbers bet 0 and the size of all possible values - 1.
+Since subcategories determines the category,
+we want to order the subcategories so that subcategories of the same category will be contiguous.
+In this way with a single number we can denote the two fields in a single shot!
+This is the table of the categories / subcategories: [categories.md](generated/categories.md)
+
+7. Boolean input for type
+
+Since we have only two types of type: entity vs concept.
+We want to produce a boolean value for each entity to pass to the NN.
 
 ### The idea of multi modal NN
 

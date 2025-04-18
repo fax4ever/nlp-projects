@@ -1,5 +1,6 @@
 from dictonary import Dictionary
 from processed_entity import ProcessedEntity
+from category_table import CategoryTable
 
 UNK = '<UNK>' # the token to be used for out of vocabulary words
 DESC_VOCAB_SIZE = 4_000
@@ -16,6 +17,7 @@ class Dictionaries:
         # descriptions_text, aliases_text, pages_text
         self.languages = Dictionary()
         self.claims = Dictionary()
+        self.category_table = CategoryTable()
 
     def include(self, processed_entity: ProcessedEntity):
         self.desc.include(processed_entity.desc_text)
@@ -25,6 +27,7 @@ class Dictionaries:
         self.languages.include(processed_entity.aliases_text)
         self.languages.include(processed_entity.pages_text)
         self.claims.include(list(processed_entity.claims_map.keys()))
+        self.category_table.include(processed_entity)
 
     def build(self):
         self.desc.build(DESC_VOCAB_SIZE, UNK)
@@ -34,6 +37,7 @@ class Dictionaries:
         self.label.build_no_limits()
         self.languages.build_no_limits()
         self.claims.build(CLAIM_VOCAB_SIZE, UNK)
+        self.category_table.build()
 
     def finalize(self, processed_entity: ProcessedEntity):
         processed_entity.desc_vector = self.desc.words_to_vector(processed_entity.desc_text)
@@ -43,3 +47,4 @@ class Dictionaries:
         processed_entity.aliases_vector = self.languages.words_to_vector(processed_entity.aliases_text)
         processed_entity.pages_vector = self.languages.words_to_vector(processed_entity.pages_text)
         processed_entity.claims_vector = self.claims.map_to_vector(processed_entity.claims_map)
+        processed_entity.subcategory_scalar = self.category_table.subcat_to_id(processed_entity.subcategory)
