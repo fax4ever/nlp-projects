@@ -5,6 +5,7 @@
 2. In order to use dumped files, copy:
   * [training.bin](training.bin)
   * [validation.bin](validation.bin)
+
 to the root of the project.
 Otherwise, those file will be created for the next time!
 
@@ -26,25 +27,63 @@ Neural networks with 4 inputs:
 
 1. Vector for the description
 
-Binary vector having the size of the vocabulary of the description
+Frequency vector having the size of the vocabulary of the description
 
 2. Vector for the wikitext
 
-Binary vector having the size of the vocabulary of the wikitext
+Frequency vector having the size of the vocabulary of the wikitext
 
-3. Vector for the languages used by labels, descriptions, aliases, wikipedia_pages
+3. Vector for labels
 
-4 Binary vectors concatenated (?) or weighted, each having the size of the vocabulary of the language used
+Frequency vector having the size of the vocabulary of the labels (few dimensions)
 
-4. Vector for relevant claims (filtering the claims that may be representative) and the subcategory
+4. Vectors for the keys (languages) used by descriptions, aliases, wikipedia_pages
 
-1 binary vector containing the relevant claims + 1 binary vector subcategory
+Frequency vectors having the size of the vocabulary of the languages codes
 
-Each of this vector is rescaled to an input vector having 64 dimensions.
-So the first layer just rescales each input without mixing them.
+5. Vector for claims keys
 
-After that we have 2 hidden layers and 1 output layer with 3 output features.
+Frequency vector having the size of the vocabulary of the claims (relation types)
 
-This is what is called a multi-modal neural network.
+6. Categorical inputs for type / category / subcategories
 
-Verify if it is best to use embedding bags / glove embedding bags instead of simple binary vectors based on vocabulary.
+We can map those as nn.Embedding
+
+### The idea of multi modal NN
+
+The dimensions of the vectors are very different.
+So we're going to add pre input layers in which we rescale those.
+
+There are some example of rescaling:
+
+```python
+# Text input
+self.text_embedding = nn.EmbeddingBag(vocab_size, text_embed_dim, mode='mean')
+self.text_proj = nn.Linear(text_embed_dim, common_dim)
+```
+
+```python
+# Categorical input
+self.category_embedding = nn.Embedding(category_vocab_size, 32)
+self.category_proj = nn.Linear(32, common_dim)
+```
+
+```python
+# Numeric input
+self.numeric_proj = nn.Linear(num_numeric_features, common_dim)
+```
+
+See * [05_multi_modal_nn.py](generated/05_multi_modal_nn.py)
+
+### Potential changes / evolution
+
+Starting from text frequency vectors. See [01_text_class.py](generated/01_text_class.py)
+Of course with batch! See [04_batch.py](generated/04_batch.py)
+
+#### Try to use EmbeddingBag
+
+See * [02_text_embedding_multiclass.py](generated/02_text_embedding_multiclass.py)
+
+#### Try to use EmbeddingBag + Glove
+
+See * [03_glove.py](generated/03_glove.py)

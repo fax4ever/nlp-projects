@@ -18,6 +18,11 @@ class Dictionary:
         self.word_to_id[unk_token] = max_vocab_size - 1
         self.occurrences = None # free memory space
 
+    def build_no_limits(self):
+        counter = collections.Counter(self.occurrences)
+        self.word_to_id = {key: index for index, (key, _) in enumerate(counter.most_common())}
+        self.occurrences = None # free memory space
+
     def length(self):
         return len(self.word_to_id)
 
