@@ -10,7 +10,3 @@ class ProcessedEntity:
 
     def __str__(self):
         return self.base_entity + " < " + str(len(self.description)) + ", " + str(len(self.wiki_text)) + " >"
-
-    def text_to_vector(self, desc_dictionary, wiki_dictionary):
-        self.desc_vector = desc_dictionary.words_to_vector(self.description)
-        self.wiki_vector = wiki_dictionary.words_to_vector(self.wiki_text)
