@@ -11,7 +11,7 @@ TRAINING_PROC_FILE_NAME = "training-proc.bin"
 VALIDATION_PROC_FILE_NAME = "validation-proc.bin"
 nltk.download('stopwords')
 nltk.download('wordnet')
-stop = set(stopwords.words('english') + list(string.punctuation))
+stop = set(stopwords.words('english') + list(string.punctuation) + ['==', "''", '``', "'s", '==='])
 
 def text_process(text):
     result = []
@@ -45,10 +45,18 @@ class ProcessedDataset(Dataset):
         dictionaries = Dictionaries()
         # from the base data, add a list of processed entities
         print("training set text processing started")
-        processed_training_set = [create_processed(entity, dictionaries) for entity in self.training_set]
+        processed_training_set = []
+        for index, entity in enumerate(self.training_set):
+            processed_training_set.append(create_processed(entity, dictionaries))
+            if (index+1) % 100 == 0:
+                print("training set processed", index+1, "entities")
         print("training set text processing ended")
         print("validation set text processing started")
-        processed_validation_set = [create_processed(entity, dictionaries) for entity in self.validation_set]
+        processed_validation_set = []
+        for index, entity in enumerate(self.validation_set):
+            processed_validation_set.append(create_processed(entity, dictionaries))
+            if (index+1) % 100 == 0:
+                print("validation set processed", index+1, "entities")
         print("validation set text processing ended")
         print("building dictionaries")
         # when we've collected all the words for the two spaces, we can build them

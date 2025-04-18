@@ -16,6 +16,7 @@ class Dictionary:
         self.word_to_id = {key: index for index, (key, _) in enumerate(counter.most_common(max_vocab_size - 1))}
         assert unk_token not in self.word_to_id
         self.word_to_id[unk_token] = max_vocab_size - 1
+        self.occurrences = None # free memory space
 
     def length(self):
         return len(self.word_to_id)
