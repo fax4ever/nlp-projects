@@ -28,3 +28,6 @@ class CategoryTable:
 
     def subcat_to_id(self, subcategory):
         return self.subcategory_to_id[subcategory]
+
+    def length(self):
+        return len(self.subcategory_to_id)
