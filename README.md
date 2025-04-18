@@ -47,7 +47,7 @@ Frequency vector having the size of the vocabulary of the claims (relation types
 
 6. Categorical inputs for type / category / subcategories
 
-We can map those as nn.Embedding
+We can map those as numbers bet 0 and the size of all possible values - 1
 
 ### The idea of multi modal NN
 

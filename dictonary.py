@@ -34,3 +34,14 @@ class Dictionary:
             if word in self.word_to_id:
                 vector[self.word_to_id[word]] = vector[self.word_to_id[word]] + 1
         return vector
+
+    # Using map to denote a Python dictionary,
+    # since the dictionary is already use for a word (term) dictionary
+    def map_to_vector(self, dictionary):
+        vector = np.zeros(self.length(), dtype=np.float32)
+        for word, freq in dictionary.items():
+            if word == self.unk_token:
+                continue
+            if word in self.word_to_id:
+                vector[self.word_to_id[word]] = freq
+        return vector
