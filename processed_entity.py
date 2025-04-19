@@ -71,3 +71,17 @@ class ProcessedEntity:
         return torch.tensor(self.subcategory_scalar)
     def type_tensor(self):
         return torch.tensor(self.type_boolean)
+
+    def dataset_item(self):
+        return {
+            "desc" : self.desc_vector,
+            "wiki" : self.wiki_vector,
+            "labels" : self.labels_vector,
+            "descriptions" : self.descriptions_vector,
+            "aliases" : self.aliases_vector,
+            "pages" : self.pages_vector,
+            "claims" : self.claims_vector,
+            "category" : self.subcategory_scalar,
+            "type" : self.type_boolean,
+            "output_label" : self.output_label
+        }

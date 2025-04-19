@@ -5,6 +5,8 @@ from dataset import Dataset
 from dictionaries import Dictionaries
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+
+from iterable_entities import IterableEntities
 from processed_entity import ProcessedEntity
 
 TRAINING_PROC_FILE_NAME = "training-proc.bin"
@@ -69,3 +71,9 @@ class ProcessedDataset(Dataset):
             dictionaries.finalize(entity)
         print("text to vector finished")
         return processed_training_set, processed_validation_set
+
+    def training(self):
+        return IterableEntities(self.processed_training_set)
+
+    def validation(self):
+        return IterableEntities(self.validation_set)
