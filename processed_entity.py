@@ -1,3 +1,5 @@
+import torch
+
 from entity import Entity
 
 def type_boolean(base_type):
@@ -50,3 +52,22 @@ class ProcessedEntity:
 
     def __str__(self):
         return self.base_entity + " < " + str(len(self.desc_text)) + ", " + str(len(self.wiki_text)) + " >"
+
+    def desc_tensor(self):
+        return torch.tensor(self.desc_vector)
+    def wiki_tensor(self):
+        return torch.tensor(self.wiki_vector)
+    def labels_tensor(self):
+        return torch.tensor(self.labels_vector)
+    def descriptions_tensor(self):
+        return torch.tensor(self.descriptions_vector)
+    def aliases_tensor(self):
+        return torch.tensor(self.aliases_text)
+    def pages_tensor(self):
+        return torch.tensor(self.pages_vector)
+    def claims_tensor(self):
+        return torch.tensor(self.claims_vector)
+    def category_tensor(self):
+        return torch.tensor(self.subcategory_scalar)
+    def type_tensor(self):
+        return torch.tensor(self.type_boolean)

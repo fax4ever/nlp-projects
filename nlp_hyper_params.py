@@ -2,6 +2,7 @@ from processed_entity import ProcessedEntity
 
 class NLPHyperParams:
     def __init__(self):
+        # processed fields
         self.desc_dim = None
         self.desc_scale = 64
         self.wiki_dim = None
@@ -16,10 +17,13 @@ class NLPHyperParams:
         self.pages_scale = 8
         self.claims_dim = None
         self.claims_scale = 16
-        self.category_length = None
+        self.category_dim = 1 # scalar
         self.category_scale = 8
-        self.type_length = 2
+        self.type_dim = 1 # scalar
         self.type_scale = 8
+        # common classifier
+        self.hidden_layers = 128
+        self.dropout = 0.2
 
     def compute(self, example: ProcessedEntity):
         self.desc_dim = example.desc_vector.shape[0]
@@ -29,7 +33,6 @@ class NLPHyperParams:
         self.aliases_dim = example.aliases_vector.shape[0]
         self.pages_dim = example.pages_vector.shape[0]
         self.claims_dim = example.claims_vector.shape[0]
-        self.category_length = example.subcategory_scalar_len
 
     def desc(self):
         return self.desc_dim, self.desc_scale
@@ -45,5 +48,6 @@ class NLPHyperParams:
         return self.pages_dim, self.pages_scale
     def claims(self):
         return self.claims_dim, self.claims_scale
-    def categories(self):
-        return self.category_length, self.category_scale
+    def total_scale(self):
+        return self.desc_scale + self.wiki_scale + self.labels_scale + self.descriptions_scale + self.aliases_scale + \
+            self.pages_scale + self.claims_scale + self.category_scale + self.type_scale

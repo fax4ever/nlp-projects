@@ -1,4 +1,4 @@
-import os, pickle
+import os
 from itertools import islice
 from file_util import dump, load
 from datasets import load_dataset
