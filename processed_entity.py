@@ -22,7 +22,7 @@ class ProcessedEntity:
         # processed fields
         self.desc_text = desc_text
         self.wiki_text = wiki_text
-        self.label_text = base.label
+        self.labels_text = base.labels
         self.descriptions_text = base.descriptions
         self.aliases_text = base.aliases
         self.pages_text = base.wikipedia_pages
@@ -35,7 +35,7 @@ class ProcessedEntity:
         # build later (then the dictionaries are finalized)
         self.desc_vector = None
         self.wiki_vector = None
-        self.label_vector = None
+        self.labels_vector = None
         self.descriptions_vector = None
         self.aliases_vector = None
         self.pages_vector = None

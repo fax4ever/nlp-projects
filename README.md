@@ -33,19 +33,19 @@ Frequency vector having the size of the vocabulary of the description
 
 Frequency vector having the size of the vocabulary of the wikitext
 
-3. Vector for labels
+3. Vectors for the keys (languages) used by labels, descriptions, aliases, wikipedia_pages
 
-Frequency vector having the size of the vocabulary of the labels (few dimensions)
+Frequency vectors having the size of the vocabulary of the languages codes.
+They will be vector-mapped using the same dictionary.
+Since the string are enumerations belonging to same common set.
 
-4. Vectors for the keys (languages) used by descriptions, aliases, wikipedia_pages
+4. Vector for claims keys
 
-Frequency vectors having the size of the vocabulary of the languages codes
+Frequency vector having the size of the vocabulary of the claims (relation types).
+Maybe we could manually select a subset of most significant claims. 
+At the first attempt let's try to make NN learning this selection (learning parameters).
 
-5. Vector for claims keys
-
-Frequency vector having the size of the vocabulary of the claims (relation types)
-
-6. Categorical inputs for category > subcategories
+5. Categorical inputs for category > subcategories
 
 We can map those as numbers bet 0 and the size of all possible values - 1.
 Since subcategories determines the category,
@@ -53,7 +53,7 @@ we want to order the subcategories so that subcategories of the same category wi
 In this way with a single number we can denote the two fields in a single shot!
 This is the table of the categories / subcategories: [categories.md](generated/categories.md)
 
-7. Boolean input for type
+6. Boolean input for type
 
 Since we have only two types of type: entity vs concept.
 We want to produce a boolean value for each entity to pass to the NN.
