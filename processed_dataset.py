@@ -76,4 +76,4 @@ class ProcessedDataset(Dataset):
         return IterableEntities(self.processed_training_set)
 
     def validation(self):
-        return IterableEntities(self.validation_set)
+        return IterableEntities(self.processed_validation_set)

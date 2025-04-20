@@ -9,3 +9,6 @@ class IterableEntities(IterableDataset):
         for entity in self.processed_entities:
             yield entity.dataset_item()
 
+    def __len__(self):
+        return len(self.processed_entities)
+

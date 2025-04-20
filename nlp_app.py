@@ -1,4 +1,5 @@
 import torch
+import matplotlib.pyplot as plt
 from torch import optim, nn
 from torch.utils.data import DataLoader
 
@@ -21,8 +22,23 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=hyper_params.learning_rate)
     criterion = nn.CrossEntropyLoss()
     trainer = NLPTrainer(model, optimizer, criterion, device, hyper_params)
-    trainer.train(training_dataloader)
-    pass
+    history = trainer.train(training_dataloader, validation_dataloader)
+
+    print("### Summary")
+    print("average loss", history["avg_epoch_loss"])
+    print("average accuracy", history["avg_epoch_accuracy"])
+
+    plt.title("MSE Loss - Plot")
+    plt.plot(history["train_loss"], label="training loss")
+    plt.plot(history["valid_loss"], label="validation loss")
+    plt.legend()
+    plt.show()
+
+    plt.title("Accuracy - Plot")
+    plt.plot(history["train_accuracy"], label="training accuracy")
+    plt.plot(history["valid_accuracy"], label="validation accuracy")
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
     main()

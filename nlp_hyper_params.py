@@ -28,7 +28,7 @@ class NLPHyperParams:
         self.hidden_layers = 128
         self.dropout = 0.2
         self.learning_rate = 0.01
-        self.epochs = 3
+        self.epochs = 50
         self.batch_size = 64
 
     def desc(self):
