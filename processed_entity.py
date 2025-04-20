@@ -1,13 +1,11 @@
-import torch
-
 from entity import Entity
+import numpy as np
 
-def type_boolean(base_type):
+def type_vector(base_type):
+    vector = np.zeros(1, dtype=np.float32)
     if base_type == 'entity':
-        return 1
-    if base_type == 'concept':
-        return 0
-    raise ValueError('type not suppoerted: ' + base_type)
+        vector[0] = vector[0] + 1
+    return vector
 
 def output_label(label):
     if label == 'cultural agnostic':
@@ -44,33 +42,13 @@ class ProcessedEntity:
         self.claims_vector = None
         # it includes implicitly the category
         # since the subcategory values have been ordered by category
-        self.subcategory_scalar = None
-        self.subcategory_scalar_len = None
+        self.subcategory_vector = None
         # in this case we can assume that we have only two types (entity vs concept)
-        self.type_boolean = type_boolean(base.type)
+        self.type_vector = type_vector(base.type)
         self.output_label = output_label(base.label)
 
     def __str__(self):
         return self.base_entity + " < " + str(len(self.desc_text)) + ", " + str(len(self.wiki_text)) + " >"
-
-    def desc_tensor(self):
-        return torch.tensor(self.desc_vector)
-    def wiki_tensor(self):
-        return torch.tensor(self.wiki_vector)
-    def labels_tensor(self):
-        return torch.tensor(self.labels_vector)
-    def descriptions_tensor(self):
-        return torch.tensor(self.descriptions_vector)
-    def aliases_tensor(self):
-        return torch.tensor(self.aliases_text)
-    def pages_tensor(self):
-        return torch.tensor(self.pages_vector)
-    def claims_tensor(self):
-        return torch.tensor(self.claims_vector)
-    def category_tensor(self):
-        return torch.tensor(self.subcategory_scalar)
-    def type_tensor(self):
-        return torch.tensor(self.type_boolean)
 
     def dataset_item(self):
         return {
@@ -81,7 +59,7 @@ class ProcessedEntity:
             "aliases" : self.aliases_vector,
             "pages" : self.pages_vector,
             "claims" : self.claims_vector,
-            "category" : self.subcategory_scalar,
-            "type" : self.type_boolean,
+            "category" : self.subcategory_vector,
+            "type" : self.type_vector,
             "output_label" : self.output_label
         }

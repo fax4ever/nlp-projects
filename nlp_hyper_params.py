@@ -34,7 +34,7 @@ class NLPHyperParams:
     def desc(self):
         return self.desc_dim, self.desc_scale
     def wiki(self):
-        return self.desc_dim, self.desc_scale
+        return self.wiki_dim, self.wiki_scale
     def labels(self):
         return self.labels_dim, self.labels_scale
     def descriptions(self):

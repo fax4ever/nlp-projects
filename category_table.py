@@ -1,6 +1,6 @@
 import pandas as pd
 from processed_entity import ProcessedEntity
-
+import numpy as np
 
 class CategoryTable:
     def __init__(self):
@@ -26,8 +26,10 @@ class CategoryTable:
         print(df.to_markdown())
         self.subcategory_to_id = {row["subcategory"]: index for index, (_, row) in enumerate(df.iterrows())}
 
-    def subcat_to_id(self, subcategory):
-        return self.subcategory_to_id[subcategory]
+    def subcat_to_vector(self, subcategory):
+        vector = np.zeros(1, dtype=np.float32)
+        vector[0] = vector[0] + self.subcategory_to_id[subcategory]
+        return vector
 
     def length(self):
         return len(self.subcategory_to_id)

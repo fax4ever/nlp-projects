@@ -22,7 +22,7 @@ class MultiModalModel(nn.Module):
         self.claims = rescale_vector_layer(p.claims())
         # individual input layers for scalar value
         self.category = nn.Linear(p.category_dim, p.category_scale)
-        self.type = nn.Linear(p.type_dim, p.type_scale)
+        self.type_proj = nn.Linear(p.type_dim, p.type_scale)
         # common classifier
         self.classifier = nn.Sequential(
             nn.Linear(p.total_scale(), p.hidden_layers),
@@ -31,16 +31,16 @@ class MultiModalModel(nn.Module):
             nn.Linear(p.hidden_layers, 3)
         )
 
-    def forward(self, processed_entity: ProcessedEntity):
-        desc_feat = self.desc(processed_entity.desc_tensor())
-        wiki_feat = self.wiki(processed_entity.wiki_tensor())
-        labels_feat = self.labels(processed_entity.labels_tensor())
-        descriptions_feat = self.descriptions(processed_entity.descriptions_tensor())
-        aliases_feat = self.aliases(processed_entity.aliases_tensor())
-        pages_feat = self.pages(processed_entity.pages_tensor())
-        claims_feat = self.claims(processed_entity.claims_tensor())
-        category_feat = self.category(processed_entity.category_tensor())
-        type_feat = self.type(processed_entity.type_tensor())
+    def forward(self, dataset_items, device):
+        desc_feat = self.desc(dataset_items['desc'].to(device))
+        wiki_feat = self.wiki(dataset_items['wiki'].to(device))
+        labels_feat = self.labels(dataset_items['labels'].to(device))
+        descriptions_feat = self.descriptions(dataset_items['descriptions'].to(device))
+        aliases_feat = self.aliases(dataset_items['aliases'].to(device))
+        pages_feat = self.pages(dataset_items['pages'].to(device))
+        claims_feat = self.claims(dataset_items['claims'].to(device))
+        category_feat = self.category(dataset_items['category'].to(device))
+        type_feat = self.type_proj(dataset_items['type'].to(device))
         combined = torch.cat([desc_feat, wiki_feat, labels_feat, descriptions_feat, aliases_feat, pages_feat,
                               claims_feat, category_feat, type_feat], dim=1)
         return self.classifier(combined)

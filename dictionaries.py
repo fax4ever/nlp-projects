@@ -44,5 +44,4 @@ class Dictionaries:
         processed_entity.aliases_vector = self.languages.words_to_vector(processed_entity.aliases_text)
         processed_entity.pages_vector = self.languages.words_to_vector(processed_entity.pages_text)
         processed_entity.claims_vector = self.claims.map_to_vector(processed_entity.claims_map)
-        processed_entity.subcategory_scalar = self.category_table.subcat_to_id(processed_entity.subcategory)
-        processed_entity.subcategory_scalar_len = self.category_table.length()
+        processed_entity.subcategory_vector = self.category_table.subcat_to_vector(processed_entity.subcategory)
