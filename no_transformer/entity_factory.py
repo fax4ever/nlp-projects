@@ -31,7 +31,11 @@ class EntityFactory:
 
     def create(self, item):
         entity_id = extract_entity_id(item['item'])
-        wikidata = self.client.get(entity_id, load=True)
-        sitelinks = wikidata.data.get("sitelinks", {})
-        en_wiki = sitelinks.get("enwiki")
-        return Entity(entity_id, item, wikidata, wiki_text(en_wiki))
+        try:
+            wikidata = self.client.get(entity_id, load=True)
+            sitelinks = wikidata.data.get("sitelinks", {})
+            en_wiki = sitelinks.get("enwiki")
+            return Entity(entity_id, item, wikidata, wiki_text(en_wiki))
+        except Exception as e:
+            print("Error loading id:", entity_id, e)
+            return None

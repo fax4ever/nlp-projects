@@ -14,7 +14,9 @@ def create_set(dataset, factory, limit, file_name):
         limit = len(dataset)
     result = []
     for index, item in enumerate(islice(dataset, limit)):
-        result.append(factory.create(item))
+        created = factory.create(item)
+        if created is not None:
+            result.append(created)
         if (index + 1) % 10 == 0:
             print("creating", file_name, index + 1, "/", limit)
     return result
