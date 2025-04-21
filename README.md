@@ -96,3 +96,9 @@ See * [02_text_embedding_multiclass.py](generated/02_text_embedding_multiclass.p
 #### Try to use EmbeddingBag + Glove
 
 See * [03_glove.py](generated/03_glove.py)
+
+## Part 2 - Transformer
+
+```bash
+python3 transformer/nlp_app.py
+```
