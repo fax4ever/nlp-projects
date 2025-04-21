@@ -27,4 +27,4 @@ class NLPTrainer:
 
     def train_and_evaluate(self):
         self.trainer.train()
-        self.trainer.evaluate()
+        print(self.trainer.evaluate())
