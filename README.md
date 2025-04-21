@@ -18,7 +18,7 @@ conda activate pytorch-env
 4. Run the project
 
 ```bash
-python3 nlp_app.py
+python3 no_transformer/nlp_app.py
 ```
 
 ## Part 1 - No transformer

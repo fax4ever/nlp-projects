@@ -1,5 +1,5 @@
 import torch
-from seed import set_seed
+from no_transformer.seed import set_seed
 
 def main():
     set_seed(42)
