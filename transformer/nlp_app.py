@@ -1,5 +1,7 @@
 import os
 from datasets import load_dataset
+from matplotlib import pyplot as plt
+
 from nlp_hyper_params import NLPHyperParams, compute_metrics
 from nlp_encoder_model import NLPEncoderModel
 from nlp_trainer import NLPTrainer
@@ -25,8 +27,8 @@ def main():
     dataset = dataset.map(map_labels)
     model = NLPEncoderModel(params)
 
-    def tokenize_function(examples):
-        return model.tokenizer(examples["description"], padding=True, truncation=True)
+    def tokenize_function(items):
+        return model.tokenizer(items["description"], padding=True, truncation=True)
     print("Tokenize the dataset ...")
     tokenized_datasets = dataset.map(tokenize_function, batched=True)
     print(tokenized_datasets)
@@ -34,11 +36,19 @@ def main():
     train_ = tokenized_datasets["train"]
     validation_ = tokenized_datasets["validation"]
     trainer = NLPTrainer(params, model, train_, validation_)
-    trainer.train_and_evaluate()
+    history = trainer.train_and_evaluate()
 
-    print(model.predict("Italian universal popular dish with a flat dough-based base and toppings"))
-    print(model.predict("sicilian eggplant dish"))
-    print(model.predict("baked food made of flour, water and other ingredients"))
+    plt.title("MSE Loss - Plot")
+    plt.plot(history["train_loss"], label="training loss")
+    plt.plot(history["valid_loss"], label="validation loss")
+    plt.legend()
+    plt.show()
+
+    plt.title("Accuracy - Plot")
+    plt.plot(history["train_accuracy"], label="training accuracy")
+    plt.plot(history["valid_accuracy"], label="validation accuracy")
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
     main()
