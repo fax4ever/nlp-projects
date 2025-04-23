@@ -1,7 +1,7 @@
 import nltk, string, os, pickle
 
 from file_util import dump, load
-from dataset import Dataset
+from nlp_dataset import NLPDataset
 from dictionaries import Dictionaries
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -30,7 +30,7 @@ def create_processed(entity, dictionaries):
     dictionaries.include(result)
     return result
 
-class ProcessedDataset(Dataset):
+class ProcessedDataset(NLPDataset):
     def __init__(self, training_limit=None, validation_limit=None, force_reload=False):
         super().__init__(training_limit, validation_limit, force_reload)
         if not (os.path.exists(TRAINING_PROC_FILE_NAME)) or not (os.path.exists(VALIDATION_PROC_FILE_NAME)) or force_reload:

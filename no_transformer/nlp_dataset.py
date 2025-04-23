@@ -21,7 +21,7 @@ def create_set(dataset, factory, limit, file_name):
             print("creating", file_name, index + 1, "/", limit)
     return result
 
-class Dataset:
+class NLPDataset:
     def __init__(self, training_limit=None, validation_limit=None, force_reload=False):
         if not (os.path.exists(TRAINING_FILE_NAME)) or not (os.path.exists(VALIDATION_FILE_NAME)) or force_reload:
             # load the project dataset
