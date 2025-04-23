@@ -32,7 +32,7 @@ class NLPTrainer:
             for step, dataset_items in tqdm(enumerate(train_dataset), desc="Batch", leave=False):
                 targets = dataset_items['output_label'].to(self.device)
                 self.optimizer.zero_grad()
-                predictions = self.model(dataset_items, self.device)
+                predictions = self.model(dataset_items)
                 sample_loss = self.loss_function(predictions, targets)
                 sample_loss.backward()
                 self.optimizer.step()
@@ -66,7 +66,7 @@ class NLPTrainer:
         with torch.no_grad():
             for step, dataset_items in tqdm(enumerate(valid_dataset), desc="Batch", leave=False):
                 targets = dataset_items['output_label'].to(self.device)
-                predictions = self.model(dataset_items, self.device)
+                predictions = self.model(dataset_items)
                 sample_loss = self.loss_function(predictions, targets)
                 valid_loss += sample_loss.tolist()
                 validation_accuracy += compute_accuracy(predictions, targets)

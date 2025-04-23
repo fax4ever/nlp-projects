@@ -20,4 +20,5 @@ class NLPHyperParams:
         self.weight_decay = 0.001 # we could use e.g. 0.01 in case of very low and very high amount of data for regularization
         self.epochs = 30
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        print("device: ", self.device)
 

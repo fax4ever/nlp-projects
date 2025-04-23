@@ -18,7 +18,8 @@ def main():
     training_dataloader = DataLoader(dataset.training(), batch_size=hyper_params.batch_size)
     validation_dataloader = DataLoader(dataset.validation(), batch_size=hyper_params.batch_size)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model = MultiModalModel(hyper_params)
+    print("using device:", device)
+    model = MultiModalModel(hyper_params, device)
     optimizer = optim.Adam(model.parameters(), lr=hyper_params.learning_rate)
     criterion = nn.CrossEntropyLoss()
     trainer = NLPTrainer(model, optimizer, criterion, device, hyper_params)
