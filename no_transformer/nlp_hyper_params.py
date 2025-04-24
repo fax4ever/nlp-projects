@@ -14,21 +14,21 @@ class NLPHyperParams:
         self.type_dim = 1 # scalar
 
         # scaled dimensions
-        self.desc_scale = 64
-        self.wiki_scale = 64
-        self.labels_scale = 8
-        self.descriptions_scale = 8
-        self.aliases_scale = 8
-        self.pages_scale = 8
-        self.claims_scale = 16
-        self.category_scale = 8
-        self.type_scale = 8
+        self.desc_scale = 64*2
+        self.wiki_scale = 64*2
+        self.labels_scale = 8*2
+        self.descriptions_scale = 8*2
+        self.aliases_scale = 8*2
+        self.pages_scale = 8*2
+        self.claims_scale = 16*2
+        self.category_scale = 8*2
+        self.type_scale = 8*2
 
         # common classifier
-        self.hidden_layers = 128
+        self.hidden_layers = 128*2
         self.dropout = 0.2
         self.learning_rate = 0.01
-        self.epochs = 50
+        self.epochs = 20
         self.batch_size = 64
 
     def desc(self):
