@@ -68,5 +68,8 @@ def main():
     plt.legend()
     plt.show()
 
+    # uncomment to push
+    # model.push("fax4ever/culturalitems-transformer")
+
 if __name__ == "__main__":
     main()

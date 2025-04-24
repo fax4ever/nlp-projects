@@ -1,3 +1,5 @@
+import os
+
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, DataCollatorWithPadding
 from nlp_hyper_params import NLPHyperParams
@@ -25,3 +27,6 @@ class NLPEncoderModel:
             outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
             _, preds = torch.max(outputs.logits, dim=1)
         return preds.item()
+
+    def push(self, repo):
+        self.model.push_to_hub(repo, token=os.environ['HUGGINGFACE_TOKEN'])
