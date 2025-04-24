@@ -18,6 +18,7 @@ def main():
     validation_ = tokenized_datasets["validation"]
     trainer = NLPTrainer(params, model, train_, validation_)
     history = trainer.train_and_evaluate()
+    print(history)
 
     plt.title("MSE Loss - Plot")
     plt.plot(history["train_loss"], label="training loss")
