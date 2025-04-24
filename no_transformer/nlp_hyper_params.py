@@ -12,6 +12,7 @@ class NLPHyperParams:
         self.claims_dim = example.claims_vector.shape[0]
         self.category_dim = 1 # scalar
         self.type_dim = 1 # scalar
+        self.desc_glove_dim = example.desc_glove_vector.shape[0]
 
         # scaled dimensions
         self.desc_scale = 64*2
@@ -23,13 +24,14 @@ class NLPHyperParams:
         self.claims_scale = 16*2
         self.category_scale = 8*2
         self.type_scale = 8*2
+        self.desc_glove_scale = 64*2
 
         # common classifier
         self.hidden_layers = 128*2
         self.dropout = 0.2
-        self.learning_rate = 0.01
-        self.epochs = 20
-        self.batch_size = 64
+        self.learning_rate = 0.001
+        self.epochs = 10
+        self.batch_size = 32
 
     def desc(self):
         return self.desc_dim, self.desc_scale
@@ -45,6 +47,8 @@ class NLPHyperParams:
         return self.pages_dim, self.pages_scale
     def claims(self):
         return self.claims_dim, self.claims_scale
+    def desc_glove(self):
+        return self.desc_glove_dim, self.desc_glove_scale
     def total_scale(self):
         return self.desc_scale + self.wiki_scale + self.labels_scale + self.descriptions_scale + self.aliases_scale + \
-            self.pages_scale + self.claims_scale + self.category_scale + self.type_scale
+            self.pages_scale + self.claims_scale + self.category_scale + self.type_scale + self.desc_glove_scale

@@ -188,3 +188,5 @@ output_folder/
 *.bin
 
 culturalitems-no-transformer/*
+no_transformer/.vector_cache/*
+no_transformer/culturalitems-no-transformer/*

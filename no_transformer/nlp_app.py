@@ -26,6 +26,7 @@ def main():
     criterion = nn.CrossEntropyLoss()
     trainer = NLPTrainer(model, optimizer, criterion, device, hyper_params)
     history = trainer.train(training_dataloader, validation_dataloader)
+    print(history)
 
     print("### Summary")
     print("average loss", history["avg_epoch_loss"])
@@ -44,8 +45,8 @@ def main():
     plt.show()
 
     # uncomment if you want to push the model to hugging face
-    # model.save_pretrained("culturalitems-no-transformer")
-    # model.push_to_hub("fax4ever/culturalitems-no-transformer", token=os.environ['HUGGINGFACE_TOKEN'])
+    model.save_pretrained("culturalitems-no-transformer")
+    model.push_to_hub("fax4ever/culturalitems-no-transformer", token=os.environ['HUGGINGFACE_TOKEN'])
 
 if __name__ == "__main__":
     main()

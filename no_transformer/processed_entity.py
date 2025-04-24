@@ -45,6 +45,7 @@ class ProcessedEntity:
         self.subcategory_vector = None
         # in this case we can assume that we have only two types (entity vs concept)
         self.type_vector = type_vector(base.type)
+        self.desc_glove_vector = None
         self.output_label = output_label(base.label)
 
     def __str__(self):
@@ -61,5 +62,6 @@ class ProcessedEntity:
             "claims" : self.claims_vector,
             "category" : self.subcategory_vector,
             "type" : self.type_vector,
+            "desc_glove" : self.desc_glove_vector,
             "output_label" : self.output_label
         }

@@ -26,6 +26,8 @@ class MultiModalModel(nn.Module, PyTorchModelHubMixin,
         # individual input layers for scalar value
         self.category = nn.Linear(p.category_dim, p.category_scale).to(device)
         self.type_proj = nn.Linear(p.type_dim, p.type_scale).to(device)
+        # glove
+        self.desc_glove = rescale_vector_layer(p.desc_glove()).to(device)
         # common classifier
         self.classifier = nn.Sequential(
             nn.Linear(p.total_scale(), p.hidden_layers),
@@ -44,6 +46,7 @@ class MultiModalModel(nn.Module, PyTorchModelHubMixin,
         claims_feat = self.claims(dataset_items['claims'].to(self.device))
         category_feat = self.category(dataset_items['category'].to(self.device))
         type_feat = self.type_proj(dataset_items['type'].to(self.device))
-        combined = torch.cat([desc_feat, wiki_feat, labels_feat, descriptions_feat, aliases_feat, pages_feat,
+        desc_glove_feat = self.desc_glove(dataset_items['desc_glove'].to(self.device))
+        combined = torch.cat([desc_feat, desc_glove_feat, wiki_feat, labels_feat, descriptions_feat, aliases_feat, pages_feat,
                               claims_feat, category_feat, type_feat], dim=1)
         return self.classifier(combined)
