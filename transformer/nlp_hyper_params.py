@@ -3,7 +3,8 @@ import evaluate
 import numpy as np
 from transformers import set_seed
 
-#List of LMs: ("bigbird", "distilbert", "roberta", "xlm_base", "xlm_large", "mdeberta_base", "mdeberta_large")
+#List of LMs: ("bigbird", "distilbert", "roberta_base", "roberta_large", 
+#              "xlm_base", "xlm_large", "mdeberta_base", "mdeberta_large")
 LMs = {
     "bigbird": {
         "model_name": "google/bigbird-roberta-base",
@@ -17,8 +18,14 @@ LMs = {
         "epochs": 1,
         "batch_size": 32
     },
-    "roberta": {
+    "roberta_base": {
         "model_name": "roberta-base",
+        "max_length": 512,
+        "epochs": 30,
+        "batch_size": 32
+    },
+    "roberta_large": {
+        "model_name": "roberta-large",
         "max_length": 512,
         "epochs": 30,
         "batch_size": 32
