@@ -18,7 +18,7 @@ class NLPEncoderModel:
 
     def predict(self, text, max_length=128):
         self.model.eval()
-        encoding = self.tokenizer(text, return_tensors='pt', max_length=max_length, padding='max_length', truncation=True)
+        encoding = self.tokenizer(text, return_tensors='pt', max_length=self.params.max_length, padding='max_length', truncation=True)
         input_ids = encoding['input_ids'].to(self.params.device)
         attention_mask = encoding['attention_mask'].to(self.params.device)
         with torch.no_grad():

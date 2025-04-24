@@ -178,6 +178,9 @@ machine-learning-project/documentation/*.synctex.gz
 ### JetBrains ###
 .idea/
 
+### VSCode ###
+.vscode/
+
 # Data files
 
 wiki.10K.txt

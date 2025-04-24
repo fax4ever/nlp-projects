@@ -27,9 +27,9 @@ def map_labels(sample):
     wiki_id = extract_entity_id(sample["item"])
     if wiki_id is not None and wiki_id in entity_dict:
         wiki_text = entity_dict[wiki_id].wiki_text
-        sample["ciao"] = wiki_text if type(wiki_text) == str else ""
+        sample["wiki_text"] = wiki_text if type(wiki_text) == str else ""
     else:
-        sample["ciao"] = ""
+        sample["wiki_text"] = ""
     return sample
 
 def main():
@@ -46,7 +46,7 @@ def main():
     model = NLPEncoderModel(params)
 
     def tokenize_function(items):
-        return model.tokenizer(items["description"], items["ciao"], padding=True, truncation=True)
+        return model.tokenizer(items["description"], items["wiki_text"], padding=True, truncation=True)
     print("Tokenize the dataset ...")
     tokenized_datasets = dataset.map(tokenize_function, batched=True)
     print(tokenized_datasets)
