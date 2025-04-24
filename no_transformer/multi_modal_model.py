@@ -1,15 +1,17 @@
 import torch
 from torch import nn
 from nlp_hyper_params import NLPHyperParams
-from processed_entity import ProcessedEntity
-
+from huggingface_hub import PyTorchModelHubMixin
 
 def rescale_vector_layer(params):
     in_features, out_features = params
     # frequency vector fields rescaling (applying also a RuLU individually):
     return nn.Sequential(nn.Linear(in_features, out_features), nn.ReLU())
 
-class MultiModalModel(nn.Module):
+class MultiModalModel(nn.Module, PyTorchModelHubMixin,
+                      repo_url="fax4ever/culturalitems-no-transformer",
+                      pipeline_tag="text-classification",
+                      license="apache-2.0"):
     def __init__(self, p : NLPHyperParams, device) -> None:
         super(MultiModalModel, self).__init__()
         self.device = device

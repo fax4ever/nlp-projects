@@ -1,3 +1,5 @@
+import os
+
 import torch
 import matplotlib.pyplot as plt
 from torch import optim, nn
@@ -40,6 +42,10 @@ def main():
     plt.plot(history["valid_accuracy"], label="validation accuracy")
     plt.legend()
     plt.show()
+
+    # uncomment if you want to push the model to hugging face
+    # model.save_pretrained("culturalitems-no-transformer")
+    # model.push_to_hub("fax4ever/culturalitems-no-transformer", token=os.environ['HUGGINGFACE_TOKEN'])
 
 if __name__ == "__main__":
     main()
