@@ -18,7 +18,7 @@ def output_label(label):
 
 class ProcessedEntity:
     def __init__(self, base: Entity, desc_text, wiki_text):
-        self.base_entity = str(base)
+        self.base_entity = base.entity_id + ": " + base.name
         # processed fields
         self.desc_text = desc_text
         self.wiki_text = wiki_text
@@ -63,5 +63,6 @@ class ProcessedEntity:
             "category" : self.subcategory_vector,
             "type" : self.type_vector,
             "desc_glove" : self.desc_glove_vector,
-            "output_label" : self.output_label
+            "output_label" : self.output_label,
+            "base" : self.base_entity
         }

@@ -1,0 +1,301 @@
+entity,true label,prediction,correct
+Q15786: 1. FC Nürnberg,cultural representative,cultural exclusive,False
+Q268530: 77 Records,cultural exclusive,cultural exclusive,True
+Q216153: A Bug's Life,cultural representative,cultural representative,True
+Q593: A Gang Story,cultural exclusive,cultural exclusive,True
+Q192185: Aaron Copland,cultural representative,cultural representative,True
+Q265890: Aarwangen Castle,cultural exclusive,cultural exclusive,True
+Q305718: abaya,cultural representative,cultural agnostic,False
+Q337267: Academy of San Carlos,cultural exclusive,cultural exclusive,True
+Q15: Africa,cultural representative,cultural representative,True
+Q388170: African American literature,cultural representative,cultural representative,True
+Q11453: agricultural irrigation,cultural agnostic,cultural agnostic,True
+Q11436: aircraft,cultural agnostic,cultural agnostic,True
+Q583479: Alcantara,cultural agnostic,cultural agnostic,True
+Q91717: alcazaba,cultural representative,cultural agnostic,False
+Q1453: Alexandra Stan,cultural representative,cultural representative,True
+Q9570: Amitabh Bachchan,cultural representative,cultural representative,True
+Q46392: Amjad Khan,cultural representative,cultural exclusive,False
+Q487265: Anasyrma,cultural representative,cultural exclusive,False
+Q25314: Angiosperms,cultural agnostic,cultural agnostic,True
+Q1107: anime,cultural representative,cultural representative,True
+Q27585: AOL,cultural exclusive,cultural representative,False
+Q192150: apéritif,cultural representative,cultural agnostic,False
+Q618238: Aperol,cultural representative,cultural representative,True
+Q207241: applied arts,cultural agnostic,cultural agnostic,True
+Q17045537: aragoto,cultural exclusive,cultural representative,False
+Q42973: architect,cultural agnostic,cultural agnostic,True
+Q3151019: architectural engineer,cultural agnostic,cultural agnostic,True
+Q45418: argan oil,cultural agnostic,cultural agnostic,True
+Q1792450: art historian,cultural agnostic,cultural agnostic,True
+Q11629: art of painting,cultural agnostic,cultural agnostic,True
+Q7066: atheism,cultural agnostic,cultural agnostic,True
+"Q552300: Baa, Baa, Black Sheep",cultural exclusive,cultural representative,False
+Q31444638: Baldegg railway station,cultural exclusive,cultural exclusive,True
+Q890297: Baltic song festivals,cultural representative,cultural exclusive,False
+Q6658: Bamboula,cultural representative,cultural exclusive,False
+Q807725: Barbarastollen underground archive,cultural exclusive,cultural exclusive,True
+Q353936: Baselland Transport,cultural exclusive,cultural exclusive,True
+Q66705: Bassecourt,cultural exclusive,cultural exclusive,True
+Q811389: Bauhaus Archive,cultural representative,cultural exclusive,False
+Q812609: Bayrisch Kraut,cultural representative,cultural exclusive,False
+Q815611: Biblioteca Ambrosiana,cultural exclusive,cultural exclusive,True
+Q11442: bicycle,cultural agnostic,cultural agnostic,True
+Q5173: Bilateria,cultural agnostic,cultural agnostic,True
+Q489: Bill Maher,cultural representative,cultural representative,True
+Q49759: bloc party,cultural agnostic,cultural agnostic,True
+Q3641631: boho-chic,cultural representative,cultural agnostic,False
+Q157906: Boomerang,cultural exclusive,cultural representative,False
+Q549322: bullfighter,cultural representative,cultural agnostic,False
+Q1132695: calico,cultural representative,cultural representative,True
+Q65997: Caliph,cultural representative,cultural representative,True
+Q5119: capital city,cultural agnostic,cultural agnostic,True
+Q584540: captain,cultural agnostic,cultural representative,False
+Q180449: carbatina,cultural representative,cultural representative,True
+Q410: Carl Sagan,cultural representative,cultural representative,True
+Q18240: carnivorous plant,cultural agnostic,cultural agnostic,True
+Q568286: cento,cultural exclusive,cultural exclusive,True
+Q154996: Charlottenburg Palace,cultural representative,cultural exclusive,False
+Q251672: Château Borély,cultural exclusive,cultural exclusive,True
+Q45982: Chittagong Kings,cultural exclusive,cultural exclusive,True
+Q1604035: Choc Stars,cultural exclusive,cultural exclusive,True
+Q222344: cinematographer,cultural agnostic,cultural agnostic,True
+Q118865: clarinetist,cultural agnostic,cultural agnostic,True
+Q265418: Classic Produktion Osnabrück,cultural exclusive,cultural agnostic,False
+Q11955: Club Deportivo Guadalajara,cultural exclusive,cultural exclusive,True
+Q280015: Colorado Gold Kings,cultural exclusive,cultural exclusive,True
+Q245068: comedian,cultural agnostic,cultural agnostic,True
+Q27773: common sole,cultural agnostic,cultural agnostic,True
+Q233591: communist party,cultural agnostic,cultural agnostic,True
+Q379282: community journalism,cultural agnostic,cultural agnostic,True
+Q36834: composer,cultural agnostic,cultural agnostic,True
+Q158852: conductor,cultural agnostic,cultural agnostic,True
+Q376596: courtship,cultural agnostic,cultural agnostic,True
+Q134426: crime comic,cultural agnostic,cultural agnostic,True
+Q506002: crosier,cultural representative,cultural agnostic,False
+Q172349: crown molding,cultural agnostic,cultural agnostic,True
+Q1142035: Crunchyroll,cultural representative,cultural representative,True
+Q597600: Cuban Institute of Radio and Television,cultural exclusive,cultural exclusive,True
+Q7367: Culicidae,cultural agnostic,cultural agnostic,True
+Q8690: Cultural Revolution,cultural representative,cultural exclusive,False
+Q247979: curia,cultural representative,cultural agnostic,False
+Q5203792: D. Rajarathinam,cultural exclusive,cultural exclusive,True
+Q11639: dance,cultural agnostic,cultural representative,False
+Q765: Dario Fo,cultural representative,cultural representative,True
+Q15647884: Dato Sri Tahir,cultural representative,cultural exclusive,False
+Q850794: dhoti,cultural exclusive,cultural representative,False
+Q430: dinosaur,cultural agnostic,cultural representative,False
+Q3290343: Dione Lucas,cultural exclusive,cultural representative,False
+Q130857: disc jockey,cultural agnostic,cultural agnostic,True
+Q2722359: Dnyaneshwari,cultural exclusive,cultural exclusive,True
+Q386854: drummer,cultural agnostic,cultural agnostic,True
+Q15964121: Ebikon railway station,cultural exclusive,cultural exclusive,True
+Q1350189: egyptologist,cultural agnostic,cultural representative,False
+Q367660: Eid Mubarak,cultural representative,cultural representative,True
+Q31444654: Emmenbrücke Gersag railway station,cultural exclusive,cultural exclusive,True
+Q1706696: engastration,cultural agnostic,cultural representative,False
+Q9465: ethics,cultural agnostic,cultural agnostic,True
+Q1371394: ethnographic film,cultural agnostic,cultural agnostic,True
+Q188907: etiquette,cultural agnostic,cultural agnostic,True
+Q46706: Eugène Ionesco,cultural representative,cultural representative,True
+Q387284: European comics,cultural representative,cultural agnostic,False
+Q24649: European political party,cultural representative,cultural agnostic,False
+Q38066: existentialism,cultural agnostic,cultural representative,False
+Q658371: extra,cultural agnostic,cultural agnostic,True
+Q693: fable,cultural agnostic,cultural agnostic,True
+Q699: fairy tale,cultural agnostic,cultural agnostic,True
+Q9764: flamenco,cultural representative,cultural representative,True
+Q62449: flat white,cultural representative,cultural representative,True
+Q36192: folklore,cultural agnostic,cultural agnostic,True
+Q1968: Formula One,cultural agnostic,cultural representative,False
+Q3102: Francis Coventry,cultural exclusive,cultural exclusive,True
+Q84629: Franz Ziehl,cultural exclusive,cultural exclusive,True
+Q6534: French Revolution,cultural representative,cultural exclusive,False
+Q764: fungi,cultural agnostic,cultural agnostic,True
+Q169325: Funimation,cultural representative,cultural representative,True
+Q618710: gauze,cultural agnostic,cultural agnostic,True
+Q3204: Geneva Open Challenger,cultural representative,cultural exclusive,False
+Q764233: geoponici,cultural representative,cultural exclusive,False
+Q3335: George Orwell,cultural representative,cultural representative,True
+Q1255562: Glasgow School,cultural representative,cultural representative,True
+Q172964: goalkeeper,cultural agnostic,cultural agnostic,True
+Q14924: golf ball retriever,cultural agnostic,cultural agnostic,True
+Q627325: graphic designer,cultural agnostic,cultural agnostic,True
+Q45594: greeting,cultural agnostic,cultural agnostic,True
+Q6663: hamburger,cultural representative,cultural representative,True
+Q655556: Heimatschutz Architecture,cultural representative,cultural exclusive,False
+Q23565: Hessischer Rundfunk,cultural exclusive,cultural exclusive,True
+Q51677: High Priest of Israel,cultural representative,cultural exclusive,False
+Q578269: HM Treasury,cultural exclusive,cultural exclusive,True
+Q65707: Horst P. Horst,cultural representative,cultural representative,True
+Q59243: Hyundai Motor Group,cultural representative,cultural representative,True
+Q132137: icon,cultural representative,cultural agnostic,False
+Q8538: Image Engine,cultural exclusive,cultural representative,False
+Q22865: independent city of Germany,cultural exclusive,cultural agnostic,False
+Q643996: Industrial Culture Handbook,cultural agnostic,cultural exclusive,False
+Q58968: intellectual,cultural agnostic,cultural agnostic,True
+Q3298: Intercontinental Champions' Supercup,cultural representative,cultural exclusive,False
+Q580340: Irish poetry,cultural representative,cultural representative,True
+Q400: Jenna Jameson,cultural exclusive,cultural representative,False
+Q161439: jewelry,cultural agnostic,cultural agnostic,True
+Q10940: jockstrap,cultural agnostic,cultural agnostic,True
+Q224644: Joe Kubert,cultural representative,cultural representative,True
+Q1294605: Jugendstil,cultural representative,cultural representative,True
+Q84405: Karl Landsteiner,cultural representative,cultural representative,True
+Q43416: Keanu Reeves,cultural representative,cultural representative,True
+Q80866: Khalifa,cultural representative,cultural representative,True
+Q2890234: Kinpira,cultural exclusive,cultural representative,False
+Q6418545: Kitty Foyle,cultural exclusive,cultural representative,False
+Q693461: KREEP,cultural agnostic,cultural agnostic,True
+Q489774: Kyobo Book Centre,cultural exclusive,cultural exclusive,True
+Q12494: ladyfinger,cultural representative,cultural representative,True
+Q284465: lectionary,cultural representative,cultural agnostic,False
+Q17563: Leonard Law,cultural exclusive,cultural exclusive,True
+Q3086695: Les Trois Accords,cultural exclusive,cultural exclusive,True
+"Q493858: Lions' Commentary on UNIX 6th Edition, with Source Code",cultural agnostic,cultural exclusive,False
+Q3257761: Loco Locass,cultural exclusive,cultural representative,False
+Q1133078: logographer,cultural agnostic,cultural exclusive,False
+Q84: London,cultural representative,cultural representative,True
+Q182357: lyric poetry,cultural agnostic,cultural representative,False
+Q48221: Malikism,cultural representative,cultural representative,True
+Q8274: manga,cultural representative,cultural representative,True
+Q131165: Manichaeism,cultural agnostic,cultural representative,False
+Q8362: manuscript illumination,cultural representative,cultural representative,True
+Q3281: Marit Paulsen,cultural exclusive,cultural exclusive,True
+Q11417: martial art,cultural agnostic,cultural agnostic,True
+Q98714302: master of the works,cultural agnostic,cultural agnostic,True
+Q162875: mausoleum,cultural agnostic,cultural agnostic,True
+Q257153: Mausoleum of Saladin,cultural exclusive,cultural exclusive,True
+Q76574: maypole,cultural representative,cultural exclusive,False
+Q2321: Mega-Łada Togliatti,cultural exclusive,cultural exclusive,True
+Q203827: Melbourne shuffle,cultural representative,cultural representative,True
+Q2185917: mennonites in Bolivia,cultural exclusive,cultural exclusive,True
+Q873: Meryl Streep,cultural representative,cultural representative,True
+Q3333382: mesocosm,cultural agnostic,cultural agnostic,True
+Q344299: Metro Istanbul,cultural exclusive,cultural exclusive,True
+Q5592: Michelangelo,cultural representative,cultural representative,True
+Q6836765: Michele Jolin,cultural exclusive,cultural exclusive,True
+Q220011: Mike DeCarlo,cultural exclusive,cultural representative,False
+Q835: Mikhail Bulgakov,cultural representative,cultural representative,True
+Q1750272: milk bar,cultural agnostic,cultural agnostic,True
+Q674067: mime artist,cultural agnostic,cultural agnostic,True
+Q1628649: Minhag,cultural exclusive,cultural exclusive,True
+Q460039: Mixed team,cultural agnostic,cultural agnostic,True
+Q687: Molière,cultural representative,cultural representative,True
+Q429088: mons,cultural agnostic,cultural agnostic,True
+Q23402: Musée d'Orsay,cultural representative,cultural representative,True
+Q2743: musical,cultural agnostic,cultural agnostic,True
+Q229724: Naoko Takeuchi,cultural representative,cultural representative,True
+Q616753: Naryshkin Baroque,cultural representative,cultural representative,True
+Q479102: National Festival of Polish Song in Opole,cultural exclusive,cultural exclusive,True
+Q56000: naturalism,cultural agnostic,cultural agnostic,True
+Q194285: Nebula Award,cultural exclusive,cultural agnostic,False
+Q25648: New York Film Festival,cultural representative,cultural exclusive,False
+Q264238: newsletter,cultural agnostic,cultural agnostic,True
+Q265169: Nitro Records,cultural exclusive,cultural exclusive,True
+Q518390: nod,cultural agnostic,cultural agnostic,True
+Q1377546: nunsploitation,cultural representative,cultural agnostic,False
+Q216929: Oliver & Company,cultural representative,cultural representative,True
+Q2425502: onnagata,cultural exclusive,cultural exclusive,True
+Q1344: opera,cultural representative,cultural agnostic,False
+Q1772945: Opera dei Pupi,cultural exclusive,cultural representative,False
+Q470137: original English-language manga,cultural representative,cultural representative,True
+Q43091: orthography,cultural agnostic,cultural agnostic,True
+Q27207: Osteichthyes,cultural agnostic,cultural agnostic,True
+Q29536: paganism,cultural representative,cultural representative,True
+Q182370: paint-on-glass animation,cultural agnostic,cultural agnostic,True
+Q130898: Palace of Iturbide,cultural representative,cultural exclusive,False
+Q7845: pataphysics,cultural representative,cultural representative,True
+Q557: Patti Smith,cultural representative,cultural representative,True
+Q272: Paul Morand,cultural representative,cultural representative,True
+Q84809: Peter Schuster,cultural exclusive,cultural exclusive,True
+Q23407: philosophy of mind,cultural agnostic,cultural agnostic,True
+Q551835: physician writer,cultural agnostic,cultural agnostic,True
+Q486748: pianist,cultural agnostic,cultural agnostic,True
+Q7194764: pin and hanger assembly,cultural agnostic,cultural agnostic,True
+Q2095595: Pinewood Toronto Studios,cultural exclusive,cultural agnostic,False
+Q12024: Pinus,cultural agnostic,cultural agnostic,True
+Q127552: Pixar,cultural representative,cultural representative,True
+Q200751: pixilation,cultural agnostic,cultural agnostic,True
+Q756: plant,cultural agnostic,cultural agnostic,True
+Q3307548: Po,cultural representative,cultural representative,True
+Q19546: pope,cultural representative,cultural representative,True
+Q27114292: posting style,cultural agnostic,cultural representative,False
+Q30461: president,cultural agnostic,cultural agnostic,True
+Q38817: Prishtina International Film Festival,cultural exclusive,cultural exclusive,True
+Q10892: protist,cultural agnostic,cultural agnostic,True
+Q12516: pyramid,cultural agnostic,cultural representative,False
+Q434: Pyrus,cultural agnostic,cultural agnostic,True
+Q41800: Raquel Argandoña,cultural exclusive,cultural exclusive,True
+Q4692: Renaissance,cultural representative,cultural representative,True
+Q11707: restaurant,cultural agnostic,cultural agnostic,True
+Q66854: Rietheim,cultural exclusive,cultural exclusive,True
+Q383845: rigaudon,cultural exclusive,cultural representative,False
+Q66768: Rossens,cultural exclusive,cultural exclusive,True
+Q18702: Royal free city,cultural exclusive,cultural exclusive,True
+Q54829: RTVE,cultural exclusive,cultural exclusive,True
+Q172582: Sahitya Akademi Award,cultural exclusive,cultural representative,False
+Q1509703: Saintonge,cultural exclusive,cultural exclusive,True
+Q11122366: sandalwood,cultural agnostic,cultural agnostic,True
+Q25814: seed plant,cultural agnostic,cultural agnostic,True
+Q237338: seinen,cultural representative,cultural representative,True
+Q145234: Seiun Awards,cultural exclusive,cultural representative,False
+Q15761: servus,cultural representative,cultural representative,True
+Q1503157: Shakespeare and Company,cultural representative,cultural representative,True
+Q7372: shark,cultural agnostic,cultural agnostic,True
+Q211367: sheet metal,cultural agnostic,cultural agnostic,True
+Q2278256: Shepperton Studios,cultural exclusive,cultural representative,False
+Q231302: shōnen,cultural representative,cultural representative,True
+Q23589: Showtime,cultural exclusive,cultural agnostic,False
+Q340709: shrug,cultural agnostic,cultural agnostic,True
+Q737377: Singer House,cultural representative,cultural exclusive,False
+Q139932: single whip law,cultural exclusive,cultural exclusive,True
+Q124619225: Siuuu,cultural representative,cultural representative,True
+Q15783: skateboard,cultural agnostic,cultural agnostic,True
+Q1661080: small press,cultural agnostic,cultural agnostic,True
+Q17084639: socks and sandals,cultural agnostic,cultural representative,False
+Q7554349: software publisher,cultural agnostic,cultural agnostic,True
+Q178406: solo dance,cultural agnostic,cultural agnostic,True
+Q359293: Soo Line Railroad,cultural exclusive,cultural exclusive,True
+Q884: South Korea,cultural representative,cultural exclusive,False
+Q236913: space rock,cultural representative,cultural representative,True
+Q27185: Stone Bell House,cultural exclusive,cultural exclusive,True
+Q6539: Storming of the Bastille,cultural representative,cultural exclusive,False
+Q182361: Studio 4°C,cultural exclusive,cultural representative,False
+Q465501: stunt performer,cultural agnostic,cultural agnostic,True
+Q1140845: subterranean river,cultural agnostic,cultural agnostic,True
+Q9603: Sufism,cultural representative,cultural representative,True
+Q1365: Swept Away,cultural representative,cultural exclusive,False
+Q11254: table salt,cultural agnostic,cultural agnostic,True
+Q2465121: Tajikfilm,cultural exclusive,cultural exclusive,True
+Q7679703: Talk to Me,cultural exclusive,cultural exclusive,True
+Q1568338: technical writer,cultural agnostic,cultural agnostic,True
+Q7696211: Telegram style,cultural agnostic,cultural agnostic,True
+Q674413: tell,cultural agnostic,cultural agnostic,True
+Q175122: terrestrial television,cultural agnostic,cultural agnostic,True
+Q595: The Intouchables,cultural representative,cultural representative,True
+Q270844: The World,cultural representative,cultural agnostic,False
+Q1074069: tidal river,cultural agnostic,cultural agnostic,True
+Q187120: time shifting,cultural agnostic,cultural agnostic,True
+Q3267562: Tina Nordström,cultural representative,cultural exclusive,False
+Q685935: trade magazine,cultural agnostic,cultural agnostic,True
+Q184781: traditional animation,cultural agnostic,cultural agnostic,True
+Q235858: traditional folk music,cultural agnostic,cultural representative,False
+Q870: train,cultural agnostic,cultural agnostic,True
+Q28543: transport in Hungary,cultural agnostic,cultural exclusive,False
+Q479716: university press,cultural agnostic,cultural agnostic,True
+Q13178: Vaccinium sect. Cyanococcus,cultural agnostic,cultural agnostic,True
+Q194363: Vaslav Nijinsky,cultural representative,cultural representative,True
+Q49024: Venice Film Festival,cultural representative,cultural representative,True
+Q8072: volcano,cultural agnostic,cultural agnostic,True
+Q246: Volkswagen,cultural representative,cultural representative,True
+Q177764: Voodoo Church,cultural representative,cultural agnostic,False
+Q375: waffle,cultural representative,cultural representative,True
+Q59183: Wanderer,cultural exclusive,cultural exclusive,True
+Q911871: wilderness,cultural agnostic,cultural agnostic,True
+Q1552567: wolf pit,cultural agnostic,cultural agnostic,True
+Q36180: writer,cultural agnostic,cultural agnostic,True
+Q156316: Würzburg Residence,cultural representative,cultural exclusive,False
+Q56911: xunfu,cultural exclusive,cultural exclusive,True
+Q377: Yanka Kupala,cultural representative,cultural representative,True
+Q615394: Yếm,cultural exclusive,cultural exclusive,True
