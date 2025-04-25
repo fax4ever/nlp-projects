@@ -52,3 +52,22 @@ class NLPHyperParams:
     def total_scale(self):
         return self.desc_scale + self.wiki_scale + self.labels_scale + self.descriptions_scale + self.aliases_scale + \
             self.pages_scale + self.claims_scale + self.category_scale + self.type_scale + self.desc_glove_scale
+
+    def params(self):
+        return {
+            'desc': self.desc(),
+            'wiki': self.wiki(),
+            'labels': self.labels(),
+            'descriptions': self.descriptions(),
+            'aliases': self.aliases(),
+            'pages': self.pages(),
+            'claims': self.claims(),
+            'desc_glove': self.desc_glove(),
+            'total_scale': self.total_scale(),
+            'category_dim': self.category_dim,
+            'category_scale': self.category_scale,
+            'type_dim': self.type_dim,
+            'type_scale': self.type_scale,
+            'hidden_layers': self.hidden_layers,
+            'dropout': self.dropout
+        }

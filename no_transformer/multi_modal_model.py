@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from nlp_hyper_params import NLPHyperParams
 from huggingface_hub import PyTorchModelHubMixin
 
 def rescale_vector_layer(params):
@@ -12,28 +11,28 @@ class MultiModalModel(nn.Module, PyTorchModelHubMixin,
                       repo_url="fax4ever/culturalitems-no-transformer",
                       pipeline_tag="text-classification",
                       license="apache-2.0"):
-    def __init__(self, p : NLPHyperParams, device) -> None:
+    def __init__(self, params, device) -> None:
         super(MultiModalModel, self).__init__()
         self.device = device
         # individual input layers for frequency vectors
-        self.desc = rescale_vector_layer(p.desc()).to(device)
-        self.wiki = rescale_vector_layer(p.wiki()).to(device)
-        self.labels = rescale_vector_layer(p.labels()).to(device)
-        self.descriptions = rescale_vector_layer(p.descriptions()).to(device)
-        self.aliases = rescale_vector_layer(p.aliases()).to(device)
-        self.pages = rescale_vector_layer(p.pages()).to(device)
-        self.claims = rescale_vector_layer(p.claims()).to(device)
+        self.desc = rescale_vector_layer(params['desc']).to(device)
+        self.wiki = rescale_vector_layer(params['wiki']).to(device)
+        self.labels = rescale_vector_layer(params['labels']).to(device)
+        self.descriptions = rescale_vector_layer(params['descriptions']).to(device)
+        self.aliases = rescale_vector_layer(params['aliases']).to(device)
+        self.pages = rescale_vector_layer(params['pages']).to(device)
+        self.claims = rescale_vector_layer(params['claims']).to(device)
         # individual input layers for scalar value
-        self.category = nn.Linear(p.category_dim, p.category_scale).to(device)
-        self.type_proj = nn.Linear(p.type_dim, p.type_scale).to(device)
+        self.category = nn.Linear(params['category_dim'], params['category_scale']).to(device)
+        self.type_proj = nn.Linear(params['type_dim'], params['type_scale']).to(device)
         # glove
-        self.desc_glove = rescale_vector_layer(p.desc_glove()).to(device)
+        self.desc_glove = rescale_vector_layer(params['desc_glove']).to(device)
         # common classifier
         self.classifier = nn.Sequential(
-            nn.Linear(p.total_scale(), p.hidden_layers),
+            nn.Linear(params['total_scale'], params['hidden_layers']),
             nn.ReLU(),
-            nn.Dropout(p.dropout),
-            nn.Linear(p.hidden_layers, 3)
+            nn.Dropout(params['dropout']),
+            nn.Linear(params['hidden_layers'], 3)
         ).to(device)
 
     def forward(self, dataset_items):
