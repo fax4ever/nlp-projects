@@ -1,5 +1,5 @@
 from dictonary import Dictionary
-from no_transformer.glove_processing import GloveProcessing
+from glove_processing import GloveProcessing
 from processed_entity import ProcessedEntity
 from category_table import CategoryTable
 
