@@ -1,5 +1,5 @@
 from dictonary import Dictionary
-from no_transformer.glove_processing import GloveProcessing
+from glove_processing import GloveProcessing
 from processed_entity import ProcessedEntity
 from category_table import CategoryTable
 
@@ -7,7 +7,8 @@ UNK = '<UNK>' # the token to be used for out of vocabulary words
 DESC_VOCAB_SIZE = 4_000
 WIKI_VOCAB_SIZE = 10_000
 CLAIM_VOCAB_SIZE = 500
-GLOVE_EMBEDDING_SIZE = 20
+DESC_GLOVE_EMBEDDING_SIZE = 20
+WIKI_GLOVE_EMBEDDING_SIZE = 100
 
 class Dictionaries:
     def __init__(self):
@@ -20,7 +21,8 @@ class Dictionaries:
         self.claims = Dictionary()
         self.category_table = CategoryTable()
         # extra add glove embeddings
-        self.glove_desc = GloveProcessing(GLOVE_EMBEDDING_SIZE)
+        self.glove_desc = GloveProcessing(DESC_GLOVE_EMBEDDING_SIZE)
+        self.wiki_desc = GloveProcessing(WIKI_GLOVE_EMBEDDING_SIZE)
 
     def include(self, processed_entity: ProcessedEntity):
         self.desc.include(processed_entity.desc_text)
@@ -50,3 +52,4 @@ class Dictionaries:
         processed_entity.claims_vector = self.claims.map_to_vector(processed_entity.claims_map)
         processed_entity.subcategory_vector = self.category_table.subcat_to_vector(processed_entity.subcategory)
         processed_entity.desc_glove_vector = self.glove_desc.words_to_vect(processed_entity.desc_text)
+        processed_entity.wiki_glove_vector = self.wiki_desc.words_to_vect(processed_entity.wiki_text)
