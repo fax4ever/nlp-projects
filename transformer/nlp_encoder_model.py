@@ -1,6 +1,5 @@
 import os
 
-import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, DataCollatorWithPadding
 from nlp_hyper_params import NLPHyperParams
 
@@ -17,16 +16,6 @@ class NLPEncoderModel:
         # the data collator function used here apply a zero-padding on the elements in the batch
         # the padding is needed to have a "full" form of the batches
         self.data_collator = DataCollatorWithPadding(tokenizer=self.tokenizer)
-
-    def predict(self, text, max_length=128):
-        self.model.eval()
-        encoding = self.tokenizer(text, return_tensors='pt', max_length=self.params.max_length, padding='max_length', truncation=True)
-        input_ids = encoding['input_ids'].to(self.params.device)
-        attention_mask = encoding['attention_mask'].to(self.params.device)
-        with torch.no_grad():
-            outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
-            _, preds = torch.max(outputs.logits, dim=1)
-        return preds.item()
 
     def push(self, repo):
         self.model.push_to_hub(repo, token=os.environ['HUGGINGFACE_TOKEN'])

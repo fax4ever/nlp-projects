@@ -191,3 +191,10 @@ culturalitems-no-transformer/*
 no_transformer/.vector_cache/*
 .vector_cache
 no_transformer/culturalitems-no-transformer/*
+
+# Repos:
+culturalitems-bigbird
+culturalitems-roberta-large
+culturalitems-roberta-base
+culturalitems-roberta-base-5
+culturalitems-distilbert
