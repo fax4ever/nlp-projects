@@ -11,11 +11,8 @@ from processed_entity import ProcessedEntity
 
 TRAINING_PROC_FILE_NAME = "training-proc.bin"
 VALIDATION_PROC_FILE_NAME = "validation-proc.bin"
-nltk.download('stopwords')
-nltk.download('wordnet')
-stop = set(stopwords.words('english') + list(string.punctuation) + ['==', "''", '``', "'s", '==='])
 
-def text_process(text):
+def text_process(text, stop):
     result = []
     if text is None:
         return result
@@ -23,9 +20,9 @@ def text_process(text):
         result.extend([WordNetLemmatizer().lemmatize(i) for i in nltk.word_tokenize(sentence) if i not in stop])
     return result
 
-def create_processed(entity, dictionaries):
-    description_tokenized = text_process(entity.description)
-    wiki_text_tokenized = text_process(entity.wiki_text)
+def create_processed(entity, dictionaries, stop):
+    description_tokenized = text_process(entity.description, stop)
+    wiki_text_tokenized = text_process(entity.wiki_text, stop)
     result = ProcessedEntity(entity, description_tokenized, wiki_text_tokenized)
     dictionaries.include(result)
     return result
@@ -43,20 +40,23 @@ class ProcessedDataset(NLPDataset):
             self.processed_validation_set = load(VALIDATION_PROC_FILE_NAME)
 
     def processing(self):
+        nltk.download('stopwords')
+        nltk.download('wordnet')
+        stop = set(stopwords.words('english') + list(string.punctuation) + ['==', "''", '``', "'s", '==='])
         print("processing the data")
         dictionaries = Dictionaries()
         # from the base data, add a list of processed entities
         print("training set text processing started")
         processed_training_set = []
         for index, entity in enumerate(self.training_set):
-            processed_training_set.append(create_processed(entity, dictionaries))
+            processed_training_set.append(create_processed(entity, dictionaries, stop))
             if (index+1) % 100 == 0:
                 print("training set processed", index+1, "entities")
         print("training set text processing ended")
         print("validation set text processing started")
         processed_validation_set = []
         for index, entity in enumerate(self.validation_set):
-            processed_validation_set.append(create_processed(entity, dictionaries))
+            processed_validation_set.append(create_processed(entity, dictionaries, stop))
             if (index+1) % 100 == 0:
                 print("validation set processed", index+1, "entities")
         print("validation set text processing ended")
