@@ -3,7 +3,7 @@ import csv
 from inference_model import InferenceModel
 from wiki_dataset import WikiDataset
 
-def output_label(label):
+def number_to_label(label):
     if label == 0:
         return 'cultural agnostic'
     if label == 1:
@@ -36,7 +36,7 @@ def main():
             match_ds = p_ds == true_label
             if match_ds:
                 matching_ds = matching_ds + 1
-            writer.writerow([item["item"], output_label(true_label), output_label(p), output_label(p_ds), match, match_ds])
+            writer.writerow([item["item"], number_to_label(true_label), number_to_label(p), number_to_label(p_ds), match, match_ds])
             if (index + 1) % 10 == 0:
                 print('inference: ', index + 1, "/", size)
                 print('matched', matching, 'on', index + 1, '(', matching / (index + 1), ')')

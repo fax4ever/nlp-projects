@@ -14,7 +14,7 @@ def build_entity_dict():
         entity_dict[entity.entity_id] = entity
     return entity_dict
 
-def output_label(label):
+def label_to_number(label):
     if label == 'cultural agnostic':
         return 0
     if label == 'cultural representative':
@@ -30,7 +30,7 @@ class WikiDataset:
         # enriching the entities with the wiki pages
         def map_labels(sample):
             label = sample["label"]
-            sample["label"] = output_label(label)
+            sample["label"] = label_to_number(label)
             wiki_id = extract_entity_id(sample["item"])
             if wiki_id is not None and wiki_id in entity_dict:
                 wiki_text = entity_dict[wiki_id].wiki_text

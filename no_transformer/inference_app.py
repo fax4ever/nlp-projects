@@ -5,7 +5,7 @@ from seed import set_seed
 from processed_dataset import ProcessedDataset
 from multi_modal_model import MultiModalModel
 
-def output_label(label):
+def number_to_label(label):
     if label == 0:
         return 'cultural agnostic'
     if label == 1:
@@ -32,7 +32,7 @@ def main():
                 if match:
                     matching = matching + 1
                 base_ = entity['base'][0]
-                writer.writerow([base_, output_label(true_label), output_label(prediction), match])
+                writer.writerow([base_, number_to_label(true_label), number_to_label(prediction), match])
 
     print('matched', matching, 'on', len(validation), '(', matching/len(validation), ')')
 
