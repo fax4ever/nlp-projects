@@ -42,6 +42,7 @@ class ProcessedDataset(NLPDataset):
     def processing(self):
         nltk.download('stopwords')
         nltk.download('wordnet')
+        nltk.download('punkt_tab')
         stop = set(stopwords.words('english') + list(string.punctuation) + ['==', "''", '``', "'s", '==='])
         print("processing the data")
         dictionaries = Dictionaries()
