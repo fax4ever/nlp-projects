@@ -7,9 +7,11 @@ class InferenceModel:
         self.tokenizer = AutoTokenizer.from_pretrained(kind)
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    def predict_text(self, desc, wiki, input_ids_ds, attention_mask_ds, max_length=512):
+    def predict_text(self, desc, wiki, input_ids_ds, attention_mask_ds):
         self.model.eval()
-        encoding = self.tokenizer(desc, wiki, return_tensors='pt', max_length=max_length, padding='max_length', truncation=True)
+        # no max length - we want to use the default of the base model
+        # as we do in training
+        encoding = self.tokenizer(desc, wiki, return_tensors='pt', padding='max_length', truncation=True)
         input_ids = encoding['input_ids'].to(self.device)
         attention_mask = encoding['attention_mask'].to(self.device)
         input_ids_ds = torch.tensor(input_ids_ds).to(self.device).view(1, -1)
