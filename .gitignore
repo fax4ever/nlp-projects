@@ -198,3 +198,5 @@ culturalitems-roberta-large
 culturalitems-roberta-base
 culturalitems-roberta-base-5
 culturalitems-distilbert
+
+*.out
