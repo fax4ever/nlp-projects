@@ -28,10 +28,10 @@ class NLPHyperParams:
 
         # common classifier
         self.hidden_layers = 128*2
-        self.dropout = 0.2
+        self.dropout = 0.15
         self.learning_rate = 1e-3
         self.weight_decay = 1e-2
-        self.epochs = 72 # manual early stopping
+        self.epochs = 20 # manual early stopping
         self.batch_size = 32
 
     def desc(self):
