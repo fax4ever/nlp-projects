@@ -12,7 +12,7 @@ Q388170: African American literature,cultural representative,cultural representa
 Q11453: agricultural irrigation,cultural agnostic,cultural agnostic,True
 Q11436: aircraft,cultural agnostic,cultural agnostic,True
 Q583479: Alcantara,cultural agnostic,cultural agnostic,True
-Q91717: alcazaba,cultural representative,cultural agnostic,False
+Q91717: alcazaba,cultural representative,cultural exclusive,False
 Q1453: Alexandra Stan,cultural representative,cultural representative,True
 Q9570: Amitabh Bachchan,cultural representative,cultural representative,True
 Q46392: Amjad Khan,cultural representative,cultural exclusive,False
@@ -30,7 +30,7 @@ Q45418: argan oil,cultural agnostic,cultural agnostic,True
 Q1792450: art historian,cultural agnostic,cultural agnostic,True
 Q11629: art of painting,cultural agnostic,cultural agnostic,True
 Q7066: atheism,cultural agnostic,cultural agnostic,True
-"Q552300: Baa, Baa, Black Sheep",cultural exclusive,cultural representative,False
+"Q552300: Baa, Baa, Black Sheep",cultural exclusive,cultural exclusive,True
 Q31444638: Baldegg railway station,cultural exclusive,cultural exclusive,True
 Q890297: Baltic song festivals,cultural representative,cultural exclusive,False
 Q6658: Bamboula,cultural representative,cultural exclusive,False
@@ -71,16 +71,16 @@ Q379282: community journalism,cultural agnostic,cultural agnostic,True
 Q36834: composer,cultural agnostic,cultural agnostic,True
 Q158852: conductor,cultural agnostic,cultural agnostic,True
 Q376596: courtship,cultural agnostic,cultural agnostic,True
-Q134426: crime comic,cultural agnostic,cultural agnostic,True
+Q134426: crime comic,cultural agnostic,cultural exclusive,False
 Q506002: crosier,cultural representative,cultural agnostic,False
 Q172349: crown molding,cultural agnostic,cultural agnostic,True
 Q1142035: Crunchyroll,cultural representative,cultural representative,True
 Q597600: Cuban Institute of Radio and Television,cultural exclusive,cultural exclusive,True
 Q7367: Culicidae,cultural agnostic,cultural agnostic,True
 Q8690: Cultural Revolution,cultural representative,cultural exclusive,False
-Q247979: curia,cultural representative,cultural agnostic,False
+Q247979: curia,cultural representative,cultural representative,True
 Q5203792: D. Rajarathinam,cultural exclusive,cultural exclusive,True
-Q11639: dance,cultural agnostic,cultural representative,False
+Q11639: dance,cultural agnostic,cultural agnostic,True
 Q765: Dario Fo,cultural representative,cultural representative,True
 Q15647884: Dato Sri Tahir,cultural representative,cultural exclusive,False
 Q850794: dhoti,cultural exclusive,cultural representative,False
@@ -90,25 +90,25 @@ Q130857: disc jockey,cultural agnostic,cultural agnostic,True
 Q2722359: Dnyaneshwari,cultural exclusive,cultural exclusive,True
 Q386854: drummer,cultural agnostic,cultural agnostic,True
 Q15964121: Ebikon railway station,cultural exclusive,cultural exclusive,True
-Q1350189: egyptologist,cultural agnostic,cultural representative,False
+Q1350189: egyptologist,cultural agnostic,cultural agnostic,True
 Q367660: Eid Mubarak,cultural representative,cultural representative,True
 Q31444654: Emmenbrücke Gersag railway station,cultural exclusive,cultural exclusive,True
-Q1706696: engastration,cultural agnostic,cultural representative,False
+Q1706696: engastration,cultural agnostic,cultural exclusive,False
 Q9465: ethics,cultural agnostic,cultural agnostic,True
 Q1371394: ethnographic film,cultural agnostic,cultural agnostic,True
 Q188907: etiquette,cultural agnostic,cultural agnostic,True
 Q46706: Eugène Ionesco,cultural representative,cultural representative,True
 Q387284: European comics,cultural representative,cultural agnostic,False
-Q24649: European political party,cultural representative,cultural agnostic,False
+Q24649: European political party,cultural representative,cultural exclusive,False
 Q38066: existentialism,cultural agnostic,cultural representative,False
 Q658371: extra,cultural agnostic,cultural agnostic,True
 Q693: fable,cultural agnostic,cultural agnostic,True
 Q699: fairy tale,cultural agnostic,cultural agnostic,True
 Q9764: flamenco,cultural representative,cultural representative,True
-Q62449: flat white,cultural representative,cultural representative,True
+Q62449: flat white,cultural representative,cultural agnostic,False
 Q36192: folklore,cultural agnostic,cultural agnostic,True
 Q1968: Formula One,cultural agnostic,cultural representative,False
-Q3102: Francis Coventry,cultural exclusive,cultural exclusive,True
+Q3102: Francis Coventry,cultural exclusive,cultural representative,False
 Q84629: Franz Ziehl,cultural exclusive,cultural exclusive,True
 Q6534: French Revolution,cultural representative,cultural exclusive,False
 Q764: fungi,cultural agnostic,cultural agnostic,True
@@ -128,13 +128,13 @@ Q23565: Hessischer Rundfunk,cultural exclusive,cultural exclusive,True
 Q51677: High Priest of Israel,cultural representative,cultural exclusive,False
 Q578269: HM Treasury,cultural exclusive,cultural exclusive,True
 Q65707: Horst P. Horst,cultural representative,cultural representative,True
-Q59243: Hyundai Motor Group,cultural representative,cultural representative,True
+Q59243: Hyundai Motor Group,cultural representative,cultural exclusive,False
 Q132137: icon,cultural representative,cultural agnostic,False
 Q8538: Image Engine,cultural exclusive,cultural representative,False
 Q22865: independent city of Germany,cultural exclusive,cultural agnostic,False
 Q643996: Industrial Culture Handbook,cultural agnostic,cultural exclusive,False
 Q58968: intellectual,cultural agnostic,cultural agnostic,True
-Q3298: Intercontinental Champions' Supercup,cultural representative,cultural exclusive,False
+Q3298: Intercontinental Champions' Supercup,cultural representative,cultural representative,True
 Q580340: Irish poetry,cultural representative,cultural representative,True
 Q400: Jenna Jameson,cultural exclusive,cultural representative,False
 Q161439: jewelry,cultural agnostic,cultural agnostic,True
@@ -145,8 +145,8 @@ Q84405: Karl Landsteiner,cultural representative,cultural representative,True
 Q43416: Keanu Reeves,cultural representative,cultural representative,True
 Q80866: Khalifa,cultural representative,cultural representative,True
 Q2890234: Kinpira,cultural exclusive,cultural representative,False
-Q6418545: Kitty Foyle,cultural exclusive,cultural representative,False
-Q693461: KREEP,cultural agnostic,cultural agnostic,True
+Q6418545: Kitty Foyle,cultural exclusive,cultural exclusive,True
+Q693461: KREEP,cultural agnostic,cultural exclusive,False
 Q489774: Kyobo Book Centre,cultural exclusive,cultural exclusive,True
 Q12494: ladyfinger,cultural representative,cultural representative,True
 Q284465: lectionary,cultural representative,cultural agnostic,False
@@ -155,7 +155,7 @@ Q3086695: Les Trois Accords,cultural exclusive,cultural exclusive,True
 "Q493858: Lions' Commentary on UNIX 6th Edition, with Source Code",cultural agnostic,cultural exclusive,False
 Q3257761: Loco Locass,cultural exclusive,cultural representative,False
 Q1133078: logographer,cultural agnostic,cultural exclusive,False
-Q84: London,cultural representative,cultural representative,True
+Q84: London,cultural representative,cultural exclusive,False
 Q182357: lyric poetry,cultural agnostic,cultural representative,False
 Q48221: Malikism,cultural representative,cultural representative,True
 Q8274: manga,cultural representative,cultural representative,True
@@ -163,10 +163,10 @@ Q131165: Manichaeism,cultural agnostic,cultural representative,False
 Q8362: manuscript illumination,cultural representative,cultural representative,True
 Q3281: Marit Paulsen,cultural exclusive,cultural exclusive,True
 Q11417: martial art,cultural agnostic,cultural agnostic,True
-Q98714302: master of the works,cultural agnostic,cultural agnostic,True
+Q98714302: master of the works,cultural agnostic,cultural exclusive,False
 Q162875: mausoleum,cultural agnostic,cultural agnostic,True
 Q257153: Mausoleum of Saladin,cultural exclusive,cultural exclusive,True
-Q76574: maypole,cultural representative,cultural exclusive,False
+Q76574: maypole,cultural representative,cultural representative,True
 Q2321: Mega-Łada Togliatti,cultural exclusive,cultural exclusive,True
 Q203827: Melbourne shuffle,cultural representative,cultural representative,True
 Q2185917: mennonites in Bolivia,cultural exclusive,cultural exclusive,True
@@ -177,9 +177,9 @@ Q5592: Michelangelo,cultural representative,cultural representative,True
 Q6836765: Michele Jolin,cultural exclusive,cultural exclusive,True
 Q220011: Mike DeCarlo,cultural exclusive,cultural representative,False
 Q835: Mikhail Bulgakov,cultural representative,cultural representative,True
-Q1750272: milk bar,cultural agnostic,cultural agnostic,True
-Q674067: mime artist,cultural agnostic,cultural agnostic,True
-Q1628649: Minhag,cultural exclusive,cultural exclusive,True
+Q1750272: milk bar,cultural agnostic,cultural exclusive,False
+Q674067: mime artist,cultural agnostic,cultural representative,False
+Q1628649: Minhag,cultural exclusive,cultural representative,False
 Q460039: Mixed team,cultural agnostic,cultural agnostic,True
 Q687: Molière,cultural representative,cultural representative,True
 Q429088: mons,cultural agnostic,cultural agnostic,True
@@ -190,7 +190,7 @@ Q616753: Naryshkin Baroque,cultural representative,cultural representative,True
 Q479102: National Festival of Polish Song in Opole,cultural exclusive,cultural exclusive,True
 Q56000: naturalism,cultural agnostic,cultural agnostic,True
 Q194285: Nebula Award,cultural exclusive,cultural agnostic,False
-Q25648: New York Film Festival,cultural representative,cultural exclusive,False
+Q25648: New York Film Festival,cultural representative,cultural representative,True
 Q264238: newsletter,cultural agnostic,cultural agnostic,True
 Q265169: Nitro Records,cultural exclusive,cultural exclusive,True
 Q518390: nod,cultural agnostic,cultural agnostic,True
@@ -198,14 +198,14 @@ Q1377546: nunsploitation,cultural representative,cultural agnostic,False
 Q216929: Oliver & Company,cultural representative,cultural representative,True
 Q2425502: onnagata,cultural exclusive,cultural exclusive,True
 Q1344: opera,cultural representative,cultural agnostic,False
-Q1772945: Opera dei Pupi,cultural exclusive,cultural representative,False
+Q1772945: Opera dei Pupi,cultural exclusive,cultural exclusive,True
 Q470137: original English-language manga,cultural representative,cultural representative,True
 Q43091: orthography,cultural agnostic,cultural agnostic,True
 Q27207: Osteichthyes,cultural agnostic,cultural agnostic,True
 Q29536: paganism,cultural representative,cultural representative,True
 Q182370: paint-on-glass animation,cultural agnostic,cultural agnostic,True
 Q130898: Palace of Iturbide,cultural representative,cultural exclusive,False
-Q7845: pataphysics,cultural representative,cultural representative,True
+Q7845: pataphysics,cultural representative,cultural agnostic,False
 Q557: Patti Smith,cultural representative,cultural representative,True
 Q272: Paul Morand,cultural representative,cultural representative,True
 Q84809: Peter Schuster,cultural exclusive,cultural exclusive,True
@@ -240,7 +240,7 @@ Q11122366: sandalwood,cultural agnostic,cultural agnostic,True
 Q25814: seed plant,cultural agnostic,cultural agnostic,True
 Q237338: seinen,cultural representative,cultural representative,True
 Q145234: Seiun Awards,cultural exclusive,cultural representative,False
-Q15761: servus,cultural representative,cultural representative,True
+Q15761: servus,cultural representative,cultural agnostic,False
 Q1503157: Shakespeare and Company,cultural representative,cultural representative,True
 Q7372: shark,cultural agnostic,cultural agnostic,True
 Q211367: sheet metal,cultural agnostic,cultural agnostic,True
@@ -253,7 +253,7 @@ Q139932: single whip law,cultural exclusive,cultural exclusive,True
 Q124619225: Siuuu,cultural representative,cultural representative,True
 Q15783: skateboard,cultural agnostic,cultural agnostic,True
 Q1661080: small press,cultural agnostic,cultural agnostic,True
-Q17084639: socks and sandals,cultural agnostic,cultural representative,False
+Q17084639: socks and sandals,cultural agnostic,cultural agnostic,True
 Q7554349: software publisher,cultural agnostic,cultural agnostic,True
 Q178406: solo dance,cultural agnostic,cultural agnostic,True
 Q359293: Soo Line Railroad,cultural exclusive,cultural exclusive,True
@@ -280,7 +280,7 @@ Q187120: time shifting,cultural agnostic,cultural agnostic,True
 Q3267562: Tina Nordström,cultural representative,cultural exclusive,False
 Q685935: trade magazine,cultural agnostic,cultural agnostic,True
 Q184781: traditional animation,cultural agnostic,cultural agnostic,True
-Q235858: traditional folk music,cultural agnostic,cultural representative,False
+Q235858: traditional folk music,cultural agnostic,cultural agnostic,True
 Q870: train,cultural agnostic,cultural agnostic,True
 Q28543: transport in Hungary,cultural agnostic,cultural exclusive,False
 Q479716: university press,cultural agnostic,cultural agnostic,True
@@ -293,7 +293,7 @@ Q177764: Voodoo Church,cultural representative,cultural agnostic,False
 Q375: waffle,cultural representative,cultural representative,True
 Q59183: Wanderer,cultural exclusive,cultural exclusive,True
 Q911871: wilderness,cultural agnostic,cultural agnostic,True
-Q1552567: wolf pit,cultural agnostic,cultural agnostic,True
+Q1552567: wolf pit,cultural agnostic,cultural representative,False
 Q36180: writer,cultural agnostic,cultural agnostic,True
 Q156316: Würzburg Residence,cultural representative,cultural exclusive,False
 Q56911: xunfu,cultural exclusive,cultural exclusive,True

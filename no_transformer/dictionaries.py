@@ -6,7 +6,6 @@ from category_table import CategoryTable
 UNK = '<UNK>' # the token to be used for out of vocabulary words
 DESC_VOCAB_SIZE = 4_000
 WIKI_VOCAB_SIZE = 10_000
-CLAIM_VOCAB_SIZE = 500
 GLOVE_EMBEDDING_SIZE = 20
 
 class Dictionaries:
@@ -35,7 +34,7 @@ class Dictionaries:
     def build(self):
         self.desc.build(DESC_VOCAB_SIZE, UNK)
         self.wiki.build(WIKI_VOCAB_SIZE, UNK)
-        self.claims.build(CLAIM_VOCAB_SIZE, UNK)
+        self.claims.build_no_limits()
         # those guys are not too large: so we can not limit them
         self.languages.build_no_limits()
         self.category_table.build()

@@ -1,4 +1,4 @@
-import torch
+import torch, os
 import matplotlib.pyplot as plt
 from torch import optim, nn
 from torch.utils.data import DataLoader
@@ -20,7 +20,7 @@ def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print("using device:", device)
     model = MultiModalModel(hyper_params.params(), device)
-    optimizer = optim.Adam(model.parameters(), lr=hyper_params.learning_rate)
+    optimizer = optim.AdamW(model.parameters(), lr=hyper_params.learning_rate, weight_decay=hyper_params.weight_decay)
     criterion = nn.CrossEntropyLoss()
     trainer = NLPTrainer(model, optimizer, criterion, device, hyper_params)
     history = trainer.train(training_dataloader, validation_dataloader)
