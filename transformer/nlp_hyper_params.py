@@ -64,7 +64,7 @@ def compute_metrics(eval_pred):
 class NLPHyperParams:
     def __init__(self):
         set_seed(42)
-        key = "distilbert"
+        key = "roberta_base"
         self.language_model_name = LMs[key]["model_name"]
         self.max_length = LMs[key]["max_length"]
         self.batch_size = LMs[key]["batch_size"]

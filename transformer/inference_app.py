@@ -14,7 +14,7 @@ def number_to_label(label):
 
 def main():
     dataset = WikiDataset()
-    model = InferenceModel("fax4ever/culturalitems-distilbert", "distilbert-base-uncased")
+    model = InferenceModel("fax4ever/culturalitems-roberta-base-5", "roberta-base")
 
     tokenized_datasets = dataset.tokenize(model.tokenizer)
     print(tokenized_datasets)
