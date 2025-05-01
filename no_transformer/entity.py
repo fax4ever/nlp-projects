@@ -15,7 +15,8 @@ def build_claims(claims):
 class Entity:
     def __init__(self, entity_id, dataset_item, wiki_data, wiki_text):
         self.entity_id = entity_id
-        self.label = dataset_item['label']
+        if 'label' in dataset_item:
+            self.label = dataset_item['label']
         self.name = dataset_item['name']
         self.description = dataset_item['description']
         self.type = dataset_item['type']

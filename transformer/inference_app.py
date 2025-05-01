@@ -1,7 +1,8 @@
-import csv
+import csv, sys
 
 from inference_model import InferenceModel
-from wiki_dataset import WikiDataset
+sys.path.insert(1, sys.path[0].replace("transformer", "no_transformer"))
+from nlp_dataset import NLPDataset
 
 def number_to_label(label):
     if label == 0:
@@ -13,37 +14,32 @@ def number_to_label(label):
     raise ValueError('label not suppoerted: ' + label)
 
 def main():
-    dataset = WikiDataset()
+    nlp_dataset = NLPDataset()
     model = InferenceModel("fax4ever/culturalitems-roberta-base-5", "roberta-base")
 
-    tokenized_datasets = dataset.tokenize(model.tokenizer)
-    print(tokenized_datasets)
-    validation_ = tokenized_datasets["validation"]
-
     matching = 0
-    matching_ds = 0
-    size = len(validation_)
-    with open('transformer-inference.csv', 'w', newline='') as file:
+    for index, item in enumerate(nlp_dataset.validation_set):
+        prediction = model.predict(item.description, item.wiki_text)
+        predicted_label = number_to_label(prediction)
+        match = predicted_label == item.label
+        if match:
+            matching = matching + 1
+        if (index + 1) % 10 == 0:
+            print('inference of the validation set: ', index + 1, "/", len(nlp_dataset.validation_set))
+            print('matched', matching, 'on', index + 1, '(', matching / (index + 1), ')')
+    print('inference of the validation: completed')
+    print('matched', matching, 'on', len(nlp_dataset.validation_set), '(', matching / len(nlp_dataset.validation_set), ')')
+
+    with open('Lost_in_Language_Recognition_output_roberta.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        field = ["item", "true label", "prediction", "prediction-ds", "correct", "correct-ds"]
+        field = ['item', 'name', 'label']
         writer.writerow(field)
-        for index, item in enumerate(validation_):
-            p, p_ds = model.predict_text(item["description"], item["wiki_text"], item["input_ids"], item["attention_mask"])
-            true_label = item["label"]
-            match = p == true_label
-            if match:
-                matching = matching + 1
-            match_ds = p_ds == true_label
-            if match_ds:
-                matching_ds = matching_ds + 1
-            writer.writerow([item["item"], number_to_label(true_label), number_to_label(p), number_to_label(p_ds), match, match_ds])
+        for index, item in enumerate(nlp_dataset.test_set):
+            prediction = model.predict(item.description, item.wiki_text)
+            writer.writerow(["http://www.wikidata.org/entity/" + item.entity_id, item.name, number_to_label(prediction)])
             if (index + 1) % 10 == 0:
-                print('inference: ', index + 1, "/", size)
-                print('matched', matching, 'on', index + 1, '(', matching / (index + 1), ')')
-                print('matched', matching_ds, 'on', index + 1, '(', matching_ds / (index + 1), ')')
-    print('inference: completed')
-    print('matched', matching, 'on', size, '(', matching / size, ')')
-    print('matched', matching_ds, 'on', size, '(', matching_ds / size, ')')
+                print('inference of the test set: ', index + 1, "/", len(nlp_dataset.test_set))
+        print('inference of the test set: completed')
 
 if __name__ == "__main__":
     main()
