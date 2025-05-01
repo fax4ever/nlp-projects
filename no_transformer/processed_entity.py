@@ -18,7 +18,8 @@ def label_to_number(label):
 
 class ProcessedEntity:
     def __init__(self, base: Entity, desc_text, wiki_text):
-        self.base_entity = base.entity_id + ": " + base.name
+        self.entity_id = base.entity_id
+        self.name = base.name
         # processed fields
         self.desc_text = desc_text
         self.wiki_text = wiki_text
@@ -50,7 +51,7 @@ class ProcessedEntity:
             self.output_label = label_to_number(base.label)
 
     def __str__(self):
-        return self.base_entity + " < " + str(len(self.desc_text)) + ", " + str(len(self.wiki_text)) + " >"
+        return self.entity_id + ": " + self.name + " < " + str(len(self.desc_text)) + ", " + str(len(self.wiki_text)) + " >"
 
     def dataset_item(self):
         return {
@@ -64,6 +65,7 @@ class ProcessedEntity:
             "category" : self.subcategory_vector,
             "type" : self.type_vector,
             "desc_glove" : self.desc_glove_vector,
-            "output_label" : self.output_label,
-            "base" : self.base_entity
+            "output_label" : self.output_label if hasattr(self, 'output_label') else 0,
+            "entity_id" : self.entity_id,
+            "name" : self.name
         }

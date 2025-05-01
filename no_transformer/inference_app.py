@@ -16,25 +16,29 @@ def number_to_label(label):
 
 def main():
     set_seed(42)
-    model = MultiModalModel.from_pretrained("fax4ever/culturalitems-no-transformer")
-    matching = 0
+    model = MultiModalModel.from_pretrained("fax4ever/no-transformer-test")
+    processed_dataset = ProcessedDataset()
 
-    with open('no-transformer-inference.csv', 'w', newline='') as file:
+    matching = 0
+    with torch.no_grad():
+        validation = processed_dataset.validation()
+        for entity in DataLoader(validation):
+            prediction = model(entity).detach().clone().argmax(dim=1).numpy()[0]
+            true_label = entity['output_label'].numpy()[0]
+            match = prediction == true_label
+            if match:
+                matching = matching + 1
+    print('matched', matching, 'on', len(validation), '(', matching/len(validation), ')')
+
+    with open('Lost_in_Language_Recognition_output_multimodalnn.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        field = ["entity", "true label", "prediction", "correct"]
+        field = ['item', 'name', 'label']
         writer.writerow(field)
         with torch.no_grad():
-            validation = ProcessedDataset().validation()
-            for entity in DataLoader(validation):
+            test = processed_dataset.test()
+            for entity in DataLoader(test):
                 prediction = model(entity).detach().clone().argmax(dim=1).numpy()[0]
-                true_label = entity['output_label'].numpy()[0]
-                match = prediction == true_label
-                if match:
-                    matching = matching + 1
-                base_ = entity['base'][0]
-                writer.writerow([base_, number_to_label(true_label), number_to_label(prediction), match])
-
-    print('matched', matching, 'on', len(validation), '(', matching/len(validation), ')')
+                writer.writerow(["http://www.wikidata.org/entity/" + entity['entity_id'][0], entity['name'][0], number_to_label(prediction)])
 
 if __name__ == "__main__":
     main()
