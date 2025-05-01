@@ -46,7 +46,8 @@ class ProcessedEntity:
         # in this case we can assume that we have only two types (entity vs concept)
         self.type_vector = type_vector(base.type)
         self.desc_glove_vector = None
-        self.output_label = label_to_number(base.label)
+        if hasattr(base, 'label'):
+            self.output_label = label_to_number(base.label)
 
     def __str__(self):
         return self.base_entity + " < " + str(len(self.desc_text)) + ", " + str(len(self.wiki_text)) + " >"

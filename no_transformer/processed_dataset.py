@@ -11,6 +11,7 @@ from processed_entity import ProcessedEntity
 
 TRAINING_PROC_FILE_NAME = "training-proc.bin"
 VALIDATION_PROC_FILE_NAME = "validation-proc.bin"
+TEST_PROC_FILE_NAME = "test-proc.bin"
 
 def text_process(text, stop):
     result = []
@@ -28,16 +29,19 @@ def create_processed(entity, dictionaries, stop):
     return result
 
 class ProcessedDataset(NLPDataset):
-    def __init__(self, training_limit=None, validation_limit=None, force_reload=False):
-        super().__init__(training_limit, validation_limit, force_reload)
-        if not (os.path.exists(TRAINING_PROC_FILE_NAME)) or not (os.path.exists(VALIDATION_PROC_FILE_NAME)) or force_reload:
-            self.processed_training_set, self.processed_validation_set = self.processing()
+    def __init__(self):
+        super().__init__()
+        if (not (os.path.exists(TRAINING_PROC_FILE_NAME)) or not (os.path.exists(VALIDATION_PROC_FILE_NAME))
+                or not (os.path.exists(TEST_PROC_FILE_NAME))):
+            self.processed_training_set, self.processed_validation_set, self.processed_test_set = self.processing()
             dump(TRAINING_PROC_FILE_NAME, self.processed_training_set)
             dump(VALIDATION_PROC_FILE_NAME, self.processed_validation_set)
+            dump(TEST_PROC_FILE_NAME, self.processed_test_set)
         else:
             # by default load the dataset from a local dump
             self.processed_training_set = load(TRAINING_PROC_FILE_NAME)
             self.processed_validation_set = load(VALIDATION_PROC_FILE_NAME)
+            self.processed_test_set = load(TEST_PROC_FILE_NAME)
 
     def processing(self):
         nltk.download('stopwords')
@@ -61,6 +65,13 @@ class ProcessedDataset(NLPDataset):
             if (index+1) % 100 == 0:
                 print("validation set processed", index+1, "entities")
         print("validation set text processing ended")
+        print("test set text processing started")
+        processed_test_set = []
+        for index, entity in enumerate(self.test_set):
+            processed_test_set.append(create_processed(entity, dictionaries, stop))
+            if (index+1) % 100 == 0:
+                print("test set processed", index+1, "entities")
+        print("test set text processing ended")
         print("building dictionaries")
         # when we've collected all the words for the two spaces, we can build them
         dictionaries.build()
@@ -70,11 +81,16 @@ class ProcessedDataset(NLPDataset):
             dictionaries.finalize(entity)
         for entity in processed_validation_set:
             dictionaries.finalize(entity)
+        for entity in processed_test_set:
+            dictionaries.finalize(entity)
         print("text to vector finished")
-        return processed_training_set, processed_validation_set
+        return processed_training_set, processed_validation_set, processed_test_set
 
     def training(self):
         return IterableEntities(self.processed_training_set)
 
     def validation(self):
         return IterableEntities(self.processed_validation_set)
+
+    def test(self):
+        return IterableEntities(self.processed_test_set)
