@@ -6,6 +6,7 @@ class InferenceModel:
         self.model = AutoModelForSequenceClassification.from_pretrained(repo)
         self.tokenizer = AutoTokenizer.from_pretrained(kind)
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model.to(self.device)
 
     def predict(self, desc, wiki):
         self.model.eval()
