@@ -10,6 +10,7 @@
 \usepackage{inconsolata}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{numprint}
 
 \title{Report MNLP}
 %\date{May $4^{th}$, 2025}
@@ -82,46 +83,87 @@ Regina Giovanni \\
 		\label{fig:4}
 	\end{figure}
 	
-	Figure \ref{fig:1} ,  \ref{fig:2} ,  \ref{fig:3}  and  \ref{fig:4} present the cross entropy
-	loss and accuracy for each epoch during the trainings.
+	\npdecimalsign{.}
+	\nprounddigits{3}
 	
 	\begin{table}[]
-		\begin{tabular}{@{}llll@{}}
+		\small
+		\caption{non-LM-based classifier training}
+		\begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}|n{4}{2}}
 			\toprule
 			\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{train\_accuracy} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
-			4                                 & 4                                    & 4096                             &                                      \\
-			32                                & 30                                   & 512                              &                                      \\
-			32                                & 30                                   & 512                              &                                      \\
-			32                                & 30                                   & 512                              &                                      \\
-			32                                & 30                                   & 512                              &                                      \\
-			32                                & 30                                   & 512                              &                                      \\
-			32                                & 30                                   & 512                              &                                      \\ \cmidrule(r){1-3}
+			0.824580834836376 & 0.6966198980808258 & 0.6848233610391616 & 0.6854166686534882 \\
+			0.42828274567668534 & 0.8351084182457048 & 0.958229947090149 & 0.6864583313465118 \\
+			0.22107240875080533 & 0.9225127551020408 & 1.5812558472156524 & 0.6979166686534881 \\
+			0.13131998874406253 & 0.9583864795918368 & 2.4951072216033934 & 0.6864583313465118 \\
+			0.130913822639945 & 0.9665178571428571 & 2.16357661485672 & 0.7114583313465118 \\
+			0.09606347653952609 & 0.9752869897959183 & 2.5771642506122587 & 0.7291666686534881 \\
+			0.07248458779450834 & 0.9835778061224489 & 2.981712055206299 & 0.69375 \\
+			0.0265690988670643 & 0.9926658163265306 & 3.1195664286613463 & 0.7208333313465118 \\
+			0.027661062501474775 & 0.9923469387755102 & 3.513991141319275 & 0.7083333313465119 \\
+			0.029358040371947454 & 0.9947385204081632 & 3.4526482462882995 & 0.7020833313465118 \\
+			0.09277717625173186 & 0.9904336734693877 & 3.629844832420349 & 0.6979166686534881 \\
+			0.09905036353343255 & 0.9824617346938775 & 2.7048511862754823 & 0.690625 \\
+			0.061935576511582345 & 0.9889987244897959 & 3.2353042364120483 & 0.7 \\
+			0.05289996036179552 & 0.9885204081632653 & 4.332302975654602 & 0.678125 \\
+			0.0905823381769124 & 0.9883609693877551 & 4.223013067245484 & 0.7229166686534881 \\
+			0.04633352841285057 & 0.9925063775510204 & 3.9111754536628722 & 0.7229166686534881 \\
+			0.03198182235851616 & 0.9929846938775511 & 5.171815228462219 & 0.7114583313465118 \\
+			0.014295995866217713 & 0.9977678571428571 & 5.33933527469635 & 0.709375 \\
+			0.02501944363913569 & 0.998405612244898 & 5.311948704719543 & 0.7416666686534882 \\
+			\cmidrule(r){1-4}
 		\end{tabular}
+		\label{table:1}
 	\end{table}
 	
-	\section{Tested encoder models}
+	\begin{table}[]
+		\caption{LM-based classifier training}
+		\begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}}
+			\toprule
+			\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
+			null & 0.547339 & 0.796667 \\
+			null & 0.569936 & 0.746667 \\
+			0.571500 & 0.661266 & 0.753333 \\
+			0.571500 & 0.730450 & 0.786667 \\
+			\cmidrule(r){1-3}
+		\end{tabular}
+		\label{table:2}
+	\end{table}
+	
+	\npnoround
+	
+	Figures \ref{fig:1} ,  \ref{fig:2} ,  \ref{fig:3}  and  \ref{fig:4} and Tables \ref{table:1} and \ref{table:2} present the cross entropy
+	loss and accuracy for each epoch during the training phases of the two models.
+	
+	\section{Tested encoder models Appendix}
 	\label{sec:appendix}
 	
-	In the table we present the model we used for the LM-based classifier. 
-	
 	\begin{table}[]
+		\small
+		\caption{LM-based classifier training}
 		\begin{tabular}{@{}l|lll@{}}
 			\toprule
 			& \multicolumn{1}{l|}{batch\_size} & \multicolumn{1}{l|}{epochs} & \multicolumn{1}{l|}{length} \\ \midrule
 			\multicolumn{1}{|l|}{google/bigbird-roberta-base} & 4                                & 4                           & 4096                             \\ \cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{distilbert-base-uncased}     & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
-			\multicolumn{1}{|l|}{roberta-base}                & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{roberta-base}                & 32                               & 30                          & 512                              \\ 
+			\cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{roberta-large}                & 32                               & 30                          & 512                              \\ 
+			\cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{xlm-roberta-base}            & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{xlm-roberta-large}           & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{microsoft/mdeberta-v3-base}  & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{microsoft/mdeberta-v3-large} & 32                               & 30                          & 512                              \\ \bottomrule
 		\end{tabular}
+		\label{table:3}
 	\end{table}
+	
+	In the table \ref{table:3} we present the base encoder models we tried for the LM-based classifier.  We choose RoBERTa-base comparing the trade-off of performance and results (again the accuracy of the validation set).
 	
 	\section{Algorithms  Appendix}
 	\label{sec:appendix}
 	
-	Put the algorithms here.
+	
 
 \end{document}
 
