@@ -9,6 +9,7 @@
 \usepackage{microtype}
 \usepackage{inconsolata}
 \usepackage{graphicx}
+\usepackage{booktabs}
 
 \title{Report MNLP}
 %\date{May $4^{th}$, 2025}
@@ -54,42 +55,68 @@ Regina Giovanni \\
 
 	\appendix
 	
-		\section{Graphs Appendix}
+	\section{Training results Appendix}
 	\label{sec:appendix}
 	
 	\begin{figure}
 		\includegraphics[width=\linewidth]{loss-no-transformer.png}
-		\caption{A boat.}
+		\caption{non-LM-based classifier cross entropy loss.}
 		\label{fig:1}
 	\end{figure}
 	
 	\begin{figure}
 		\includegraphics[width=\linewidth]{accuracy-no-transformer.png}
-		\caption{A boat.}
+		\caption{non-LM-based classifier accuracy.}
 		\label{fig:2}
 	\end{figure}
 	
 	\begin{figure}
 		\includegraphics[width=\linewidth]{loss-yes-transformer.png}
-		\caption{A boat.}
+		\caption{LM-based classifier cross entropy loss.}
 		\label{fig:3}
 	\end{figure}
 	
 	\begin{figure}
 		\includegraphics[width=\linewidth]{accuracy-yes-transformer.png}
-		\caption{A boat.}
+		\caption{LM-based classifier accuracy.}
 		\label{fig:4}
 	\end{figure}
 	
-	Figure \ref{fig:1} shows non-LM-based classifier loss.
-	Figure \ref{fig:2} shows non-LM-based classifier accuracy.
-	Figure \ref{fig:3} shows LM-based classifier loss.
-	Figure \ref{fig:4} shows LM-based classifier accuracy.
+	Figure \ref{fig:1} ,  \ref{fig:2} ,  \ref{fig:3}  and  \ref{fig:4} present the cross entropy
+	loss and accuracy for each epoch during the trainings.
 	
-	\section{Tables  Appendix}
+	\begin{table}[]
+		\begin{tabular}{@{}llll@{}}
+			\toprule
+			\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{train\_accuracy} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
+			4                                 & 4                                    & 4096                             &                                      \\
+			32                                & 30                                   & 512                              &                                      \\
+			32                                & 30                                   & 512                              &                                      \\
+			32                                & 30                                   & 512                              &                                      \\
+			32                                & 30                                   & 512                              &                                      \\
+			32                                & 30                                   & 512                              &                                      \\
+			32                                & 30                                   & 512                              &                                      \\ \cmidrule(r){1-3}
+		\end{tabular}
+	\end{table}
+	
+	\section{Tested encoder models}
 	\label{sec:appendix}
 	
-	Put the tables here.
+	In the table we present the model we used for the LM-based classifier. 
+	
+	\begin{table}[]
+		\begin{tabular}{@{}l|lll@{}}
+			\toprule
+			& \multicolumn{1}{l|}{batch\_size} & \multicolumn{1}{l|}{epochs} & \multicolumn{1}{l|}{length} \\ \midrule
+			\multicolumn{1}{|l|}{google/bigbird-roberta-base} & 4                                & 4                           & 4096                             \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{distilbert-base-uncased}     & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{roberta-base}                & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{xlm-roberta-base}            & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{xlm-roberta-large}           & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{microsoft/mdeberta-v3-base}  & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{microsoft/mdeberta-v3-large} & 32                               & 30                          & 512                              \\ \bottomrule
+		\end{tabular}
+	\end{table}
 	
 	\section{Algorithms  Appendix}
 	\label{sec:appendix}
