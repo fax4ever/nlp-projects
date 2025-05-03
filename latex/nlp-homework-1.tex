@@ -11,6 +11,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{numprint}
+\usepackage{listings}
 
 \title{Report MNLP}
 %\date{May $4^{th}$, 2025}
@@ -159,6 +160,83 @@ Regina Giovanni \\
 	\end{table}
 	
 	Table \ref{table:3} lists the base encoder models we tested for the LM-based classifier. We selected RoBERTa-base based on a trade-off between performance and validation set accuracy. For instance, some models—such as BigBird—are too large to run efficiently on standard machines with typical GPUs.
+
+	\section{File description Appendix}
+	\label{sec:appendix}
+	
+	In this section we will describe the content of the \href{https://drive.google.com/drive/folders/1t5pgHkdenMFPdKqQweiFl8vhIAaiVFTM?usp=drive_link}{shared Google drive directory}.
+	
+	\subsection{Colab(s)}
+	
+	\emph{NLP\_no\_transformer\_training.ipynb}: non-LM-based training Colab, the trained model is pushed to the
+	\href{https://huggingface.co/fax4ever/culturalitems-no-transformer}{Hugging Face repo for non-LM-based}.
+	
+	\noindent \emph{NLP\_no\_transformer\_inference.ipynb}: non-LM-based inference Colab, the trained model is pulled from the
+	\href{https://huggingface.co/fax4ever/culturalitems-no-transformer}{Hugging Face repo for non-LM-based}.
+	
+	\noindent \emph{NLP\_yes\_transformer\_training.ipynb}: LM-based training Colab, the trained model is pushed to the
+	\href{https://huggingface.co/fax4ever/culturalitems-roberta-base}{Hugging Face repo for LM-based}.
+	
+	\noindent \emph{NLP\_no\_transformer\_inference.ipynb}: LM-based inference Colab, the trained model is pulled from the
+	\href{https://huggingface.co/fax4ever/culturalitems-roberta-base}{Hugging Face repo for LM-based}.
+	
+	\subsection{Data loaded dumps}
+
+	These dumps contain data retrieved from Wikipedia pages and Wikidata entities online. 
+	Since this content is mutable, results may vary if the files are regenerated. 
+	If you want to reproduce the exact results described in the report, please use these files. 
+	Remove them if your goal is to test the Colab’s ability to generate them from scratch:
+	
+	 \begin{itemize}
+	 	\item training.bin
+	 	\item validation.bin
+	 	\item test.bin
+	 \end{itemize}
+	 
+	 \subsection{Processed data dumps}
+	 
+	 These are used only by the non-LM-based components. Unlike the others, 
+	 they can be safely deleted without affecting the results, 
+	 as they simply store preprocessed data derived from the original sources. 
+	 Use them to speed up training and inference. 
+	 Remove them if your goal is to test Colab’s ability to recreate them:
+	 
+	 \begin{itemize}
+	 	\item training-proc.bin
+	 	\item validation-proc.bin
+	 	\item test-proc.bin
+	 \end{itemize}
+	
+	\subsection{Other files}
+	
+	\emph{Lost\_in\_Language\_Recognition\_output\_multimodalnn.csv}: non-LM-based inference result on the test set
+	\emph{Lost\_in\_Language\_Recognition\_output\_roberta.csv}: LM-based inference result on the test set
+	\emph{nlp-homework-1.pdf}: this report
+	
+	\section{Algorithms  Appendix}
+	\label{sec:appendix}
+	
+	In this section we present some implementation ideas of the project, providing some
+	code samples and describing them.
+	
+	\subsection{Pushing and Pulling Models from Hugging Face Repositories}
+	
+	For the LM-based component, we used Hugging Face’s Transformers high-level API. By using \emph{AutoModelForSequenceClassification}  the model instance provides a convenient 
+	\emph{push\_to\_hub()} method for uploading the model to the Hugging Face Hub:
+	
+	\small
+	\begin{lstlisting}[language=python]
+model.push_to_hub(repo, token=...)
+	\end{lstlisting}
+	\normalsize
+	
+	To load the fine-tuned model, we simply use \emph{AutoModelForSequenceClassification.from\_pretrained}.
+	
+	Interestingly, we found that a similar workflow is possible even when using the lower-level PyTorch API, which we applied in the non-LM-based part. This requires the model class to extend the \emph{PyTorchModelHubMixin} interface.
+	
+	A few guidelines must be followed. For instance, all constructor parameters need to be serializable. Additionally, to ensure the model can be reused seamlessly on both CPU and CUDA devices, we recommend not passing the device type to the constructor. Instead, provide a method within the model to set the device for its components. You can refer to the  \emph{MultiModalModel} class used in the non-LM-based implementation as an example.
+	
+	The value of deploying the model to the Hub is that it becomes immutable and can be easily shared and tested across different environments.
 
 \end{document}
 
