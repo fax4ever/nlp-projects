@@ -237,6 +237,78 @@ model.push_to_hub(repo, token=...)
 	A few guidelines must be followed. For instance, all constructor parameters need to be serializable. Additionally, to ensure the model can be reused seamlessly on both CPU and CUDA devices, we recommend not passing the device type to the constructor. Instead, provide a method within the model to set the device for its components. You can refer to the  \emph{MultiModalModel} class used in the non-LM-based implementation as an example.
 	
 	The value of deploying the model to the Hub is that it becomes immutable and can be easily shared and tested across different environments.
+	
+	\subsection{non-LM-based model}
 
+	The Wikidata description is used to generate two inputs for the model: a frequency vector based on a dictionary limited to 4,000 items, and a 20-word GloVe embedding, with each word represented by a 100-dimensional vector. The Wikipedia text is used separately to produce a frequency vector based on a different dictionary of 10,000 items. Additionally, for each entity, we collect a set of language indicators: those used in labels, descriptions, aliases, and Wikipedia pages. Since these sets share the same domain—the complete set of supported languages—we use a common dictionary to generate their corresponding frequency vectors.
+	
+	For the properties (Wikidata claims of the entity), we chose to collect only the claim keys, which are then used to generate a frequency vector based on a separate dictionary. Additionally, we map the entity type and its category/subcategory, representing each as scalar values. The method used to compute the category/subcategory scalar values is described in the next subsection of the appendix.
+	
+	As mentioned earlier, each of these inputs is rescaled using a dedicated mini-network, defined as follows:
+	
+	\scriptsize
+	\begin{lstlisting}[language=python]
+return nn.Sequential(nn.Linear(inf, outf), nn.ReLU())
+	\end{lstlisting}
+	\normalsize
+	
+	This setup not only rescales each input into an embedding—whose size becomes a tunable hyperparameter—but also applies a non-linear activation function to the output.
+	
+	In the forward method the result of all the inputs is concatenated using the \emph{torch.cat} function and passed to the classifier:
+	
+	 \scriptsize
+	 \begin{lstlisting}[language=python]
+combined = torch.cat([desc_feat, desc_glove_feat, 
+  wiki_feat, labels_feat, descriptions_feat, 
+  aliases_feat, pages_feat,
+  claims_feat, category_feat, type_feat], dim=1)
+return self.classifier(combined)
+	 \end{lstlisting}
+	 \normalsize
+	 
+	 While the classifier is a very common FF network:
+	 
+	 	 \scriptsize
+	 \begin{lstlisting}[language=python]
+self.classifier = nn.Sequential(
+  nn.Linear(params['total_scale'],  params['hidden_layers']),
+  nn.ReLU(),
+  nn.Dropout(params['dropout']),
+  nn.Linear(params['hidden_layers'], 3)
+)
+	 \end{lstlisting}
+	 \normalsize
+	 
+	 \subsection{Production of the Category/Subcategory Scalar}
+	 
+	Instead of mapping each category and subcategory to separate scalar values, we leveraged the fact that each subcategory uniquely determines its category. Using the Pandas library, we first collect all category–subcategory pairs. We then sort them by category so that subcategories belonging to the same category appear adjacent in the resulting ID sequence:
+	
+	 \scriptsize
+	\begin{lstlisting}[language=python]	
+def build(self):
+  data = {
+    'subcategory': self.subcategories,
+    'category': self.categories
+  }
+  df = pd.DataFrame(data)
+  df = df.sort_values('category')
+  print(df.to_markdown())
+  self.subcategory_to_id = {row["subcategory"]: 
+    index for index, (_, row) in enumerate(df.iterrows())}
+
+def subcat_to_vector(self, subcategory):
+  vector = np.zeros(1, dtype=np.float32)
+  vector[0] = vector[0] + self.subcategory_to_id[subcategory]
+  return vector
+	\end{lstlisting}
+	\normalsize
+	
+	With this approach, a single scalar value encodes both the subcategory (directly as its ID) and the category (implicitly as a range of adjacent IDs). According to our experiments, this design improves classification performance.
+	
+	\section{Team specialization Appendix}
+	\label{sec:appendix}
+	
+	Significant work on hyperparameter optimization was carried out by Nicolò Della Porta, who, for example, extensively explored and applied \href{https://optuna.org/}{Optuna}  for this purpose across both the non-LM-based and LM-based models. Giovanni Regina focused on identifying domain-specific heuristic rules to generate additional features, helping to enhance the classifier’s performance in both model types. Fabio Massimo Ercoli concentrated more on the non-LM-based model, particularly contributing to the design and implementation of input rescaling strategies and the category scalar idea.
+	
 \end{document}
 
