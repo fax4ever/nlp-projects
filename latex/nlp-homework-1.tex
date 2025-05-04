@@ -109,17 +109,18 @@ Using the non-LM-based classifier, at inference time we obtained an overall accu
 \end{table}
 	
 \begin{table}[]
-    \caption{LM-based classifier training}
-	\begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}}
+	\small
+	\caption{LM-based classifier training}
+	\begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}|n{4}{2}}
 		\toprule
-			\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
-			null & 0.547339 & 0.796667 \\
-			null & 0.569936 & 0.746667 \\
-			0.571500 & 0.661266 & 0.753333 \\
-			0.571500 & 0.730450 & 0.786667 \\
-			\cmidrule(r){1-3}
+		\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{valid\_accuracy} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
+		0.5060026049613953 & 0.807870740681491 & 0.5877273678779602 & 0.77 \\
+		0.3512169420719147 & 0.8688209886418173 & 0.5964884161949158 & 0.76 \\
+		0.21002374589443207 & 0.9259318509038554 & 0.7461965680122375 & 0.7366666666666667 \\
+		0.09121483564376831 & 0.9716845304751239 & 0.7461965680122375 & 0.7933333333333333 \\
+		\cmidrule(r){1-3}
 	\end{tabular}
-    \label{table:2}
+	\label{table:2}
 \end{table}
 	
 \npnoround
