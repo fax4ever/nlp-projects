@@ -1,4 +1,5 @@
 import csv, sys
+from sklearn.metrics import f1_score, recall_score, precision_score, accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 
 from inference_model import InferenceModel
 sys.path.insert(1, sys.path[0].replace("transformer", "no_transformer"))
@@ -18,9 +19,13 @@ def main():
     model = InferenceModel("fax4ever/culturalitems-roberta-base-5", "roberta-base")
 
     matching = 0
+    predictions = []
+    labels = []
     for index, item in enumerate(nlp_dataset.validation_set):
         prediction = model.predict(item.description, item.wiki_text)
         predicted_label = number_to_label(prediction)
+        predictions.append(predicted_label)
+        labels.append(item.label)
         match = predicted_label == item.label
         if match:
             matching = matching + 1
@@ -29,6 +34,13 @@ def main():
             print('matched', matching, 'on', index + 1, '(', matching / (index + 1), ')')
     print('inference of the validation: completed')
     print('matched', matching, 'on', len(nlp_dataset.validation_set), '(', matching / len(nlp_dataset.validation_set), ')')
+
+    cm = confusion_matrix(labels, predictions)
+    ConfusionMatrixDisplay(cm).plot()
+    print('f1', f1_score(labels, predictions, average='macro'))
+    print('recall', recall_score(labels, predictions, average='macro'))
+    print('precision', precision_score(labels, predictions, average='macro'))
+    print('accuracy_score', accuracy_score(labels, predictions))
 
     with open('Lost_in_Language_Recognition_output_roberta.csv', 'w', newline='') as file:
         writer = csv.writer(file)
