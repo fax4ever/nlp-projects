@@ -25,74 +25,65 @@ Regina Giovanni \\
 
 \begin{document}
 
-	\maketitle
+\maketitle
 
-	\section{Introduction}
-	Cultural items are elements such as concepts or entities that carry cultural meaning and reflect the identity, practices, and values of specific communities. In natural language, these items can appear in diverse forms, ranging from food names and historical references to gestures and works of art. Their interpretation often depends on shared knowledge within a culture, making their automatic classification a complex task.
-	In this report, it is described how we addressed the task of automatic cultural item classification. The goal is to label each item by identifying the category it belongs to among the three given categories: \textit{Cultural Agnostic (CA)}, \textit{Cultural Representative (CR)} and \textit{Cultural Exclusive (CE)}. As requested, to tackle this we implemented and evaluated two distinct approaches: a LM-based method using an encoder Transformer and a non-LM-based method relying on several data. The report presents a comparative analysis of the two approaches in terms of classification performance and it explains how they work by reflecting on the methodological choices employed.
+\section{Introduction}
+Cultural items are elements such as concepts or entities that carry cultural meaning and reflect the identity, practices, and values of specific communities. In natural language, these items can appear in diverse forms, ranging from food names and historical references to gestures and works of art. Their interpretation often depends on shared knowledge within a culture, making their automatic classification a complex task. \newline In this report, it is described how we addressed the task of automatic cultural item classification. The goal is to label each item by identifying the category it belongs to among the three given categories: \textit{Cultural Agnostic (CA)}, \textit{Cultural Representative (CR)} and \textit{Cultural Exclusive (CE)}. As requested, to tackle this we implemented and evaluated two distinct approaches: a LM-based method using an encoder Transformer and a non-LM-based method relying on several data. The report presents a comparative analysis of the two approaches in terms of classification performance and it explains how they work by reflecting on the methodological choices employed.
 
-	\section{Methodology}
+\section{Methodology}
+In the following section there are illustrated the metholodogies we devised in order to accomplish the requested task.
 
-	\subsection{Non-LM-based}
-	The main idea is very simple: using a FF (feed forward) shallow neural network to classify the items, using the labels to implement a typical supervised learning. For each entity we provide different kinds of information, for instance the Wikidata description, the Wikipedia page text, but also the set of languages for which we have a Wikipedia page, the category of the item (provided by the Homework dataset), but also the set of claims (attributes) defined in the Wikidata entry.
-	The Wikidata description text is used twice as input, as frequency vector and is transformed into GloVe embeddings. We provide both as input.
+\subsection{Non-LM-based}
+The main idea is very simple: using a FF (feed forward) shallow neural network to classify the items, using the labels to implement a typical supervised learning. For each entity we provide different kinds of information, for instance the Wikidata description, the Wikipedia page text, but also the set of languages for which we have a Wikipedia page, the category of the item (provided by the Homework dataset), but also the set of claims (attributes) defined in the Wikidata entry. The Wikidata description text is used twice as input, as frequency vector and is transformed into GloVe embeddings. We provide both as input.
+For each of those elements we build a frequency vector that have different dimensions, so we're using different dictionaries having different sizes. The idea we had is to re-scale each of original vector size to values that can be parameterize, in particular those re-scaled values are hyper parameters of the solution. So for each input we produce an embedding, and we concatenate all of those to create the input of the classifier, that is as we said, a FF (feed forward) shallow neural network. Each input embedding is a function of an input. \newline Decide how to scale the input looks crucial to us, since the original frequency vector sizes are very different and we want make each input contributing with the right weight in order to classify well the entities. 
 	
-	For each of those elements we build a frequency vector that have different dimensions, so we're using different dictionaries having different sizes. The idea we had is to re-scale each of original vector size to values that can be parameterize, in particular those re-scaled values are hyper parameters of the solution. So for each input we produce an embedding, and we concatenate all of those to create the input of the classifier, that is as we said, a FF (feed forward) shallow neural network. Each input embedding is a function of an input.
-	
-	Decide how to scale the input looks crucial to us, since the original frequency vector sizes are very different and we want make each input contributing with the right weight in order to classify well the entities. 
-	
-	\subsection{LM-based}
-	The solution is built around a pretrained encoder that generates embeddings, which serve as the input to the classification network. We tokenize both the Wikidata descriptions and the English Wikipedia pages, experimenting with several English-only encoders. After multiple trials, we selected RoBERTa-base as the encoder, limiting the number of training epochs to optimize validation set accuracy.
+\subsection{LM-based}
+The solution is built around a pretrained encoder that generates embeddings, which serve as the input to the classification network. We tokenize both the Wikidata descriptions and the English Wikipedia pages, experimenting with several English-only encoders. After multiple trials, we selected RoBERTa-base as the encoder, limiting the number of training epochs to optimize validation set accuracy.
 
-	\section{Experiments}
-	We use only the training set to train the network, while the validation set helps us evaluate how well the model generalizes to unseen data. Since the dataset is relatively balanced across labels, we focused on maximizing validation accuracy.
-	
-	During training, for each epoch, we track the loss and accuracy on both the training and validation sets. In particular, we monitor validation accuracy over epochs to determine the optimal point at which to stop training.
-	
-	At inference time, we generate label predictions for the entire validation set and compute the overall accuracy. We also predict labels for the test set and compile the results into a CSV file, as required by the assignment.
-	
-	\section{Results}
-	
-	For the non-LM-based classifier at inference time we get an overall accuracy of 0.7533333333333333, matching 226 on 300 items. For the LM-based classifier at inference time we get an overall accuracy of 0.7966666666666666, matching 239 on 300 items. 
+\section{Experiments}
+We use only the training set to train the network, while the validation set helps us evaluate how well the model generalizes to unseen data. Since the dataset is relatively balanced across labels, we focused on maximizing validation accuracy. \newline During training, for each epoch, we track the loss and accuracy on both the training and validation sets. In particular, we monitor validation accuracy over epochs to determine the optimal point at which to stop training. \newline At inference time, we generate label predictions for the entire validation set and compute the overall accuracy. We also predict labels for the test set and compile the results into a CSV file, as required by the assignment.
 
-	\appendix
+\section{Results}
+For the non-LM-based classifier at inference time we get an overall accuracy of $0.75\overline{3}$, matching 226 on 300 items. For the LM-based classifier at inference time we get an overall accuracy of $0.79\overline{6}$, matching 239 on 300 items. 
+
+\appendix
+\section{Training results Appendix}
+\label{sec:appendix1}
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{loss-no-transformer.png}
+    \caption{non-LM-based classifier cross entropy loss.}
+    \label{fig:1}
+\end{figure}
 	
-	\section{Training results Appendix}
-	\label{sec:appendix}
+\begin{figure}
+    \includegraphics[width=\linewidth]{accuracy-no-transformer.png}
+    \caption{non-LM-based classifier accuracy.}
+    \label{fig:2}
+\end{figure}
 	
-	\begin{figure}
-		\includegraphics[width=\linewidth]{loss-no-transformer.png}
-		\caption{non-LM-based classifier cross entropy loss.}
-		\label{fig:1}
-	\end{figure}
+\begin{figure}
+    \includegraphics[width=\linewidth]{loss-yes-transformer.png}
+    \caption{LM-based classifier cross entropy loss.}
+    \label{fig:3}
+\end{figure}
 	
-	\begin{figure}
-		\includegraphics[width=\linewidth]{accuracy-no-transformer.png}
-		\caption{non-LM-based classifier accuracy.}
-		\label{fig:2}
-	\end{figure}
+\begin{figure}
+    \includegraphics[width=\linewidth]{accuracy-yes-transformer.png}
+    \caption{LM-based classifier accuracy.}
+    \label{fig:4}
+\end{figure}
 	
-	\begin{figure}
-		\includegraphics[width=\linewidth]{loss-yes-transformer.png}
-		\caption{LM-based classifier cross entropy loss.}
-		\label{fig:3}
-	\end{figure}
+\npdecimalsign{.}
+\nprounddigits{3}
 	
-	\begin{figure}
-		\includegraphics[width=\linewidth]{accuracy-yes-transformer.png}
-		\caption{LM-based classifier accuracy.}
-		\label{fig:4}
-	\end{figure}
-	
-	\npdecimalsign{.}
-	\nprounddigits{3}
-	
-	\begin{table}[]
-		\small
-		\caption{non-LM-based classifier training}
-		\begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}|n{4}{2}}
-			\toprule
-			\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{train\_accuracy} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
+\begin{table}[]
+    \small
+    \caption{non-LM-based classifier training}
+    
+    \begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}|n{4}{2}}
+        \toprule
+	\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{train\_accuracy} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
 			0.824580834836376 & 0.6966198980808258 & 0.6848233610391616 & 0.6854166686534882 \\
 			0.42828274567668534 & 0.8351084182457048 & 0.958229947090149 & 0.6864583313465118 \\
 			0.22107240875080533 & 0.9225127551020408 & 1.5812558472156524 & 0.6979166686534881 \\
@@ -113,39 +104,38 @@ Regina Giovanni \\
 			0.014295995866217713 & 0.9977678571428571 & 5.33933527469635 & 0.709375 \\
 			0.02501944363913569 & 0.998405612244898 & 5.311948704719543 & 0.7416666686534882 \\
 			\cmidrule(r){1-4}
-		\end{tabular}
-		\label{table:1}
-	\end{table}
+    \end{tabular}
+    \label{table:1}
+\end{table}
 	
-	\begin{table}[]
-		\caption{LM-based classifier training}
-		\begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}}
-			\toprule
+\begin{table}[]
+    \caption{LM-based classifier training}
+	\begin{tabular}{n{4}{2}|n{4}{2}|n{4}{2}}
+		\toprule
 			\multicolumn{1}{|l|}{train\_loss} & \multicolumn{1}{l|}{valid\_loss} & \multicolumn{1}{l|}{valid\_accuracy} \\ \midrule
 			null & 0.547339 & 0.796667 \\
 			null & 0.569936 & 0.746667 \\
 			0.571500 & 0.661266 & 0.753333 \\
 			0.571500 & 0.730450 & 0.786667 \\
 			\cmidrule(r){1-3}
-		\end{tabular}
-		\label{table:2}
-	\end{table}
+	\end{tabular}
+    \label{table:2}
+\end{table}
 	
-	\npnoround
+\npnoround
 	
-	Figures \ref{fig:1} ,  \ref{fig:2} ,  \ref{fig:3}  and  \ref{fig:4} and Tables \ref{table:1} and \ref{table:2} present the cross entropy
+Figures \ref{fig:1}, \ref{fig:2}, \ref{fig:3}, \ref{fig:4} and Tables \ref{table:1}, \ref{table:2} present the cross entropy
 	loss and accuracy for each epoch during the training phases of the two models.
 	
-	\section{Tested encoder models Appendix}
-	\label{sec:appendix}
-	
-	\begin{table}[]
+\section{Tested encoder models Appendix}
+\label{sec:appendix2}
+\begin{table}[]
 		\small
 		\caption{LM-based classifier training}
 		\begin{tabular}{@{}l|lll@{}}
 			\toprule
 			& \multicolumn{1}{l|}{batch\_size} & \multicolumn{1}{l|}{epochs} & \multicolumn{1}{l|}{length} \\ \midrule
-			\multicolumn{1}{|l|}{google/bigbird-roberta-base} & 4                                & 4                           & 4096                             \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{bigbird-roberta-base} & 4                                & 4                           & 4096                             \\ \cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{distilbert-base-uncased}     & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{roberta-base}                & 32                               & 30                          & 512                              \\ 
 			\cmidrule(r){1-1}
@@ -153,8 +143,8 @@ Regina Giovanni \\
 			\cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{xlm-roberta-base}            & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
 			\multicolumn{1}{|l|}{xlm-roberta-large}           & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
-			\multicolumn{1}{|l|}{microsoft/mdeberta-v3-base}  & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
-			\multicolumn{1}{|l|}{microsoft/mdeberta-v3-large} & 32                               & 30                          & 512                              \\ \bottomrule
+			\multicolumn{1}{|l|}{mdeberta-v3-base}  & 32                               & 30                          & 512                              \\ \cmidrule(r){1-1}
+			\multicolumn{1}{|l|}{mdeberta-v3-large} & 32                               & 30                          & 512                              \\ \bottomrule
 		\end{tabular}
 		\label{table:3}
 	\end{table}
@@ -229,34 +219,17 @@ Regina Giovanni \\
 model.push_to_hub(repo, token=...)
 	\end{lstlisting}
 	\normalsize
+To load the fine-tuned model, we simply use \emph{AutoModelForSequenceClassification.from\_pretrained}. \newline Interestingly, we found that a similar workflow is possible even when using the lower-level PyTorch API, which we applied in the non-LM-based part. This requires the model class to extend the \emph{PyTorchModelHubMixin} interface. \newline A few guidelines must be followed. For instance, all constructor parameters need to be serializable. Additionally, to ensure the model can be reused seamlessly on both CPU and CUDA devices, we recommend not passing the device type to the constructor. Instead, provide a method within the model to set the device for its components. You can refer to the  \emph{MultiModalModel} class used in the non-LM-based implementation as an example. \newline The value of deploying the model to the Hub is that it becomes immutable and can be easily shared and tested across different environments.
 	
-	To load the fine-tuned model, we simply use \emph{AutoModelForSequenceClassification.from\_pretrained}.
-	
-	Interestingly, we found that a similar workflow is possible even when using the lower-level PyTorch API, which we applied in the non-LM-based part. This requires the model class to extend the \emph{PyTorchModelHubMixin} interface.
-	
-	A few guidelines must be followed. For instance, all constructor parameters need to be serializable. Additionally, to ensure the model can be reused seamlessly on both CPU and CUDA devices, we recommend not passing the device type to the constructor. Instead, provide a method within the model to set the device for its components. You can refer to the  \emph{MultiModalModel} class used in the non-LM-based implementation as an example.
-	
-	The value of deploying the model to the Hub is that it becomes immutable and can be easily shared and tested across different environments.
-	
-	\subsection{non-LM-based model}
-
-	The Wikidata description is used to generate two inputs for the model: a frequency vector based on a dictionary limited to 4,000 items, and a 20-word GloVe embedding, with each word represented by a 100-dimensional vector. The Wikipedia text is used separately to produce a frequency vector based on a different dictionary of 10,000 items. Additionally, for each entity, we collect a set of language indicators: those used in labels, descriptions, aliases, and Wikipedia pages. Since these sets share the same domain—the complete set of supported languages—we use a common dictionary to generate their corresponding frequency vectors.
-	
-	For the properties (Wikidata claims of the entity), we chose to collect only the claim keys, which are then used to generate a frequency vector based on a separate dictionary. Additionally, we map the entity type and its category/subcategory, representing each as scalar values. The method used to compute the category/subcategory scalar values is described in the next subsection of the appendix.
-	
-	As mentioned earlier, each of these inputs is rescaled using a dedicated mini-network, defined as follows:
-	
-	\scriptsize
+\subsection{non-LM-based model}
+The Wikidata description is used to generate two inputs for the model: a frequency vector based on a dictionary limited to 4,000 items, and a 20-word GloVe embedding, with each word represented by a 100-dimensional vector. The Wikipedia text is used separately to produce a frequency vector based on a different dictionary of 10,000 items. Additionally, for each entity, we collect a set of language indicators: those used in labels, descriptions, aliases, and Wikipedia pages. Since these sets share the same domain—the complete set of supported languages—we use a common dictionary to generate their corresponding frequency vectors. \newline For the properties (Wikidata claims of the entity), we chose to collect only the claim keys, which are then used to generate a frequency vector based on a separate dictionary. Additionally, we map the entity type and its category/subcategory, representing each as scalar values. The method used to compute the category/subcategory scalar values is described in the next subsection of the appendix. \newline As mentioned earlier, each of these inputs is rescaled using a dedicated mini-network, defined as follows:
+\scriptsize
 	\begin{lstlisting}[language=python]
 return nn.Sequential(nn.Linear(inf, outf), nn.ReLU())
 	\end{lstlisting}
-	\normalsize
-	
-	This setup not only rescales each input into an embedding—whose size becomes a tunable hyperparameter—but also applies a non-linear activation function to the output.
-	
-	In the forward method the result of all the inputs is concatenated using the \emph{torch.cat} function and passed to the classifier:
-	
-	 \scriptsize
+\normalsize
+This setup not only rescales each input into an embedding—whose size becomes a tunable hyperparameter—but also applies a non-linear activation function to the output. \newline In the forward method the result of all the inputs is concatenated using the \emph{torch.cat} function and passed to the classifier:
+\scriptsize
 	 \begin{lstlisting}[language=python]
 combined = torch.cat([desc_feat, desc_glove_feat, 
   wiki_feat, labels_feat, descriptions_feat, 
@@ -264,26 +237,22 @@ combined = torch.cat([desc_feat, desc_glove_feat,
   claims_feat, category_feat, type_feat], dim=1)
 return self.classifier(combined)
 	 \end{lstlisting}
-	 \normalsize
-	 
-	 While the classifier is a very common FF network:
-	 
-	 	 \scriptsize
-	 \begin{lstlisting}[language=python]
+\normalsize
+While the classifier is a very common FF network:
+\scriptsize
+    \begin{lstlisting}[language=python]
 self.classifier = nn.Sequential(
   nn.Linear(params['total_scale'],  params['hidden_layers']),
   nn.ReLU(),
   nn.Dropout(params['dropout']),
   nn.Linear(params['hidden_layers'], 3)
 )
-	 \end{lstlisting}
-	 \normalsize
+    \end{lstlisting}
+\normalsize
 	 
-	 \subsection{Production of the Category/Subcategory Scalar}
-	 
-	Instead of mapping each category and subcategory to separate scalar values, we leveraged the fact that each subcategory uniquely determines its category. Using the Pandas library, we first collect all category–subcategory pairs. We then sort them by category so that subcategories belonging to the same category appear adjacent in the resulting ID sequence:
-	
-	 \scriptsize
+\subsection{Production of the Category/Subcategory Scalar}
+Instead of mapping each category and subcategory to separate scalar values, we leveraged the fact that each subcategory uniquely determines its category. Using the Pandas library, we first collect all category–subcategory pairs. We then sort them by category so that subcategories belonging to the same category appear adjacent in the resulting ID sequence:
+\scriptsize
 	\begin{lstlisting}[language=python]	
 def build(self):
   data = {
@@ -301,14 +270,11 @@ def subcat_to_vector(self, subcategory):
   vector[0] = vector[0] + self.subcategory_to_id[subcategory]
   return vector
 	\end{lstlisting}
-	\normalsize
+\normalsize
+With this approach, a single scalar value encodes both the subcategory (directly as its ID) and the category (implicitly as a range of adjacent IDs). According to our experiments, this design improves classification performance.
 	
-	With this approach, a single scalar value encodes both the subcategory (directly as its ID) and the category (implicitly as a range of adjacent IDs). According to our experiments, this design improves classification performance.
-	
-	\section{Team specialization Appendix}
-	\label{sec:appendix}
-	
-	Significant work on hyperparameter optimization was carried out by Nicolò Della Porta, who, for example, extensively explored and applied \href{https://optuna.org/}{Optuna}  for this purpose across both the non-LM-based and LM-based models. Giovanni Regina focused on identifying domain-specific heuristic rules to generate additional features, helping to enhance the classifier’s performance in both model types. Fabio Massimo Ercoli concentrated more on the non-LM-based model, particularly contributing to the design and implementation of input rescaling strategies and the category scalar idea.
-	
+\section{Team specialization Appendix}
+\label{sec:appendix}
+Significant work on hyperparameter optimization was carried out by Nicolò Della Porta, who, for example, extensively explored and applied \href{https://optuna.org/}{Optuna}  for this purpose across both the non-LM-based and LM-based models. Giovanni Regina focused on identifying domain-specific heuristic rules to generate additional features, helping to enhance the classifier’s performance in both model types. Fabio Massimo Ercoli concentrated more on the non-LM-based model, particularly contributing to the design and implementation of input rescaling strategies and the category scalar idea.
 \end{document}
 
