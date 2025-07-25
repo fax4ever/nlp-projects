@@ -54,3 +54,12 @@ Select the virtual environment: `sentence_splitter/.venv`!
 
 With Cursor (and maybe VSCode -- I didn't try it) the environment is loaded by default if you open the project
 with the root project directory as target folder.
+
+### ROCm 6.4.0 PyTorch 
+
+If you have an AMD Radeon and you want to use it with Pytorch, you can install a specific Pytorch version:
+
+```shell
+UV_HTTP_TIMEOUT=3000 uv pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.4/
+```
+
