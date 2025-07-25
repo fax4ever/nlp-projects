@@ -1,0 +1,17 @@
+[project]
+name = "sentence-splitter-embedding-model"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Fabio Massimo Ercoli", email = "fabiomassimo.ercoli@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+sentence-splitter-embedding-model = "sentence_splitter_embedding_model:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

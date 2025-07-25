@@ -1,0 +1,13 @@
+[project]
+name = "sentence-splitter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.uv.workspace]
+members = [
+    "sentence_splitter_embedding_model",
+    "sentence_splitter_llm",
+]
