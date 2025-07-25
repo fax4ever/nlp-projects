@@ -1,9 +1,18 @@
-from sentence_splitter_embedding_model import utils
+from sentence_splitter_embedding_model.encoder_splitter import EncoderSplitter
 import torch
+import pandas as pd
 
 
 def main():
-    print("Hello from sentence-splitter!", utils.helper(), torch.cuda.is_available())
+    print("Cuda is available:", torch.cuda.is_available())
+    train = pd.read_csv("data/manzoni_train_tokens.csv")  # token,label
+    print("Train DataFrame")
+    print(train)
+    validation = pd.read_csv("data/manzoni_dev_tokens.csv")  # token,label
+    print("Validation DataFrame")
+    print(validation)
+
+    encoder_splitter = EncoderSplitter(train, validation)
 
 
 if __name__ == "__main__":
