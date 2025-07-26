@@ -1,10 +1,10 @@
-from sentence_splitter_embedding_model.encoder_splitter import EncoderSplitter
-import torch
 import pandas as pd
+from util.utils import set_seed
+from sentence_splitter_embedding_model.encoder_splitter import EncoderSplitter
 
 
 def main():
-    print("Cuda is available:", torch.cuda.is_available())
+    set_seed()
     train = pd.read_csv("data/manzoni_train_tokens.csv")  # token,label
     print("Train DataFrame")
     print(train)

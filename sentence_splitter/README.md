@@ -63,3 +63,18 @@ If you have an AMD Radeon and you want to use it with Pytorch, you can install a
 UV_HTTP_TIMEOUT=3000 uv pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.4/
 ```
 
+## UV other commands
+
+### Add a dependency
+
+On the root (sentence_splitter)
+```shell
+uv add pandas
+```
+
+### Add a new package (module) 
+
+On the root (sentence_splitter)
+```shell
+uv init --package util
+```

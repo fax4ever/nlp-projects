@@ -15,6 +15,7 @@ dependencies = [
 members = [
     "sentence_splitter_embedding_model",
     "sentence_splitter_llm",
+    "util",
 ]
 
 [tool.uv.sources]
