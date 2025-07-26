@@ -9,6 +9,8 @@ dependencies = [
     "pytorch-triton-rocm",
     "transformers>=4.53.3",
     "pandas>=2.3.1",
+    "accelerate>=1.9.0",
+    "evaluate>=0.4.5",
 ]
 
 [tool.uv.workspace]
