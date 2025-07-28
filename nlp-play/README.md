@@ -55,3 +55,49 @@ and the root (nlp-play) root directory.
 ```shell
 uv run pytest
 ```
+
+## Synch the project
+
+To acquire any changes (for instance if a new package is defined or the [pyproject.toml](pyproject.toml) is changed manually):
+
+On the root (nlp-play)
+```shell
+uv sync --all-packages
+```
+
+The main idea of uv is to have a single virtual environment and install it:
+1. all the dependencies
+2. all the packages
+
+## Container build and run
+
+Build, tag so that the image will be in the Podman local repo:
+
+```shell
+podman build -t quay.io/fercoli/nlp-play:0.1.0 .
+```
+
+Run the container:
+
+```shell
+podman run --rm quay.io/fercoli/nlp-play:0.1.0
+```
+
+Replace the entrypoint `uv run main.py` with the `/bin/bash` and run the container,
+to inspect the scaffold and debug for instance.
+
+```shell
+podman run --rm --name=nlp-play -it quay.io/fercoli/nlp-play:0.1.0 /bin/bash
+```
+
+In any case the image can be removed
+
+```shell
+podman rmi quay.io/fercoli/nlp-play:0.1.0
+```
+
+Or pushed to the remote quay.io
+
+```shell
+podman push quay.io/fercoli/nlp-play:0.1.0
+```

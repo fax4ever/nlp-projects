@@ -1,0 +1,23 @@
+FROM registry.access.redhat.com/ubi9/python-312:latest
+
+USER root
+RUN dnf update -y && dnf clean all
+
+RUN pip3 install --no-cache-dir uv
+# Change the working directory to the `app` directory
+WORKDIR /app
+
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock,relabel=shared \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml,relabel=shared \
+    uv sync --frozen --no-install-project --no-dev
+
+# Copy the project into the image
+ADD . /app
+
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --all-packages
+
+CMD uv run main.py
