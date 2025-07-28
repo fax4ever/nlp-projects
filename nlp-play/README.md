@@ -50,6 +50,8 @@ mkdir tests
 
 Add a test
 
+This can be run from both the module directory (token-classification)
+and the root (nlp-play) root directory.
 ```shell
 uv run pytest
 ```
