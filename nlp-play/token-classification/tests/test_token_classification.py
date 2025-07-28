@@ -14,3 +14,6 @@ def test_subject(name):
 
 def test_encoder_splitter(test_subject, name):
     assert test_subject.hello() == "ciao " + name
+    dataset = test_subject.dataset
+    value = dataset["train"][0]
+    assert value is not None

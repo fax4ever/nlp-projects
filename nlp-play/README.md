@@ -28,6 +28,12 @@ This is a test dependency:
 uv add --dev pytest
 ```
 
+To add a specific version
+
+```shell
+uv add dataset==3.6.0
+```
+
 Let's create a module
 
 ```shell
