@@ -107,3 +107,29 @@ Or pushed to the remote quay.io
 ```shell
 podman push quay.io/fercoli/nlp-play:0.1.0
 ```
+
+## Use code formatter
+
+On the root (nlp-play)
+```shell
+uv add --dev black
+```
+
+Use black to format the code:
+On the root (nlp-play)
+```shell
+uv run black .
+```
+
+## Use code checker
+
+On the root (nlp-play)
+```shell
+uv add --dev flake8
+```
+
+Use flake8 to check the code:
+On the root (nlp-play)
+```shell
+uv run flake8 .
+```

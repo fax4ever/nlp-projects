@@ -2,7 +2,7 @@ from token_classification.token_classification import TokenClassification
 
 
 def main():
-    service = TokenClassification('Frank')
+    service = TokenClassification("Frank")
     print(service.hello())
 
 
