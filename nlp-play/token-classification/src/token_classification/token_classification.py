@@ -1,5 +1,5 @@
 from datasets import load_dataset
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, DataCollatorForTokenClassification
 
 def align_labels_with_tokens(labels, word_ids):
         new_labels = []
@@ -33,6 +33,7 @@ class TokenClassification:
             batched=True,
             remove_columns=self.dataset["train"].column_names,
         )
+        self.data_collator = DataCollatorForTokenClassification(self.tokenizer)
 
     def tokenize_and_align_labels(self, items):
         tokenized_inputs = self.tokenizer(

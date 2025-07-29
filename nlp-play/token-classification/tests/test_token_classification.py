@@ -8,4 +8,5 @@ def test_subject():
 
 
 def test_encoder_splitter(test_subject: TokenClassification):
-    assert test_subject.tokenized_dataset["train"][0:1] is not None
+    batch = test_subject.data_collator([test_subject.tokenized_dataset["train"][i] for i in range(2)])
+    assert batch["labels"] is not None
