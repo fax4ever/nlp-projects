@@ -1,7 +1,8 @@
 from datasets import load_dataset
-from transformers import AutoTokenizer, DataCollatorForTokenClassification
+from transformers import AutoTokenizer, DataCollatorForTokenClassification, AutoModelForTokenClassification, TrainingArguments, Trainer
 import evaluate
 import numpy as np
+import os
 
 def align_labels_with_tokens(labels, word_ids):
         new_labels = []
@@ -27,10 +28,11 @@ def align_labels_with_tokens(labels, word_ids):
 
 class TokenClassification:
     def __init__(self):
+        model_checkpoint = "bert-base-cased"
         self.dataset = load_dataset("conll2003", trust_remote_code=True)
         ner_feature = self.dataset["train"].features["ner_tags"]
         self.label_names = ner_feature.feature.names
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+        self.tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
         print("tokenizer.is_fast", self.tokenizer.is_fast)
         self.tokenized_dataset = self.dataset.map(
             self.tokenize_and_align_labels,
@@ -38,7 +40,38 @@ class TokenClassification:
             remove_columns=self.dataset["train"].column_names,
         )
         self.data_collator = DataCollatorForTokenClassification(self.tokenizer)
-        metric = evaluate.load("seqeval")
+        self.metric = evaluate.load("seqeval")
+        self.id2label = {i: label for i, label in enumerate(self.label_names)}
+        self.label2id = {v: k for k, v in self.id2label.items()}
+        self.model = AutoModelForTokenClassification.from_pretrained(
+            model_checkpoint,
+            id2label=self.id2label,
+            label2id=self.label2id,
+        )
+        print("num_labels", self.model.config.num_labels)
+
+    def train(self):    
+        args = TrainingArguments(
+            "bert-finetuned-ner",
+            eval_strategy="epoch",
+            save_strategy="epoch",
+            learning_rate=2e-5,
+            num_train_epochs=3,
+            weight_decay=0.01,
+            push_to_hub=True,
+            hub_token=os.environ['HF_TOKEN']
+        )
+        trainer = Trainer(
+            model=self.model,
+            args=args,
+            train_dataset=self.tokenized_dataset["train"],
+            eval_dataset=self.tokenized_dataset["validation"],
+            data_collator=self.data_collator,
+            compute_metrics=self.compute_metrics,
+            processing_class=self.tokenizer,
+        )
+        trainer.train()
+        trainer.push_to_hub(commit_message="Training complete", token=os.environ['HF_TOKEN'])
 
     def tokenize_and_align_labels(self, items):
         tokenized_inputs = self.tokenizer(
