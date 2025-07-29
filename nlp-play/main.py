@@ -2,8 +2,8 @@ from token_classification.token_classification import TokenClassification
 
 
 def main():
-    service = TokenClassification("Frank")
-    print(service.hello())
+    service = TokenClassification()
+    print(service.tokenized_dataset)
 
 
 if __name__ == "__main__":

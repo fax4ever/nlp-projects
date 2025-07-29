@@ -1,31 +1,7 @@
 from datasets import load_dataset
 from transformers import AutoTokenizer
 
-
-class TokenClassification:
-    def __init__(self, name):
-        self.name = name
-        self.dataset = load_dataset("conll2003", trust_remote_code=True)
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
-        print("tokenizer.is_fast", self.tokenizer.is_fast)
-
-    def hello(self):
-        return "ciao " + self.name
-
-    def tokenize_and_align_labels(self, items):
-        tokenized_inputs = self.tokenizer(
-            items["tokens"], truncation=True, is_split_into_words=True
-        )
-        all_labels = items["ner_tags"]
-        new_labels = []
-        for i, labels in enumerate(all_labels):
-            word_ids = tokenized_inputs.word_ids(i)
-            new_labels.append(self.align_labels_with_tokens(labels, word_ids))
-
-        tokenized_inputs["labels"] = new_labels
-        return tokenized_inputs
-
-    def align_labels_with_tokens(self, labels, word_ids):
+def align_labels_with_tokens(labels, word_ids):
         new_labels = []
         current_word = None
         for word_id in word_ids:
@@ -46,3 +22,29 @@ class TokenClassification:
                 new_labels.append(label)
 
         return new_labels
+
+class TokenClassification:
+    def __init__(self):
+        self.dataset = load_dataset("conll2003", trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+        print("tokenizer.is_fast", self.tokenizer.is_fast)
+        self.tokenized_dataset = self.dataset.map(
+            self.tokenize_and_align_labels,
+            batched=True,
+            remove_columns=self.dataset["train"].column_names,
+        )
+
+    def tokenize_and_align_labels(self, items):
+        tokenized_inputs = self.tokenizer(
+            items["tokens"], truncation=True, is_split_into_words=True
+        )
+        all_labels = items["ner_tags"]
+        new_labels = []
+        for i, labels in enumerate(all_labels):
+            word_ids = tokenized_inputs.word_ids(i)
+            new_labels.append(align_labels_with_tokens(labels, word_ids))
+
+        tokenized_inputs["labels"] = new_labels
+        return tokenized_inputs
+
+    
