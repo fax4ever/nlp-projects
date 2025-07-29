@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "datasets==3.6.0",
+    "evaluate>=0.4.5",
+    "seqeval>=1.2.2",
     "torch>=2.7.1",
     "transformers>=4.54.0",
 ]

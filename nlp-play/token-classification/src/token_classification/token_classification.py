@@ -1,5 +1,7 @@
 from datasets import load_dataset
 from transformers import AutoTokenizer, DataCollatorForTokenClassification
+import evaluate
+import numpy as np
 
 def align_labels_with_tokens(labels, word_ids):
         new_labels = []
@@ -26,6 +28,8 @@ def align_labels_with_tokens(labels, word_ids):
 class TokenClassification:
     def __init__(self):
         self.dataset = load_dataset("conll2003", trust_remote_code=True)
+        ner_feature = self.dataset["train"].features["ner_tags"]
+        self.label_names = ner_feature.feature.names
         self.tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
         print("tokenizer.is_fast", self.tokenizer.is_fast)
         self.tokenized_dataset = self.dataset.map(
@@ -34,6 +38,7 @@ class TokenClassification:
             remove_columns=self.dataset["train"].column_names,
         )
         self.data_collator = DataCollatorForTokenClassification(self.tokenizer)
+        metric = evaluate.load("seqeval")
 
     def tokenize_and_align_labels(self, items):
         tokenized_inputs = self.tokenizer(
@@ -47,5 +52,23 @@ class TokenClassification:
 
         tokenized_inputs["labels"] = new_labels
         return tokenized_inputs
+    
+    def compute_metrics(self, eval_preds):
+        logits, labels = eval_preds
+        predictions = np.argmax(logits, axis=-1)
+
+        # Remove ignored index (special tokens) and convert to labels
+        true_labels = [[self.label_names[l] for l in label if l != -100] for label in labels]
+        true_predictions = [
+            [self.label_names[p] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+        all_metrics = self.metric.compute(predictions=true_predictions, references=true_labels)
+        return {
+            "precision": all_metrics["overall_precision"],
+            "recall": all_metrics["overall_recall"],
+            "f1": all_metrics["overall_f1"],
+            "accuracy": all_metrics["overall_accuracy"],
+        }
 
     
