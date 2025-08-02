@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from sentence_splitter_embedding_model.encoder_splitter import EncoderSplitter
+from datasets import Dataset
 
 
 @pytest.fixture
@@ -15,9 +15,16 @@ def dev():
 
 
 @pytest.fixture
-def encoder_splitter(train, dev):
-    return EncoderSplitter(train, dev)
+def train_dataset(train):
+    return Dataset.from_pandas(train)
 
 
-def test_encoder_splitter(encoder_splitter):
-    assert encoder_splitter is not None
+@pytest.fixture
+def dev_dataset(dev):
+    return Dataset.from_pandas(dev)
+
+
+def test_train_and_evaluate(train_dataset, dev_dataset):
+    assert train_dataset is not None
+    assert dev_dataset is not None
+
