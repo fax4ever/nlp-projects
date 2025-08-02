@@ -15,8 +15,3 @@ sentence-splitter-embedding-model = "sentence_splitter_embedding_model:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[dependency-groups]
-dev = [
-    "pytest>=8.4.1",
-]

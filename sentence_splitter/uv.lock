@@ -768,6 +768,11 @@ dependencies = [
     { name = "transformers" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "accelerate", specifier = ">=1.9.0" },
@@ -780,20 +785,13 @@ requires-dist = [
     { name = "transformers", specifier = ">=4.53.3" },
 ]
 
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=8.4.1" }]
+
 [[package]]
 name = "sentence-splitter-embedding-model"
 version = "0.1.0"
 source = { editable = "sentence_splitter_embedding_model" }
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-]
-
-[package.metadata]
-
-[package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=8.4.1" }]
 
 [[package]]
 name = "sentence-splitter-llm"

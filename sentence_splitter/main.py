@@ -1,22 +1,12 @@
-import pandas as pd
-from util.utils import set_seed
-from datasets import Dataset
+from datasets import load_dataset
+from sentence_splitter_embedding_model.splitter_with_encoder import SplitterWithEncoder
 
 
 def main():
-    set_seed()
-    train = pd.read_csv("data/manzoni_train_tokens.csv")  # token,label
-    print("Train DataFrame")
-    print(train)
-
-    validation = pd.read_csv("data/manzoni_dev_tokens.csv")  # token,label
-    print("Validation DataFrame")
-    print(validation)
-
-    train_dataset = Dataset.from_pandas(train)
-    validation_dataset = Dataset.from_pandas(validation)
+    dataset_dict = load_dataset("fax4ever/manzoni")
+    splitter = SplitterWithEncoder()
+    splitter.train(dataset_dict)
     
-
 
 if __name__ == "__main__":
     main()

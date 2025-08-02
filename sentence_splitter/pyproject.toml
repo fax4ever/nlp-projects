@@ -37,3 +37,8 @@ pytorch-triton-rocm = [
 name = "pytorch-rocm"
 url = "https://download.pytorch.org/whl/rocm6.3"
 explicit = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]

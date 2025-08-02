@@ -21,11 +21,6 @@ uv run main.py
 
 ## Execute the tests
 
-Go to the module directory (sentence_splitter_embedding_model)
-```shell
-cd sentence_splitter_embedding_model
-```
-
 Run the tests
 ```shell
 uv run pytest
