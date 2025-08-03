@@ -3,6 +3,7 @@ from datasets import DatasetDict
 import evaluate
 import os
 import numpy as np
+from sentence_splitter_embedding_model.weighted_trainer import WeightedTrainer
 
 END_OF_SENTENCE = 1
 NOT_END_OF_SENTENCE = 0
@@ -33,9 +34,11 @@ class SplitterWithEncoder:
             num_train_epochs=3,
             weight_decay=0.01,
             push_to_hub=True,
-            hub_token=os.environ['HF_TOKEN']
+            hub_token=os.environ['HF_TOKEN'],
+            load_best_model_at_end=True, # Stop training when F1 stops improving
+            metric_for_best_model="f1" # Of course on the validation set
         )
-        trainer = Trainer(
+        trainer = WeightedTrainer (
             model=self.model,
             args=args,
             train_dataset=self.tokenized_dataset_dict["train"],
