@@ -5,7 +5,7 @@ from sentence_splitter_embedding_model.splitter_with_encoder import SplitterWith
 
 @pytest.fixture
 def dataset_dict():
-    return load_dataset("fax4ever/manzoni")
+    return load_dataset("fax4ever/manzoni-192")
 
 
 @pytest.fixture
