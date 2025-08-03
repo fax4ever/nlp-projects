@@ -1,5 +1,8 @@
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, DataCollatorForTokenClassification, AutoModelForTokenClassification, TrainingArguments, Trainer
 from datasets import DatasetDict
+import evaluate
+import os
+import numpy as np
 
 END_OF_SENTENCE = 1
 NOT_END_OF_SENTENCE = 0
@@ -20,7 +23,31 @@ class SplitterWithEncoder:
             remove_columns=dataset_dict["train"].column_names,
             batch_size=128,
         )
-        label_names = [NOT_END_OF_SENTENCE, END_OF_SENTENCE]
+        self.data_collator = DataCollatorForTokenClassification(self.tokenizer)
+        self.metric = evaluate.load("seqeval")
+        self.model = AutoModelForTokenClassification.from_pretrained(base_embedding_model_name, num_labels=2)
+        args = TrainingArguments(
+            "bert-base-cased-sentence-splitter",
+            eval_strategy="epoch",
+            save_strategy="epoch",
+            learning_rate=2e-5,
+            num_train_epochs=3,
+            weight_decay=0.01,
+            push_to_hub=True,
+            hub_token=os.environ['HF_TOKEN']
+        )
+        trainer = Trainer(
+            model=self.model,
+            args=args,
+            train_dataset=self.tokenized_dataset_dict["train"],
+            eval_dataset=self.tokenized_dataset_dict["validation"],
+            data_collator=self.data_collator,
+            compute_metrics=self.compute_metrics,
+            processing_class=self.tokenizer,
+        )
+        trainer.train()
+        trainer.push_to_hub(commit_message="Training complete", token=os.environ['HF_TOKEN'])
+
 
     def tokenize_and_align_labels(self, items):
         tokenized_inputs = self.tokenizer(
@@ -36,6 +63,7 @@ class SplitterWithEncoder:
         tokenized_inputs["labels"] = new_labels
         return tokenized_inputs
 
+
     def align_labels_with_tokens(self, labels, word_ids):
         new_labels = []
         current_word = None
@@ -49,3 +77,16 @@ class SplitterWithEncoder:
                 # Treat the same word never as end of sentence
                 new_labels.append(NOT_END_OF_SENTENCE)
         return new_labels
+    
+
+    def compute_metrics(self, eval_preds):
+        logits, labels = eval_preds
+        predictions = np.argmax(logits, axis=-1)
+
+        all_metrics = self.metric.compute(predictions=predictions, references=labels)
+        return {
+            "precision": all_metrics["overall_precision"],
+            "recall": all_metrics["overall_recall"],
+            "f1": all_metrics["overall_f1"],
+            "accuracy": all_metrics["overall_accuracy"],
+        }

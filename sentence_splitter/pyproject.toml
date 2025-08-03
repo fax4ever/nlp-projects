@@ -11,6 +11,7 @@ dependencies = [
     "pandas>=2.3.1",
     "accelerate>=1.9.0",
     "evaluate>=0.4.5",
+    "seqeval>=1.2.2",
 ]
 
 [tool.uv.workspace]
