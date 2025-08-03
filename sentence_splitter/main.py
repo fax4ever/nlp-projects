@@ -5,7 +5,8 @@ from sentence_splitter_embedding_model.splitter_with_encoder import SplitterWith
 def main():
     dataset_dict = load_dataset("fax4ever/manzoni-192")
     splitter = SplitterWithEncoder()
-    splitter.train(dataset_dict)
+    splitter.tokenize_dataset(dataset_dict, "bert-base-cased")
+    splitter.train()
     
 
 if __name__ == "__main__":

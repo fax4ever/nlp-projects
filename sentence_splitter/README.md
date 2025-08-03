@@ -1,5 +1,20 @@
 # Sentence Splitter
 
+## Model tested
+
+1. 🚀 ModernBERT-base-ita (Most Recent - Dec 2024)
+  * `DeepMount00/ModernBERT-base-ita`
+
+2. 🇮🇹 Italian BERT XXL (Most Established): 
+  * `dbmdz/bert-base-italian-xxl-cased`
+
+3. 🌍 XLM-RoBERTa (Best Multilingual)
+  * `FacebookAI/xlm-roberta-base`
+  * `FacebookAI/xlm-roberta-large`
+
+4. 🔬 Italian ELECTRA (Alternative Architecture): 
+  * `dbmdz/electra-base-italian-xxl-cased-discriminator`
+
 The project is managed using UV.
 
 ## Create the UV environment with Modules

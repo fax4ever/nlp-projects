@@ -10,22 +10,21 @@ LABEL_FOR_START_END_OF_SEQUENCE = NOT_END_OF_SENTENCE
 
 class SplitterWithEncoder:
 
-    def __init__(self):
-        pass
-
-    def train(self, dataset_dict:DatasetDict):
-        base_embedding_model_name = "bert-base-cased"
-        self.tokenizer = AutoTokenizer.from_pretrained(base_embedding_model_name)
-        
+    def tokenize_dataset(self, dataset_dict:DatasetDict, embedding_model:str):
+        self.embedding_model = embedding_model
+        self.tokenizer = AutoTokenizer.from_pretrained(embedding_model)
         self.tokenized_dataset_dict = dataset_dict.map(
             self.tokenize_and_align_labels,
             batched=True,
             remove_columns=dataset_dict["train"].column_names,
             batch_size=128,
         )
+
+
+    def train(self):
         self.data_collator = DataCollatorForTokenClassification(self.tokenizer)
         self.metric = evaluate.load("seqeval")
-        self.model = AutoModelForTokenClassification.from_pretrained(base_embedding_model_name, num_labels=2)
+        self.model = AutoModelForTokenClassification.from_pretrained(self.embedding_model, num_labels=2)
         args = TrainingArguments(
             "bert-base-cased-sentence-splitter",
             eval_strategy="epoch",
