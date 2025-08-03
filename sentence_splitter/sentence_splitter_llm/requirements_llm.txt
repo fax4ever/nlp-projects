@@ -1,0 +1,21 @@
+# Additional requirements for LLM-based sentence splitting
+# Install with: pip install -r requirements_llm.txt
+
+# Core LLM and fine-tuning libraries
+torch>=2.0.0
+transformers>=4.36.0
+datasets>=2.14.0
+accelerate>=0.24.0
+
+# Parameter-efficient fine-tuning
+peft>=0.7.0
+
+# Quantization for QLoRA
+bitsandbytes>=0.41.0
+
+# Optional: for better performance
+flash-attn>=2.0.0  # Only if you have compatible GPU
+
+# Evaluation
+evaluate>=0.4.0
+scikit-learn>=1.3.0
