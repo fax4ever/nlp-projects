@@ -3,7 +3,7 @@
 Simple example of how to use the LLM sentence splitter.
 """
 
-from src.sentence_splitter_llm.llm_sentence_splitter import LLMSentenceSplitter
+from generated_code.llm_sentence_splitter import LLMSentenceSplitter
 
 
 def quick_test():
