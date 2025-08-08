@@ -3,7 +3,7 @@ name = "sentence-splitter"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "torch>=2.7.0",
     "pytorch-triton-rocm",
@@ -12,6 +12,8 @@ dependencies = [
     "accelerate>=1.9.0",
     "evaluate>=0.4.5",
     "seqeval>=1.2.2",
+    "sentencepiece>=0.2.0",
+    "unsloth>=2025.8.2",
 ]
 
 [tool.uv.workspace]
