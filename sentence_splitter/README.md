@@ -1,6 +1,6 @@
 # Sentence Splitter
 
-## Model tested
+## Models tested
 
 1. 🚀 ModernBERT-base-ita (Most Recent - Dec 2024)
   * `DeepMount00/ModernBERT-base-ita`
@@ -15,28 +15,24 @@
 4. 🔬 Italian ELECTRA (Alternative Architecture): 
   * `dbmdz/electra-base-italian-xxl-cased-discriminator`
 
-The project is managed using UV.
+The project is managed with `uv`.
 
-## Create the UV environment with Modules
+## Create the uv environment with modules
 
-On the root (sentence_splitter)
+From the project root (`sentence_splitter/`):
 ```shell
 uv sync --all-packages
 ```
 
-After this command a virtual environment will be created under `sentence_splitter/.venv`
-But the modules are not loaded into it without the option `--all-packages`!
+This creates a virtual environment under `sentence_splitter/.venv`.
+Use the `--all-packages` flag to install all subpackages into the shared environment.
 
-To test that the modules are present by the virtual environment:
-
-On the root (sentence_splitter)
+To verify the environment has the modules, run from the project root (`sentence_splitter/`):
 ```shell
 uv run main.py
 ```
 
-## Execute the tests
-
-Run the tests
+## Run tests
 ```shell
 uv run pytest
 ```
@@ -46,45 +42,40 @@ You should see:
 === 1 passed in 0.01s ===
 ```
 
-## Install the virtual environment on your IDE
+## Use the virtual environment in your IDE
 
-The crucial idea of UV packaging is to define a single virtual environment (`sentence_splitter/.venv`)
-at root project level **and then** (it means...) install all the packages on it!
-In this way you can make one package using another one... or use packages from the root of the project.
-The common virtual environment will be common denominator!
+The key idea is to define a single virtual environment (`sentence_splitter/.venv`) at the project root
+and install all packages into it. This allows packages to depend on each other and be used from the root.
 
 ### IntelliJ IDEA
 
-To install it on IntelliJ IDEA open any Python file and click on `Configure Python Interpreter`.
-Then click on the **Edit** of ModuleSDK.
-Then click on **Add new Python SDK**
-Select the virtual environment: `sentence_splitter/.venv`!
+Open any Python file and click `Configure Python Interpreter`.
+Click **Edit** of Module SDK, then **Add new Python SDK**, and select `sentence_splitter/.venv`.
 
 ### VSCode / Cursor
 
-With Cursor (and maybe VSCode -- I didn't try it) the environment is loaded by default if you open the project
-with the root project directory as target folder.
+Cursor (and likely VSCode) loads the environment by default when you open the project root folder.
 
-### ROCm 6.4.0 PyTorch 
+### PyTorch with ROCm 6.4.0
 
-If you have an AMD Radeon and you want to use it with Pytorch, you can install a specific Pytorch version:
+If you have an AMD GPU and want to use it with PyTorch, install a specific PyTorch build:
 
 ```shell
 UV_HTTP_TIMEOUT=3000 uv pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.4/
 ```
 
-## UV other commands
+## Other uv commands
 
 ### Add a dependency
 
-On the root (sentence_splitter)
+From the project root (`sentence_splitter/`):
 ```shell
 uv add pandas
 ```
 
-### Add a new package (module) 
+### Add a new package (module)
 
-On the root (sentence_splitter)
+From the project root (`sentence_splitter/`):
 ```shell
 uv init --package util
 ```
