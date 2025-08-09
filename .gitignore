@@ -200,3 +200,5 @@ culturalitems-roberta-base-5
 culturalitems-distilbert
 
 *.out
+*.blg
+*.bbl
