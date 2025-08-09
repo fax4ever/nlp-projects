@@ -13,6 +13,7 @@
 \usepackage{numprint}
 \usepackage{listings}
 \usepackage{natbib}
+\bibliographystyle{unsrtnat}
 
 \title{%
 	Sentence Splitter\\
@@ -31,11 +32,57 @@ Della Porta Nicolò \\
 
 \section{Introduction}
 
+Quoting \cite{redaelli-sprugnoli-2024-sentence} "Sentence splitting, that is the segmentation of the raw input text into sentences, is a fundamental step in text processing".  According to \cite{frohmann2024segmenttextuniversalapproach} the main challenges are:
+
+\begin{itemize}
+	\item robustness to missing punctuation
+	\item effective adaptability to new domains
+	\item high efficiency
+\end{itemize}
+
+According to \cite{redaelli-sprugnoli-2024-sentence} we can add to the list:
+
+\begin{itemize}
+	\item multilinguality
+\end{itemize}
+
+Because a sentence splitting that works well for English may not work well to split another language.
+
+In this project we implemented two models for sentence splitting, using an Italian corpus as train and validation set.
+The first one is based on an embedding model, the second one is based on generative LLM.
+We want to analyze compare the two approaches. 
+We want also to test the models out of domains.
+
 \section{Methodology}
 
-explain your starting hypothesis and the methods you will use to test them
-
 \subsection{Embedding-based}
+
+We fine tuned a pretrained embedding model (multilingual or trained on Italian language) using the test and validation datasets provided by the homework guide.
+
+The original dataset provides two large texts (one to use as train and the other as validation) together with the golden labels to mark the end of sentence (1) and all the rest of the words (0).
+
+In order to make the datasets suitable for the training we had to apply some transormations. 
+We needed to group words into sequences of tokens aligning the golden labels consistently.
+The number of tokens of each sequence must fit the max length of the embedding models,
+for instance 512.
+
+We generated different datasets using different number of words to generate each sequence: 
+64, 128, 192, 256. Notice that the number of tokens for each sequences will be strictly grater,
+since for each word the tokenizer of the model will produce one or more tokens.
+
+Before to use the datasets we still need to align (as mentioned above)  the labels to the tokens.
+The alignment strategy we applied consists in keep 1 as the first token generated from a word
+having label 1, use 0 for all the other cases.
+
+One aspect that we had to address was the fact that the label distribution is very unbalanced
+for this use case. Most the labels are 0s, and few 1s. We applied 2 different ideas.
+
+First of all, we set the \emph{load\_best\_model\_at\_end} as training argument to \emph{true},
+using \emph{metric\_for\_best\_model} to F1. This to implement an early stopping based on F1,
+and not on the accuracy (that would be misleading for such a unbalanced dataset).
+
+Second of all,  we override the loss function to weight much less (1/30) a miss-labeling on 0s then
+the ones on 1s. We called it a weighted trainer. 
 
 \subsection{LLM-based}
 
@@ -57,7 +104,10 @@ Comparative analysis of the two approaches on the validation set – which one i
 better?
 
 The \LaTeX\ related items are
-\cite{andrew2007scalable}. 
+\cite{frohmann2024segmenttextuniversalapproach}. 
+
+The \LaTeX\ related items are
+\cite{redaelli-sprugnoli-2024-sentence}. 
 
 \appendix
 \section{Training results Appendix}
