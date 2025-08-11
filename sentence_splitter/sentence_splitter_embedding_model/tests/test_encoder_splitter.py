@@ -1,7 +1,7 @@
 import pytest
 from datasets import load_dataset, DatasetDict
 from sentence_splitter_embedding_model.splitter_with_encoder import SplitterWithEncoder
-
+import evaluate
 
 @pytest.fixture
 def dataset_dict():
@@ -41,7 +41,16 @@ def test_splitter_italian_bert(splitter:SplitterWithEncoder, dataset_dict:Datase
     input_ids_0 = splitter.tokenized_dataset_dict['train']['input_ids'][0]
     assert len(labels_0) == len(input_ids_0)
     assert len(labels_0) <= 512
-    
+
+
+def test_try_eval():
+    metric = evaluate.load("seqeval")
+    a = [[str(num) for num in [1, 2, 3]]]
+    b = [[str(num) for num in [1, 2, 3]]]
+    predictions = [['O', 'O', 'B-MISC', 'I-MISC', 'I-MISC', 'I-MISC', 'O'], ['B-PER', 'I-PER', 'O']]
+    references = [['O', 'O', 'B-MISC', 'I-MISC', 'I-MISC', 'I-MISC', 'O'], ['B-PER', 'I-PER', 'O']]
+    print(metric.compute(predictions=predictions, references=references))
+
 
 
 

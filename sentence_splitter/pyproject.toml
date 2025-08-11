@@ -14,6 +14,7 @@ dependencies = [
     "seqeval>=1.2.2",
     "sentencepiece>=0.2.0",
     "unsloth>=2025.8.2",
+    "torchvision>=0.22.1",
 ]
 
 [tool.uv.workspace]
