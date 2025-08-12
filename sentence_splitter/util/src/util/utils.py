@@ -24,16 +24,27 @@ def map_nested_ints_to_strings(values: Iterable[Iterable[int]]) -> List[List[str
         for inner_iter in values
     ]
 
-def remove_minus100(reference_batch: Iterable) -> List:
-    return [item for item in reference_batch if item != -100 and item != '-100']
 
-
-def compute_f1_metric(predictions: List[List], references: List[List]) -> float:
+def compute_f1_metric(predictions: Iterable[Iterable], references: Iterable[Iterable]) -> float:
     metric = evaluate.load("f1", average="binary")
 
+    assert len(predictions) == len(references)
     for i, prediction_batch in enumerate(predictions):
         reference_batch = references[i]
+        
+        prediction_valid_batch = []
+        reference_valid_batch = []
+        trailing = False
 
+        assert len(prediction_batch) == len(reference_batch)
+        for prediction, reference in zip(prediction_batch, reference_batch):
+            if reference == -100 or reference == '-100':
+                trailing = True
+                continue
+            else:
+                assert not trailing
+                reference_valid_batch.append(reference)
+                prediction_valid_batch.append(prediction)
 
-    metric.add_batch(predictions=predictions, references=references)
+        metric.add_batch(predictions=prediction_valid_batch, references=reference_valid_batch)
     return metric.compute()

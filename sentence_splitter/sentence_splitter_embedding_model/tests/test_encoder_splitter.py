@@ -5,6 +5,7 @@ import pytest
 from datasets import load_dataset, DatasetDict
 from sentence_splitter_embedding_model.splitter_with_encoder import SplitterWithEncoder
 import evaluate
+from util.utils import compute_f1_metric
 
 @pytest.fixture
 def dataset_dict():
@@ -67,6 +68,11 @@ def test_load_data_txt_from_same_directory():
     assert pred is not None
     assert ref is not None
     assert len(pred) == len(ref)
+
+    val = compute_f1_metric(data[0], data[1])
+    val2 = compute_f1_metric(data[2], data[3])
+    val3 = compute_f1_metric(data[4], data[5])
+    print(val, val2, val3)
 
 def test_simple_f1_metric():
     metric = evaluate.load("f1", average="binary")
