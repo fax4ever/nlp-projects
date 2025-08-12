@@ -1,3 +1,6 @@
+import ast
+from pathlib import Path
+import numpy as np
 import pytest
 from datasets import load_dataset, DatasetDict
 from sentence_splitter_embedding_model.splitter_with_encoder import SplitterWithEncoder
@@ -51,6 +54,30 @@ def test_try_eval():
     references = [['O', 'O', 'B-MISC', 'I-MISC', 'I-MISC', 'I-MISC', 'O'], ['B-PER', 'I-PER', 'O']]
     print(metric.compute(predictions=predictions, references=references))
 
+
+def test_load_data_txt_from_same_directory():
+    data_path = Path(__file__).parent / "data.txt"
+    text = data_path.read_text(encoding="utf-8")
+    data = ast.literal_eval(text)
+    assert isinstance(data, list)
+    assert len(data) == 6
+
+    pred = data[0][0]
+    ref = data[1][0]
+    assert pred is not None
+    assert ref is not None
+    assert len(pred) == len(ref)
+
+def test_simple_f1_metric():
+    metric = evaluate.load("f1", average="binary")
+    metric.add_batch(predictions=[1, 2, 2], references=[1, 2, 2])
+    metric.add_batch(predictions=[2, 2, 2], references=[1, 2, 2])
+    ciao = metric.compute()
+    print(ciao)
+
+
+
+    
 
 
 

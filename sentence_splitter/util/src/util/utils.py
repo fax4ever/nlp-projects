@@ -2,7 +2,7 @@ import torch
 import random
 import numpy as np
 from typing import Iterable, List, Sequence
-
+import evaluate
 
 def set_seed(seed=777, total_determinism=False):
     seed = seed
@@ -23,3 +23,17 @@ def map_nested_ints_to_strings(values: Iterable[Iterable[int]]) -> List[List[str
         [str(item) for item in inner_iter]
         for inner_iter in values
     ]
+
+def remove_minus100(reference_batch: Iterable) -> List:
+    return [item for item in reference_batch if item != -100 and item != '-100']
+
+
+def compute_f1_metric(predictions: List[List], references: List[List]) -> float:
+    metric = evaluate.load("f1", average="binary")
+
+    for i, prediction_batch in enumerate(predictions):
+        reference_batch = references[i]
+
+
+    metric.add_batch(predictions=predictions, references=references)
+    return metric.compute()
