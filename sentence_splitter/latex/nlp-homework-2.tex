@@ -147,9 +147,40 @@ For this purpose, we planned to use the dataset from \cite{redaelli-sprugnoli-20
 from the same century are used.
 The dataset has already the gold results annotated by the authors of the paper.
 
-\emph{Note: The out-of-domain evaluation was designed but not yet implemented in the current notebooks.}
-
 \section{Results}
+
+\subsection{Embedding-based: in-domain}
+
+\begin{table}[]
+	\small
+	\caption{Best F1-epoch Embedding-based}
+	\begin{tabular}{llll}
+		Models & Best Epoch & F1 & Valid loss \\
+		BERT base cased & 6      & 0.9922        & 0.0014                  \\
+		ModernBERT base ITA  & 12      & 0.9938        & 0.0097                  \\
+		BERT base ITA XXL cased & 11      & 0.9922        & 0.0021                 \\
+		XLM RoBERTa base & 4       & 0.9953        & 0.0014                  \\
+		XLM RoBERTa large & 12       & 0.9953       & 0.0087                 \\
+		Electra ITA XXL disc. & 20       & 0.9953        & 0.0015                
+	\end{tabular}
+	\label{t1}
+\end{table}
+
+Tables \ref{t1} reports the F1 scores and the losses on validation set 
+for the best-F1 epoch, training the network with 30 epochs.
+This is of course an in-domain evaluation, since the validation set
+is from the same author (Manzoni) and even also the same novel
+(I Promessi Sposi).
+The scores look not so bad, probably we can expect they will diverge
+more in case of out-of-domain evaluation.
+
+\subsection{Embedding-based: out-of-domain}
+
+\subsection{LLM-based: in-domain}
+
+\subsection{LLM-based: out-of-domain}
+
+\subsection{Embedding vs LLM: comparison}
 
 \emph{This section is planned to compare the two approaches: embedding-based vs LLM-based.}
 \emph{The comparison will be conducted once both implementations are fully executed and evaluated.}
