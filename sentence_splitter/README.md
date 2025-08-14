@@ -79,3 +79,20 @@ From the project root (`sentence_splitter/`):
 ```shell
 uv init --package util
 ```
+
+### Used Out of Domain dataset
+
+@inproceedings{redaelli-sprugnoli-2024-sentence,
+	title = {Is Sentence Splitting a Solved Task? Experiments to the Intersection between {NLP} and {I}talian Linguistics},
+	author = {Redaelli, Arianna  and Sprugnoli, Rachele},
+	editor = {Dell'Orletta, Felice  and Lenci, Alessandro  and Montemagni, Simonetta  and Sprugnoli, Rachele},
+	booktitle = {Proceedings of the 10th Italian Conference on Computational Linguistics (CLiC-it 2024)},
+	month = dec,
+	year = "2024",
+	address = "Pisa, Italy",
+	publisher = "CEUR Workshop Proceedings",
+	url = "https://aclanthology.org/2024.clicit-1.88/",
+	pages = "813--820",
+	ISBN = "979-12-210-7060-6",
+	abstract = "Sentence splitting, that is the segmentation of the raw input text into sentences, is a fundamental step in text processing. Although it is considered a solved task for texts such as news articles and Wikipedia pages, the performance of systems can vary greatly depending on the text genre. This paper presents the evaluation of the performance of eight sentence splitting tools adopting different approaches (rule-based, supervised, semi-supervised, and unsupervised learning) on Italian 19th-century novels, a genre that has not received sufficient attention so far but which can be an interesting common ground between Natural Language Processing and Digital Humanities."
+}

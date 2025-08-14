@@ -1,6 +1,5 @@
 import ast
 from pathlib import Path
-import numpy as np
 import pytest
 from datasets import load_dataset, DatasetDict
 from sentence_splitter_embedding_model.splitter_with_encoder import SplitterWithEncoder
