@@ -35,23 +35,23 @@ Della Porta Nicolò \\
 Quoting \cite{redaelli-sprugnoli-2024-sentence} "Sentence splitting, that is the segmentation of the raw input text into sentences, is a fundamental step in text processing".  According to \cite{frohmann2024segmenttextuniversalapproach} the main challenges are:
 
 \begin{itemize}
-	\item robustness to missing punctuation
-	\item effective adaptability to new domains
-	\item high efficiency
+	\item Robustness to missing punctuation
+	\item Effective adaptability to new domains
+	\item High efficiency
 \end{itemize}
 
 According to \cite{redaelli-sprugnoli-2024-sentence} we can add to the list:
 
 \begin{itemize}
-	\item multilinguality
+	\item Multilinguality
 \end{itemize}
 
 Because a sentence splitting that works well for English may not work well to split another language.
 
-In this project we implemented two models for sentence splitting, using an Italian corpus as train and validation set.
-The first one is based on an embedding model, the second one is based on a generative LLM.
+In this project we implemented two types of models for sentence splitting, using an Italian corpus as train and validation set.
+The first kind is based on an embedding model, the second is based on a generative LLM.
 We aim to analyze and compare the two approaches. 
-We also plan to test the models out-of-domain.
+We also plan to test the models out of the original domain of training, that is an annotated text from I Promessi Sposi by Manzoni.
 
 \section{Methodology}
 
@@ -88,7 +88,7 @@ During inference, we don't need to align the labels, since the labels are genera
 
 \subsection{LLM-based}
 
-Fine-tuning an LLM is usually prohibitive or impossible using modest hardware, such as a single GPU with 8 GB / 16 GB RAM. So we applied two techniques to reduce the amount of memory required (and also the time) to fine-tune the models: LoRA (Low-Rank Adaptation) and parameter quantization.
+Fine-tuning an LLM is usually prohibitive or impossible using modest hardware, such as a single GPU with 16 GB / 24 GB RAM. So we applied two techniques to reduce the amount of memory required (and also the time) to fine-tune the models: LoRA (Low-Rank Adaptation) and parameter quantization.
 
 A special focus was given to creating good prompts for both the training and inference phases.
 We first generated new datasets from the ones we used for the embedding-based solution, in which 
@@ -103,20 +103,19 @@ for every sequence we have:
  
  We used the Supervised Fine-Tuning (TRL SFT) Trainer to train the model.
 
-The fine-tuned model is (as usual) pushed to the Hugging Face repository, so that it can be used
-for inference from anywhere.
+The fine-tuned models are (as usual) pushed to the Hugging Face repository, so that they can be used for inference from anywhere.
 
 \section{Experiments}
 
-\subsection{F1 on different models - same domain}
+\subsection{Training}
 
 The performance goal we set is to maximize the F1 score on the validation set. The test set is unlabeled, so we cannot use it. Our expectation is that with a good result on the
 validation set can generalize nicely on the test set.
 
-For the embedding-based solution, we implemented the approach using BERT-base-cased as the base model.
-While we considered several Italian and multilingual models during development:
+For the embedding-based solution, we tested the following base models:
 
  \begin{itemize}
+ 	\item BERT base cased
 	\item ModernBERT-base-ita (Dec 2024)
 	\item Italian BERT XXL (most established)
 	\item XLM-RoBERTa base
@@ -124,23 +123,18 @@ While we considered several Italian and multilingual models during development:
 	\item Italian ELECTRA
 \end{itemize}
 
-The actual implementation uses BERT-base-cased for demonstration purposes.
-
-For the LLM-based solution, we implemented the approach using Qwen3-4B Instruct.
-We considered several instruction-tuned models during development:
+For the LLM-based solution, we tested the following base models:
 
  \begin{itemize}
- 	\item Qwen3-4B
-	\item Meta-Llama-3.1-8B-Instruct
-	\item mistral-7b-instruct-v0.3-bnb-4bit
+ 	\item Qwen3 4B
+	\item Meta Llama 3.1 8B Instruct
+	\item Mistral 7B Instruct v0.3 bnb 4bit
+	\item Minerva 7B Instruct v1.0
 \end{itemize}
 
-The actual implementation uses Qwen3-4B Instruct (via unsloth/Qwen3-4B) with 4-bit quantization and LoRA fine-tuning.
+Both test and validation set come from the same novel: \emph{I Promessi Sposi}. 
 
-These tests are executed on the same domain, since all the datasets (train, validation and tests) 
-come from the same novel: \emph{I Promessi Sposi}. 
-
-\subsection{Out-of-domain tests}
+\subsection{Out-of-domain evaluation}
 
 We designed experiments to test the same models on different authors.
 For this purpose, we planned to use the dataset from \cite{redaelli-sprugnoli-2024-sentence}, in which different authors
