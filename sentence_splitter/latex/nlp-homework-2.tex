@@ -51,7 +51,7 @@ Because a sentence splitting that works well for English may not work well to sp
 In this project we implemented two types of models for sentence splitting, using an Italian corpus as train and validation set.
 The first kind is based on an embedding model, the second is based on a generative LLM.
 We aim to analyze and compare the two approaches. 
-We also plan to test the models out of the original domain of training, that is an annotated text from I Promessi Sposi by Manzoni.
+We also plan to test the models out of the original domain of training, that is an annotated text from I Promessi Sposi (Quarantana) by Manzoni.
 
 \section{Methodology}
 
@@ -62,8 +62,8 @@ We fine-tuned a pretrained embedding model using the train and validation datase
 The original dataset provides two large texts (one to use as train and the other as validation) together with the golden labels to mark the end of sentence (1) and all the rest of the words (0).
 
 In order to make the datasets suitable for training, we had to apply some transformations. 
-We needed to group words into sequences of tokens, aligning the golden labels consistently.
-The number of tokens of each sequence must fit the max length of the embedding models,
+We needed to group words into sequences, and to tokenize words into tokens, aligning the golden labels consistently.
+With the constraint that the number of tokens of each sequence must fit the max length of the embedding models,
 for instance 512.
 
 We generated a dataset using sequences of 192 words each. Notice that the number of tokens for each sequence will be strictly greater,
@@ -76,8 +76,8 @@ having label 1, and using 0 for all the other cases.
 One aspect that we had to address was the fact that the label distribution is very unbalanced
 for this use case. Most of the labels are 0s, and few are 1s. We applied 2 different strategies.
 
-First, we set the \emph{load\_best\_model\_at\_end} training argument to \emph{true},
-using \emph{metric\_for\_best\_model} set to F1. This implements early stopping based on F1,
+First, we set the \textbf{load\_best\_model\_at\_end} training argument to \textbf{true},
+using \textbf{metric\_for\_best\_model} set to F1. This implements early stopping based on F1,
 rather than on accuracy (which would be misleading for such an unbalanced dataset).
 
 Second, we overrode the loss function to weight misclassification of class 1 (end of sentence) 30× more than class 0. 
@@ -109,7 +109,7 @@ The fine-tuned models are (as usual) pushed to the Hugging Face repository, so t
 
 \subsection{Training}
 
-The performance goal we set is to maximize the F1 score on the validation set. The test set is unlabeled, so we cannot use it. Our expectation is that with a good result on the
+The performance goal we set is to maximize the F1 score on the validation set. Our expectation is that with a good result on the
 validation set can generalize nicely on the test set.
 
 For the embedding-based solution, we tested the following base models:
@@ -132,7 +132,7 @@ For the LLM-based solution, we tested the following base models:
 	\item Minerva 7B Instruct v1.0
 \end{itemize}
 
-Both test and validation set come from the same novel: \emph{I Promessi Sposi}. 
+As we said, both test and validation set come from the same novel: \emph{I Promessi Sposi}. 
 
 \subsection{Out-of-domain evaluation}
 
@@ -141,9 +141,20 @@ For this purpose, we planned to use the dataset from \cite{redaelli-sprugnoli-20
 from the same century are used.
 The dataset has already the gold results annotated by the authors of the paper.
 
+We evaluated the f1 score of the predictions, having the annotated
+novels as ground true.
+
+We produced labels from both the annotated novels and 
+from predictions. For simplicity of the implementation,
+for this phase, we produces a label for each character, instead of a label for each token.
+
+The golden-annotated novel rows were grouped in chunk of equal size of lines, to produce sequences.
+
+We tested the in-domain novel (Quarantana) and 3 novels (Pinocchio, I Malavoglia and Cuore) from different authors of the same period.
+
 \section{Results}
 
-\subsection{Embedding-based: in-domain}
+\subsection{Training}
 
 \begin{table}[]
 	\small
@@ -160,36 +171,46 @@ The dataset has already the gold results annotated by the authors of the paper.
 	\label{t1}
 \end{table}
 
-Tables \ref{t1} reports the F1 scores and the losses on validation set 
+Table \ref{t1} reports the F1 scores and the losses on validation set 
 for the best-F1 epoch, training the network with 30 epochs.
 This is of course an in-domain evaluation, since the validation set
 is from the same author (Manzoni) and even also the same novel
 (I Promessi Sposi).
-The scores look not so bad, probably we can expect they will diverge
-more in case of out-of-domain evaluation.
+On training, the F1s on the validation set look very good.
 
-\subsection{Embedding-based: out-of-domain}
+\subsection{Out of Domain}
 
-\subsection{LLM-based: in-domain}
+\begin{table}[]
+	\small
+	\caption{Out-Of-Domain Evaluation: Embedding-based}
+	\begin{tabular}{lllll}
+		Models & Quara. & Pinocc. & Malav. & Cuore \\
+		BERT base cased & 0.9922      & 0.8058 & 0.7304        & 0.8757                  \\
+		ModernBERT ITA  & 0.9675     & 0.8495   & 0.8128   & 0.8864                  \\
+		BERT ITA XXL  & 0.9938      & 0.9947   & 0.9205     & 0.9591                 \\
+		XLM RoBERTa B & 0.3953       & 0.5427   & 0.1980     & 0.2424                 \\
+		XLM RoBERTa L & 0.5275       & 0.6618    & 0.3559   & 0.5               \\
+		Electra ITA XXL  & 0.9923       & 0.9785    & 0.9171    & 0.9655             
+	\end{tabular}
+	\label{t2}
+\end{table}
 
-\subsection{LLM-based: out-of-domain}
+When we evaluate the same models on different novels we got the
+result reported in table \ref{t2}.
+
+According to our tests, multilingual base models (XLM RoBERTa base and large)
+got very bad results, even in the same domain (Quarantana).
+
+It seems to be better to use BERT base, even if it does not trained on Italian.
+This base model, like ModernBERT ITA, works very good in domain (Quarantana) and
+decently out of domain (other novels).
+
+BERT ITA XXL and Electra ITA XXL got great results both in domain and out of domain.
+
+The novel that seems to be the more difficult to split for all model is I Malavoglia.
+Best result is usually achived in domain (as expected).
 
 \subsection{Embedding vs LLM: comparison}
-
-\emph{This section is planned to compare the two approaches: embedding-based vs LLM-based.}
-\emph{The comparison will be conducted once both implementations are fully executed and evaluated.}
-
-The planned comparison metrics include:
-
- \begin{itemize}
-	\item F1 score - in-domain (Manzoni dataset)
-	\item F1 score - out-of-domain (other 19th century Italian authors)
-	\item Memory usage during training and inference
-	\item Training time requirements
-	\item Inference speed
- \end{itemize}
-
-\emph{Note: Actual results will be populated after running the experiments described in the notebooks.}
 
 \appendix
 \section{Additional details/describe Appendix}
