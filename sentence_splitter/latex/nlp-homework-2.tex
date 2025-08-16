@@ -107,7 +107,7 @@ The fine-tuned models are (as usual) pushed to the Hugging Face repository, so t
 
 \section{Experiments}
 
-\subsection{Training}
+\subsection{Embedding-based: Training Evaluation}
 
 The performance goal we set is to maximize the F1 score on the validation set. Our expectation is that with a good result on the
 validation set can generalize nicely on the test set.
@@ -134,7 +134,7 @@ For the LLM-based solution, we tested the following base models:
 
 As we said, both test and validation set come from the same novel: \emph{I Promessi Sposi}. 
 
-\subsection{Out-of-domain evaluation}
+\subsection{Embedding-based: Out of Domain Evaluation}
 
 We designed experiments to test the same models on different authors.
 For this purpose, we planned to use the dataset from \cite{redaelli-sprugnoli-2024-sentence}, in which different authors
@@ -152,9 +152,14 @@ The golden-annotated novel rows were grouped in chunk of equal size of lines, to
 
 We tested the in-domain novel (Quarantana) and 3 novels (Pinocchio, I Malavoglia and Cuore) from different authors of the same period.
 
+\subsection{LLM-based}
+
+Results for LLM-based (generative)  models will be evaluated manually, simply taking an out of domain 
+text fragment from Cuore novel and pass in input to the target test models.
+
 \section{Results}
 
-\subsection{Training}
+\subsection{Embedding-based: Training Evaluation}
 
 \begin{table}[]
 	\small
@@ -178,7 +183,7 @@ is from the same author (Manzoni) and even also the same novel
 (I Promessi Sposi).
 On training, the F1s on the validation set look very good.
 
-\subsection{Out of Domain}
+\subsection{Embedding-based: Out of Domain Evaluation}
 
 \begin{table}[]
 	\small
@@ -210,11 +215,7 @@ BERT ITA XXL and Electra ITA XXL got great results both in domain and out of dom
 The novel that seems to be the more difficult to split for all model is I Malavoglia.
 Best result is usually achived in domain (as expected).
 
-\subsection{Embedding vs LLM: comparison}
-
-\appendix
-\section{Additional details/describe Appendix}
-\label{sec:appendix1}
+\subsection{LLM-based}
 
 \bibliography{custom}
 
