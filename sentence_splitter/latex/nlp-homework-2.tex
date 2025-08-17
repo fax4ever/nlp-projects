@@ -99,6 +99,9 @@ for every sequence we have:
  	\item \emph{output\_text}: here we group all the words that belong to the same sentence on different lines, numbered sequentially
  \end{itemize}
  
+ In the process also we add the spaces between the words, paying attention to
+ not introduce a space before a punctuation sign or after an apostrophe.
+ 
  This is not a prompt yet. To create the final prompts, we created dictionaries of roles (system / user / assistant) with contents (we called them conversations) and passed them to the LLM tokenizer in order to have them converted into the proper chat templates. 
  
  We used the Supervised Fine-Tuning (TRL SFT) Trainer to train the model.
@@ -216,6 +219,83 @@ The novel that seems to be the more difficult to split for all model is I Malavo
 Best result is usually achived in domain (as expected).
 
 \subsection{LLM-based}
+
+All the 4 LLM-based tested models provide the same output to the text 
+we passed to the prompt. The output text is reported on Appendix \ref{sec:appendix1}
+and looks totally correct. 
+
+Unfortunatelly, even the inference requires a GPU and also 
+you can usually use only one model on the same notebook run 
+also for inference.
+
+The models can allucinate. For instance, we experienced in some runs that 
+sometimes characters, in particular white spaces had been fabricate by the model: they were not present in the input text to split passed by the user.
+
+\subsection{Conclusions}
+
+The embedding base models are very efficient (they usually require a
+number of parameter at least 1 order magnitude less than the LLM-based ones).
+Also if a good base Italian model is chosen (for instance BERT ITA XXL)
+results are great both in domain and out of domain.
+
+The LLM-based ones also seem to provide good results in terms of quality
+of the results but they can allucinate. 
+in the input prompt, but they were present in the output: this is simply not possible
+using an embedding-based approach.
+Also they are much more heavy to train and to use at inference time.
+For instance if you cannot use different LLMs models in the same notebook,
+for memory reason using a commercial GPU. Furthermore,
+we had to use LoRA and the paramater quantization in order to train the models
+on a modest hardware.
+
+\appendix
+
+\section{LLM output Appendix}
+\label{sec:appendix1}
+
+The sentence splitting output returned by the LLM-based model is:
+
+\noindent 1. Non era un legno di lusso, ma un semplice pezzo da catasta, di quelli che d’inverno si mettono nelle stufe e nei caminetti per accendere il fuoco e per riscaldare le stanze.
+
+\noindent 2. Non so come andasse, ma il fatto gli è che un bel giorno questo pezzo di legno capitò nella bottega di un vecchio falegname, il quale aveva nome mastr’Antonio, se non che tutti lo chiamavano maestro Ciliegia, per via della punta del suo naso, che era sempre lustra e paonazza, come una ciliegia matura.
+
+\noindent 3. Appena maestro Ciliegia ebbe visto quel pezzo di legno, si rallegrò tutto; e dandosi una fregatina di mani per la contentezza, borbottò a mezza voce: "Questo legno è capitato a tempo; voglio servirmene per fare una gamba di tavolino."
+
+The Minerva-base model also returned the token \emph{<|eot\_id|>}
+at the very end.
+
+\section{Notebook Descriptions Appendix}
+\label{sec:appendix2}
+
+We have produced 4 notebooks:
+
+ \begin{itemize}
+	\item \textbf{sentence\_splitter\_embeddings}: To train an embedding-base
+	model.
+	\item Meta Llama 3.1 8B Instruct
+	\item Mistral 7B Instruct v0.3 bnb 4bit
+	\item Minerva 7B Instruct v1.0
+\end{itemize}
+
+Notice that the notebooks have been developed to be run on a JupiterLab
+environment: if you are trying to run on Google Colab , you should replace 
+\emph{os.environ['HF\_TOKEN']} with 
+\emph{userdata.get('HF\_TOKEN')}, and also you need to add the following line to the input:
+
+from google.colab import userdata
+
+Moreover, if you want to run the trainings part, you need to change 
+the Hugging Face repository (in the notebook \emph{fax4ever}),
+providing consistently your Hugging Face token.
+
+While you don't need to set the Hugging Face token to
+run the inference notebooks.
+
+\section{Models and Datasets Appendix}
+\label{sec:appendix3}
+
+All the fine tuned models and the datasets were published to Hugging Face 
+hub.
 
 \bibliography{custom}
 
