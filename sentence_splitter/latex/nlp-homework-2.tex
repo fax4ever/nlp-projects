@@ -239,7 +239,7 @@ Also if a good base Italian model is chosen (for instance BERT ITA XXL)
 results are great both in domain and out of domain.
 
 The LLM-based ones also seem to provide good results in terms of quality
-of the results but they can allucinate. 
+of the results but they can hallucinate. 
 in the input prompt, but they were present in the output: this is simply not possible
 using an embedding-based approach.
 Also they are much more heavy to train and to use at inference time.
@@ -261,11 +261,15 @@ on a modest hardware.
 
 The sentence splitting output returned by the LLM-based model is:
 
+{\fontfamily{qcr}\selectfont
+
 \noindent 1. Non era un legno di lusso, ma un semplice pezzo da catasta, di quelli che d’inverno si mettono nelle stufe e nei caminetti per accendere il fuoco e per riscaldare le stanze.
 
 \noindent 2. Non so come andasse, ma il fatto gli è che un bel giorno questo pezzo di legno capitò nella bottega di un vecchio falegname, il quale aveva nome mastr’Antonio, se non che tutti lo chiamavano maestro Ciliegia, per via della punta del suo naso, che era sempre lustra e paonazza, come una ciliegia matura.
 
 \noindent 3. Appena maestro Ciliegia ebbe visto quel pezzo di legno, si rallegrò tutto; e dandosi una fregatina di mani per la contentezza, borbottò a mezza voce: "Questo legno è capitato a tempo; voglio servirmene per fare una gamba di tavolino."
+
+}
 
 The Minerva-based and the Llama-based model also returned the token \emph{<|eot\_id|>}
 at the very end. While the Mistral-based model appeneded \emph{</s>} at the end.
@@ -274,22 +278,42 @@ The Quen3-based added \emph{<|im\_end|>} at the end.
 \section{Notebook Descriptions Appendix}
 \label{sec:appendix2}
 
+\subsection{Notebook  List}
+
 We have produced 4 notebooks:
 
  \begin{itemize}
-	\item \textbf{sentence\_splitter\_embeddings}: To train an embedding-base
+	\item \textbf{sentence\_splitter\_embeddings.ipynb}: it trains an embedding-based
 	model.
-	\item Meta Llama 3.1 8B Instruct
-	\item Mistral 7B Instruct v0.3 bnb 4bit
-	\item Minerva 7B Instruct v1.0
+	\item \textbf{sentence\_splitter\_generative.ipynb}: it trains a LLM-based model.
+	\item \textbf{sentence\_splitter\_out\_of\_domain\_eval.ipynb}: it performs the out of domain 
+	evaluations for (already deployed) embedding-based models.
+	\item \textbf{sentence\_splitter\_generative\_eval.ipynb}: it tests a single splitting on
+	LLM-based models.
 \end{itemize}
 
-Notice that the notebooks have been developed to be run on a JupiterLab
-environment: if you are trying to run on Google Colab , you should replace 
-\emph{os.environ['HF\_TOKEN']} with 
-\emph{userdata.get('HF\_TOKEN')}, and also you need to add the following line to the input:
+\subsection{Google Colab Execution}
 
-from google.colab import userdata
+The notebooks have been developed to be run on a \href{https://jupyterlab.readthedocs.io/en/latest/#}{JupiterLab}
+environment. 
+
+To run those on  Google Colab, you should replace:
+
+\begin{verbatim}
+	os.environ['HF_TOKEN']
+\end{verbatim}
+
+with
+
+\begin{verbatim}
+	userdata.get('HF_TOKEN')
+\end{verbatim}
+
+and also you need to add the following line to the input:
+
+\begin{verbatim}
+	from google.colab import userdata
+\end{verbatim}
 
 Moreover, if you want to run the trainings part, you need to change 
 the Hugging Face repository (in the notebook \emph{fax4ever}),
@@ -303,6 +327,70 @@ run the inference notebooks.
 
 All the fine tuned models and the datasets were published to Hugging Face 
 hub.
+
+\subsection{Embedding-based released models}
+
+ \begin{itemize}
+	\item \href{https://huggingface.co/fax4ever/bert-base-cased-sentence-splitter}{bert-base-cased-sentence-splitter}
+	\item \href{https://huggingface.co/fax4ever/ModernBERT-base-ita-sentence-splitter}{ModernBERT-base-ita-sentence-splitter}
+	\item \href{https://huggingface.co/fax4ever/bert-base-italian-xxl-cased-sentence-splitter}{bert-base-italian-xxl-cased-sentence-splitter}
+	\item \href{https://huggingface.co/fax4ever/xlm-roberta-base-sentence-splitter}{xlm-roberta-base-sentence-splitter}
+	\item \href{https://huggingface.co/fax4ever/xlm-roberta-large-sentence-splitter}{xlm-roberta-large-sentence-splitter}
+	\item \href{https://huggingface.co/fax4ever/electra-base-italian-xxl-cased-discriminator-sentence-splitter}{electra-base-italian-xxl-cased-discriminator-sentence-splitter}
+\end{itemize}
+
+\subsection{LLM-based released models}
+
+\begin{itemize}
+	\item 
+	\href{https://huggingface.co/fax4ever/qwen3-4b-unsloth-bnb-4bit-sentence-splitter}{qwen3-4b-unsloth-bnb-4bit-sentence-splitter}
+	\item 
+	\href{https://huggingface.co/fax4ever/meta-llama-3.1-8b-instruct-unsloth-bnb-4bit-sentence-splitter}{meta-llama-3.1-8b-instruct-unsloth-bnb-4bit-sentence-splitter}
+	\item \href{https://huggingface.co/fax4ever/mistral-7b-instruct-v0.3-bnb-4bit-sentence-splitter}{mistral-7b-instruct-v0.3-bnb-4bit-sentence-splitter}
+	\item \href{https://huggingface.co/fax4ever/Minerva-7B-instruct-v1.0-sentence-splitter}{Minerva-7B-instruct-v1.0-sentence-splitter}
+\end{itemize}
+
+\subsection{Datasets}
+
+The main Dataset to train the embedding-based models and LLM-based model are:
+
+\begin{itemize}
+	\item \href{https://huggingface.co/datasets/fax4ever/manzoni-192}{manzoni-192}
+	\item \href{https://huggingface.co/datasets/fax4ever/llm-manzoni-192}{llm-manzoni-192}
+\end{itemize}
+
+Those are strictly derived from the CSVs files that were provided to do the Homework.
+No other data then that was used to train the models.
+
+\section{Indeterminism Appendix}
+\label{sec:appendix3}
+
+We tried to make the runs as much deterministic as possible, but without affecting the
+performance.
+It means that some output derived from indeterministic algortithms may change with the executions.
+Making all determistic would have affected too much the performance.
+So, it means that if you run everything from scratch, you could find sligtly different results.
+
+For instance the second time we re-trained everything from scratch we got different results
+for the out of domain evaluations, see Table \ref{t3}.
+
+\begin{table}[]
+	\small
+	\caption{Out-Of-Domain Evaluation: Embedding-based (TAKE-2!)}
+	\begin{tabular}{lllll}
+		Models & Quara. & Pinocc. & Malav. & Cuore \\
+		BERT base cased & 0.9859      & 0.8854 & 0.7826        & 0.9364                 \\
+		ModernBERT ITA  & 0.9130     & 0.5603   & 0.6667   & 0.8144                 \\
+		BERT ITA XXL  & 0.9939     & 0.8774  & 0.9121     & 0.9486                 \\
+		XLM RoBERTa B & 0.3952      & 0.5426   & 0.2115     & 0.2424                 \\
+		XLM RoBERTa L & 0.5275       & 0.6618    & 0.3559   & 0.5               \\
+		Electra ITA XXL  & 0.9938      & 1.0   & 0.9348    & 0.9385            
+	\end{tabular}
+	\label{t3}
+\end{table}
+
+Anyway, we can confirm the same analysis we made on the take-1.
+That's the hard life of the data scientists, even in the Deep Learning era!
 
 \bibliography{custom}
 
