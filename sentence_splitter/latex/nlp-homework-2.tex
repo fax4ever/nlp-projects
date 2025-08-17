@@ -244,7 +244,13 @@ in the input prompt, but they were present in the output: this is simply not pos
 using an embedding-based approach.
 Also they are much more heavy to train and to use at inference time.
 For instance if you cannot use different LLMs models in the same notebook,
-for memory reason using a commercial GPU. Furthermore,
+for memory reason using a commercial GPU. 
+
+With the only exception of qwen3-4b-unsloth-bnb-4bit that takes 5 minutes
+to be trained the other take from 40 minutes to 1 hour to be trained,
+on a max memory GPU of 22.069 GB.
+
+Furthermore,
 we had to use LoRA and the paramater quantization in order to train the models
 on a modest hardware.
 
@@ -261,8 +267,9 @@ The sentence splitting output returned by the LLM-based model is:
 
 \noindent 3. Appena maestro Ciliegia ebbe visto quel pezzo di legno, si rallegrò tutto; e dandosi una fregatina di mani per la contentezza, borbottò a mezza voce: "Questo legno è capitato a tempo; voglio servirmene per fare una gamba di tavolino."
 
-The Minerva-base model also returned the token \emph{<|eot\_id|>}
-at the very end.
+The Minerva-based and the Llama-based model also returned the token \emph{<|eot\_id|>}
+at the very end. While the Mistral-based model appeneded \emph{</s>} at the end.
+The Quen3-based added \emph{<|im\_end|>} at the end.
 
 \section{Notebook Descriptions Appendix}
 \label{sec:appendix2}
