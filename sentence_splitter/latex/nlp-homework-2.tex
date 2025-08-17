@@ -158,7 +158,7 @@ We tested the in-domain novel (Quarantana) and 3 novels (Pinocchio, I Malavoglia
 \subsection{LLM-based}
 
 Results for LLM-based (generative)  models will be evaluated manually, simply taking an out of domain 
-text fragment from Cuore novel and pass it as input to the target test models.
+text fragment from Pinocchio novel and pass it as input to the target test models.
 
 \section{Results}
 
@@ -224,12 +224,13 @@ All the 4 LLM-based tested models provide the same output to the text
 we passed to the prompt. The output text is reported on Appendix \ref{sec:appendix1}
 and looks totally correct. 
 
-Unfortunatelly, even the inference requires a GPU and also 
-you can usually use only one model on the same notebook run 
-also for inference.
+Unfortunately, even the inference requires a GPU and also 
+you can usually use only one model on the same notebook run.
 
 The models can hallucinate. For instance, we experienced in some runs that 
-sometimes characters, in particular white spaces had been fabricated by the model: they were not present in the input text to split passed by the user.
+sometimes characters, in particular white spaces had been fabricated 
+out of thin air
+by the model: they were not present in the input text to split.
 
 \subsection{Conclusions}
 
@@ -238,13 +239,9 @@ number of parameter at least 1 order magnitude less than the LLM-based ones).
 Also if a good base Italian model is chosen (for instance BERT ITA XXL)
 results are great both in domain and out of domain.
 
-The LLM-based ones also seem to provide good results in terms of quality
-of the results but they can hallucinate. 
-in the input prompt, but they were present in the output: this is simply not possible
-using an embedding-based approach.
-Also they are much more heavy to train and to use at inference time.
-For instance if you cannot use different LLMs models in the same notebook,
-for memory reason using a commercial GPU. 
+The LLM-based ones also seem to provide good results in terms of quality, but they can hallucinate, while it is simply not possible using an embedding-based approach.
+
+Moreover, the latter are much more heavy to train and to use at inference time.
 
 With the only exception of qwen3-4b-unsloth-bnb-4bit that takes 5 minutes
 to be trained the other take from 40 minutes to 1 hour to be trained,
@@ -254,6 +251,9 @@ Furthermore,
 we had to use LoRA and the parameter quantization in order to train the models
 on a modest hardware.
 
+All in all, the team has thinks that using an embedding based model
+would be better the natural choice to address the sentence splitting use case.
+
 \appendix
 
 \section{LLM output Appendix}
@@ -261,13 +261,17 @@ on a modest hardware.
 
 The sentence splitting output returned by the LLM-based model is:
 
-{\fontfamily{qcr}\selectfont
+{\fontfamily{sffamily}\selectfont
+
+\vspace{3mm}
 
 \noindent 1. Non era un legno di lusso, ma un semplice pezzo da catasta, di quelli che d’inverno si mettono nelle stufe e nei caminetti per accendere il fuoco e per riscaldare le stanze.
 
 \noindent 2. Non so come andasse, ma il fatto gli è che un bel giorno questo pezzo di legno capitò nella bottega di un vecchio falegname, il quale aveva nome mastr’Antonio, se non che tutti lo chiamavano maestro Ciliegia, per via della punta del suo naso, che era sempre lustra e paonazza, come una ciliegia matura.
 
 \noindent 3. Appena maestro Ciliegia ebbe visto quel pezzo di legno, si rallegrò tutto; e dandosi una fregatina di mani per la contentezza, borbottò a mezza voce: "Questo legno è capitato a tempo; voglio servirmene per fare una gamba di tavolino."
+
+\vspace{3mm}
 
 }
 
