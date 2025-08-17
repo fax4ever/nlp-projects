@@ -46,7 +46,7 @@ According to \cite{redaelli-sprugnoli-2024-sentence} we can add to the list:
 	\item Multilinguality
 \end{itemize}
 
-Because a sentence splitting that works well for English may not work well to split another language.
+A sentence splitting approach that works well for English may not work well to split another language.
 
 In this project we implemented two types of models for sentence splitting, using an Italian corpus as train and validation set.
 The first kind is based on an embedding model, the second is based on a generative LLM.
@@ -112,7 +112,7 @@ The fine-tuned models are (as usual) pushed to the Hugging Face repository, so t
 
 \subsection{Embedding-based: Training Evaluation}
 
-The performance goal we set is to maximize the F1 score on the validation set. Our expectation is that with a good result on the
+The performance goal we set is to maximize the F1 score on the validation set. Our expectation is that a good result on the
 validation set can generalize nicely on the test set.
 
 For the embedding-based solution, we tested the following base models:
@@ -145,13 +145,13 @@ from the same century are used.
 The dataset has already the gold results annotated by the authors of the paper.
 
 We evaluated the f1 score of the predictions, having the annotated
-novels as ground true.
+novels as ground truth.
 
 We produced labels from both the annotated novels and 
 from predictions. For simplicity of the implementation,
-for this phase, we produces a label for each character, instead of a label for each token.
+for this phase, we produce a label for each character, instead of a label for each token.
 
-The golden-annotated novel rows were grouped in chunk of equal size of lines, to produce sequences.
+The golden-annotated novel rows were grouped in chunks of equal size of lines, to produce sequences.
 
 We tested the in-domain novel (Quarantana) and 3 novels (Pinocchio, I Malavoglia and Cuore) from different authors of the same period.
 
@@ -209,14 +209,14 @@ result reported in table \ref{t2}.
 According to our tests, multilingual base models (XLM RoBERTa base and large)
 got very bad results, even in the same domain (Quarantana).
 
-It seems to be better to use BERT base, even if it does not trained on Italian.
+It seems to be better to use BERT base, even if it is not trained on Italian.
 This base model, like ModernBERT ITA, works very good in domain (Quarantana) and
 decently out of domain (other novels).
 
 BERT ITA XXL and Electra ITA XXL got great results both in domain and out of domain.
 
-The novel that seems to be the more difficult to split for all model is I Malavoglia.
-Best result is usually achived in domain (as expected).
+The novel that seems to be the most difficult to split for all models is I Malavoglia.
+Best result is usually achieved in domain (as expected).
 
 \subsection{LLM-based}
 
@@ -228,8 +228,8 @@ Unfortunatelly, even the inference requires a GPU and also
 you can usually use only one model on the same notebook run 
 also for inference.
 
-The models can allucinate. For instance, we experienced in some runs that 
-sometimes characters, in particular white spaces had been fabricate by the model: they were not present in the input text to split passed by the user.
+The models can hallucinate. For instance, we experienced in some runs that 
+sometimes characters, in particular white spaces had been fabricated by the model: they were not present in the input text to split passed by the user.
 
 \subsection{Conclusions}
 
@@ -251,7 +251,7 @@ to be trained the other take from 40 minutes to 1 hour to be trained,
 on a max memory GPU of 22.069 GB.
 
 Furthermore,
-we had to use LoRA and the paramater quantization in order to train the models
+we had to use LoRA and the parameter quantization in order to train the models
 on a modest hardware.
 
 \appendix
@@ -272,7 +272,7 @@ The sentence splitting output returned by the LLM-based model is:
 }
 
 The Minerva-based and the Llama-based model also returned the token \emph{<|eot\_id|>}
-at the very end. While the Mistral-based model appeneded \emph{</s>} at the end.
+at the very end. While the Mistral-based model appended \emph{</s>} at the end.
 The Quen3-based added \emph{<|im\_end|>} at the end.
 
 \section{Notebook Descriptions Appendix}
@@ -365,11 +365,11 @@ No other data then that was used to train the models.
 \section{Indeterminism Appendix}
 \label{sec:appendix3}
 
-We tried to make the runs as much deterministic as possible, but without affecting the
+We tried to make the runs as deterministic as possible, but without affecting the
 performance.
-It means that some output derived from indeterministic algortithms may change with the executions.
-Making all determistic would have affected too much the performance.
-So, it means that if you run everything from scratch, you could find sligtly different results.
+It means that some output derived from indeterministic algorithms may change with the executions.
+Making all deterministic would have affected too much the performance.
+So, it means that if you run everything from scratch, you could find slightly different results.
 
 For instance the second time we re-trained everything from scratch we got different results
 for the out of domain evaluations, see Table \ref{t3}.
