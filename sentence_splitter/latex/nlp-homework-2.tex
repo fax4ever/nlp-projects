@@ -45,21 +45,19 @@ According to \cite{redaelli-sprugnoli-2024-sentence} we can add to the list:
 \begin{itemize}
 	\item Multilinguality
 \end{itemize}
-
-A sentence splitting approach that works well for English may not work well to split another language.
-
-In this project we implemented two types of models for sentence splitting, using an Italian corpus as train and validation set.
-The first kind is based on an embedding model, the second is based on a generative LLM.
+A sentence splitting approach that works well for English may not work well to split another language. \newline In this project we implemented two types of models for sentence splitting, using an Italian corpus as train and validation set.
+The first kind is based on embedding models, the second is based on generative LLMs.
 We aim to analyze and compare the two approaches. 
-We also plan to test the models out of the original domain of training, that is an annotated text from I Promessi Sposi (Quarantana) by Manzoni.
+We also plan to test the models out of the original domain of training. 
+The training model is a golden-annotated text from I Promessi Sposi (Quarantana) by Manzoni.
 
 \section{Methodology}
 
 \subsection{Embedding-based}
 
-We fine-tuned a pretrained embedding model using the train and validation datasets provided by the homework guide.
+We fine-tuned a series of pretrained embedding models using the train and validation datasets provided by the homework guide.
 
-The original dataset provides two large texts (one to use as train and the other as validation) together with the golden labels to mark the end of sentence (1) and all the rest of the words (0).
+The original dataset provides two large texts (one to use as train and the other as validation) along with the golden labels to mark the end of sentence (1) and all the rest of the words (0).
 
 In order to make the datasets suitable for training, we had to apply some transformations. 
 We needed to group words into sequences, and to tokenize words into tokens, aligning the golden labels consistently.
@@ -67,20 +65,12 @@ With the constraint that the number of tokens of each sequence must fit the max 
 for instance 512.
 
 We generated a dataset using sequences of 192 words each. Notice that the number of tokens for each sequence will be strictly greater,
-since for each word the tokenizer of the model will produce one or more tokens.
-
-Before using the datasets, we still need to align (as mentioned above) the labels to the tokens.
+since for each word the tokenizer of the model will produce one or more tokens. \newline Before using the datasets, we still need to align (as mentioned above) the labels to the tokens.
 The alignment strategy we applied consists of keeping 1 as the first token generated from a word
-having label 1, and using 0 for all the other cases.
-
-One aspect that we had to address was the fact that the label distribution is very unbalanced
-for this use case. Most of the labels are 0s, and few are 1s. We applied 2 different strategies.
-
-First, we set the \textbf{load\_best\_model\_at\_end} training argument to \textbf{true},
+having label 1, and using 0 for all the other cases. \newline One aspect that we had to address was the fact that the label distribution is very unbalanced
+for this use case. Most of the labels are 0s, and few are 1s. We applied 2 different strategies. \newline First, we set the \textbf{load\_best\_model\_at\_end} training argument to \textbf{true},
 using \textbf{metric\_for\_best\_model} set to F1. This implements early stopping based on F1,
-rather than on accuracy (which would be misleading for such an unbalanced dataset).
-
-Second, we overrode the loss function to weight misclassification of class 1 (end of sentence) 30× more than class 0. 
+rather than on accuracy (which would be misleading for such an unbalanced dataset). \newline Second, we overrode the loss function to weight misclassification of class 1 (end of sentence) 30× more than class 0. 
 This weighting factor was motivated by the label distribution (96.7\% class 0 vs 3.3\% class 1). 
 We implemented this using a custom weighted trainer. 
 
@@ -137,7 +127,7 @@ For the LLM-based solution, we tested the following base models:
 
 As we said, both test and validation set come from the same novel: \emph{I Promessi Sposi}. 
 
-\subsection{Embedding-based: Out of Domain Evaluation}
+\subsection{Out of Domain Evaluation: Eval Dataset}
 
 We designed experiments to test the same models on different authors.
 For this purpose, we planned to use the dataset from \cite{redaelli-sprugnoli-2024-sentence}, in which different authors
@@ -155,10 +145,11 @@ The golden-annotated novel rows were grouped in chunks of equal size of lines, t
 
 We tested the in-domain novel (Quarantana) and 3 novels (Pinocchio, I Malavoglia and Cuore) from different authors of the same period.
 
-\subsection{LLM-based}
+\subsection{Out of Domain Evaluation: Test Dataset}
 
-Results for LLM-based (generative)  models will be evaluated manually, simply taking an out of domain 
-text fragment from Pinocchio novel and pass it as input to the target test models.
+We'll try the test set on the two best embedding-bases models
+(according to the eval dataset results), Italian BERT XXL and Italian ELECTRA and
+one LLM-based model (Minerva 7B Instruct v1.0).
 
 \section{Results}
 
@@ -186,11 +177,11 @@ is from the same author (Manzoni) and even also the same novel
 (I Promessi Sposi).
 On training, the F1s on the validation set look very good.
 
-\subsection{Embedding-based: Out of Domain Evaluation}
+\subsection{Out of Domain Evaluation: Eval Dataset}
 
 \begin{table}[]
 	\small
-	\caption{Out-Of-Domain Evaluation: Embedding-based}
+	\caption{Out-Of-Domain Evaluation: Eval Dataset}
 	\begin{tabular}{lllll}
 		Models & Quara. & Pinocc. & Malav. & Cuore \\
 		BERT base cased & 0.9922      & 0.8058 & 0.7304        & 0.8757                  \\
@@ -218,21 +209,77 @@ BERT ITA XXL and Electra ITA XXL got great results both in domain and out of dom
 The novel that seems to be the most difficult to split for all models is I Malavoglia.
 Best result is usually achieved in domain (as expected).
 
-\subsection{LLM-based}
+\subsection{Out of Domain Evaluation: Test Dataset}
 
-All the 4 LLM-based tested models provide the same output to the text 
-we passed to the prompt. The output text is reported on Appendix \ref{sec:appendix1}
-and looks totally correct. 
+A special focus was given to the evaluation of the performance on the test set.
+Not to make any design choice but to provide a final evaluation of the 
+trained models (seeing those as immutable instances).
 
-Unfortunately, even the inference requires a GPU and also 
-you can usually use only one model on the same notebook run.
+\begin{table}[]
+	\small
+	\caption{Out-Of-Domain Evaluation: Test Dataset}
+	\begin{tabular}{lllll}
+		Models & Type & F1 \\
+		BERT ITA XXL & embedding-based & 0.8770 \\
+		Electra ITA XXL & embedding-based & 0.8994 \\
+		Minerva 7B Instruct v1.0 B & LLM-based & 0.7445
+	\end{tabular}
+	\label{t3}
+\end{table}
 
-The models can hallucinate. For instance, we experienced in some runs that 
-sometimes characters, in particular white spaces had been fabricated 
-out of thin air
-by the model: they were not present in the input text to split.
+From the F1 score we computed, see table \ref{t3},
+embedding-based models (carefoully choosen) perform better
+than large LLM-based model.
 
-\subsection{Conclusions}
+Also LLM-based models have a series of further issues:
+
+\begin{itemize}
+ 	\item they are one order of magnitude slower than embedding-based
+	\item we cannot use CPU hardware even for inference
+	\item they can hallucinate
+\end{itemize}
+
+\subsection{What are the recurrent errors committed by the models?}
+
+As inference notebooks output we have the three cvs files:
+
+\begin{itemize}
+ 	\item Lost\_in\_language\_recognition-hw2\_split-bert-base-italian-xxl-cased.csv
+	\item Lost\_in\_language\_recognition-hw2\_split-electra-base-italian-xxl-cased.csv
+	\item Lost\_in\_language\_recognition-hw2\_split-Minerva-7B-based.csv
+\end{itemize}
+
+Thanks to these files, we can analyze the missclassification of the models.
+
+Looking at the errors it seems that the models tend most of the
+time to split the sentence where it is not necessary.
+
+For instance, "C'era una volta…" or "C'era una volta… -" has been misclassifed by all our
+trained models as a sentence.
+
+A rare case in which the models do not recognize a new sentence, is:
+
+"guardò dentro un armadio che stava sempre chiuso, e nessuno;"
+
+All the models classified `;` as 0. Other cases are still about
+the presence of the sign `;`.
+
+Looking at the log of the `sentence\_splitter\_out\_of\_domain\_test\_generative.ipynb'
+we can see at some few hallucinations (not possible with embedding-bases models).
+
+Some words have been transformed by the model, for instance 
+`messe` has been reported in the output as `mise` or `trasfigurito`
+in `trasfigurato` or `imprestezziti` in `impresciuttiti`. We can say that the model may use
+a more-common-used word in the output (violating the fact that
+the output only should refer to the input words!)
+
+One allucination is about portion of the sequence
+are not present (they were not reported in the output),
+but this fenoumenon seems to be quite rare.
+A word (`Sì! –`) in the input has been completed 
+by the model to produce the output.
+
+\section{Conclusions}
 
 The embedding base models are very efficient (they usually require a
 number of parameter at least 1 order magnitude less than the LLM-based ones).
@@ -254,54 +301,37 @@ on a modest hardware.
 All in all, the team has thinks that using an embedding based model
 would be better the natural choice to address the sentence splitting use case.
 
+The AI seems to follow the common software engineer rule:
+there is no common receip for everthing:
+LLMs work grate for a lot of use cases, but not in
+all the case.
+
 \appendix
 
-\section{LLM output Appendix}
-\label{sec:appendix1}
-
-The sentence splitting output returned by the LLM-based model is:
-
-{\fontfamily{sffamily}\selectfont
-
-\vspace{3mm}
-
-\noindent 1. Non era un legno di lusso, ma un semplice pezzo da catasta, di quelli che d’inverno si mettono nelle stufe e nei caminetti per accendere il fuoco e per riscaldare le stanze.
-
-\noindent 2. Non so come andasse, ma il fatto gli è che un bel giorno questo pezzo di legno capitò nella bottega di un vecchio falegname, il quale aveva nome mastr’Antonio, se non che tutti lo chiamavano maestro Ciliegia, per via della punta del suo naso, che era sempre lustra e paonazza, come una ciliegia matura.
-
-\noindent 3. Appena maestro Ciliegia ebbe visto quel pezzo di legno, si rallegrò tutto; e dandosi una fregatina di mani per la contentezza, borbottò a mezza voce: "Questo legno è capitato a tempo; voglio servirmene per fare una gamba di tavolino."
-
-\vspace{3mm}
-
-}
-
-The Minerva-based and the Llama-based model also returned the token \emph{<|eot\_id|>}
-at the very end. While the Mistral-based model appended \emph{</s>} at the end.
-The Quen3-based added \emph{<|im\_end|>} at the end.
-
 \section{Notebook Descriptions Appendix}
-\label{sec:appendix2}
+\label{sec:appendix1}
 
 \subsection{Notebook  List}
 
-We have produced 4 notebooks:
+We have produced 5 notebooks:
 
- \begin{itemize}
-	\item \textbf{sentence\_splitter\_embeddings.ipynb}: it trains an embedding-based
-	model.
-	\item \textbf{sentence\_splitter\_generative.ipynb}: it trains a LLM-based model.
-	\item \textbf{sentence\_splitter\_out\_of\_domain\_eval.ipynb}: it performs the out of domain 
-	evaluations for (already deployed) embedding-based models.
-	\item \textbf{sentence\_splitter\_generative\_eval.ipynb}: it tests a single splitting on
-	LLM-based models.
-\end{itemize}
+\noindent \textbf{sentence\_splitter\_discriminative\_training.ipynb}: it trains several embedding-based
+	models.
+    
+\noindent  \textbf{sentence\_splitter\_generative\_training.ipynb}: it trains some LLM-based models.
+
+\noindent \textbf{ss\_out\_of\_domain\_eval\_discriminative.ipynb}: it performs the out of domain evaluations for (already deployed) embedding-based models on evaluation dataset.
+    
+\noindent \textbf{ss\_out\_of\_domain\_test\_discriminative.ipynb}: it performs the out of domain evaluations for (already deployed) embedding-based models on test dataset.
+
+\noindent \textbf{ss\_out\_of\_domain\_test\_generative.ipynb}: it performs the out of domain evaluations for (already deployed) generative models on test dataset.
 
 \subsection{Google Colab Execution}
 
 The notebooks have been developed to be run on a \href{https://jupyterlab.readthedocs.io/en/latest/#}{JupiterLab}
 environment. 
 
-To run those on  Google Colab, you should replace:
+To run those on Google Colab, you should replace:
 
 \begin{verbatim}
 	os.environ['HF_TOKEN']
@@ -327,7 +357,7 @@ While you don't need to set the Hugging Face token to
 run the inference notebooks.
 
 \section{Models and Datasets Appendix}
-\label{sec:appendix3}
+\label{sec:appendix2}
 
 All the fine tuned models and the datasets were published to Hugging Face 
 hub.
@@ -335,12 +365,12 @@ hub.
 \subsection{Embedding-based released models}
 
  \begin{itemize}
-	\item \href{https://huggingface.co/fax4ever/bert-base-cased-sentence-splitter}{bert-base-cased-sentence-splitter}
-	\item \href{https://huggingface.co/fax4ever/ModernBERT-base-ita-sentence-splitter}{ModernBERT-base-ita-sentence-splitter}
-	\item \href{https://huggingface.co/fax4ever/bert-base-italian-xxl-cased-sentence-splitter}{bert-base-italian-xxl-cased-sentence-splitter}
-	\item \href{https://huggingface.co/fax4ever/xlm-roberta-base-sentence-splitter}{xlm-roberta-base-sentence-splitter}
-	\item \href{https://huggingface.co/fax4ever/xlm-roberta-large-sentence-splitter}{xlm-roberta-large-sentence-splitter}
-	\item \href{https://huggingface.co/fax4ever/electra-base-italian-xxl-cased-discriminator-sentence-splitter}{electra-base-italian-xxl-cased-discriminator-sentence-splitter}
+ \item \href{https://huggingface.co/fax4ever/bert-base-cased-sentence-splitter}{bert-base-cased-sentence-splitter}
+ \item \href{https://huggingface.co/fax4ever/ModernBERT-base-ita-sentence-splitter}{ModernBERT-base-ita-sentence-splitter}
+ \item \href{https://huggingface.co/fax4ever/bert-base-italian-xxl-cased-sentence-splitter}{bert-base-italian-xxl-cased-sentence-splitter}
+ \item \href{https://huggingface.co/fax4ever/xlm-roberta-base-sentence-splitter}{xlm-roberta-base-sentence-splitter}
+ \item \href{https://huggingface.co/fax4ever/xlm-roberta-large-sentence-splitter}{xlm-roberta-large-sentence-splitter}
+ \item \href{https://huggingface.co/fax4ever/electra-base-italian-xxl-cased-discriminator-sentence-splitter}{electra-base-italian-xxl-cased-discriminator-sentence-splitter}
 \end{itemize}
 
 \subsection{LLM-based released models}
@@ -361,6 +391,8 @@ The main Dataset to train the embedding-based models and LLM-based model are:
 \begin{itemize}
 	\item \href{https://huggingface.co/datasets/fax4ever/manzoni-192}{manzoni-192}
 	\item \href{https://huggingface.co/datasets/fax4ever/llm-manzoni-192}{llm-manzoni-192}
+    \item \href{https://huggingface.co/datasets/fax4ever/sentence-splitter-ood-192}{sentence-splitter-ood-192}
+    \item \href{https://huggingface.co/datasets/fax4ever/sentence-splitter-ood-128}{sentence-splitter-ood-128}
 \end{itemize}
 
 Those are strictly derived from the CSVs files that were provided to do the Homework.
@@ -390,7 +422,7 @@ for the out of domain evaluations, see Table \ref{t3}.
 		XLM RoBERTa L & 0.5275       & 0.6618    & 0.3559   & 0.5               \\
 		Electra ITA XXL  & 0.9938      & 1.0   & 0.9348    & 0.9385            
 	\end{tabular}
-	\label{t3}
+	\label{t4}
 \end{table}
 
 Anyway, we can confirm the same analysis we made on the take-1.
