@@ -50,5 +50,8 @@ def test_minerva_aligned_sentences(minerva_output, words):
 
 def test_minerva_aligned_labels(minerva_output, words, golden_labels):
     minerva_labels = MinervaLabels(minerva_output, words)
-    aligned_labels = minerva_labels.aligned_labels()
-    assert minerva_labels is not None
+    aligned_labels = minerva_labels.aligned_labels(golden_labels)
+
+    print(aligned_labels)
+    print(golden_labels)
+    assert aligned_labels is not None

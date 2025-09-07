@@ -6,7 +6,7 @@ class MinervaLabels:
     self.minerva_output = minerva_output
     self.sentences = self._create_sentences()
     self.aligned_sentences = self._aligned_sentences()
-    self.check_alinged_sentences()
+    self._check_alinged_sentences() # Sanity check
 
   def _create_sentences(self):
     import re
@@ -32,23 +32,30 @@ class MinervaLabels:
     else:
       raise ValueError(f"Sentence {sentence} not found in {self.words_joined}")
 
-  def check_alinged_sentences(self):
+  def _check_alinged_sentences(self):
     aligned_join = "".join(self.aligned_sentences)
     if not aligned_join == self.words_joined:
       raise ValueError(f"Aligned sentences {self.aligned_sentences} do not match words {self.words_joined}")
 
-  def aligned_labels(self):
-    """
-    Align the extracted sentences with the given tokens to produce labels.
-    Returns a list where 1 indicates the end of a sentence (sentence boundary).
-    """
-    # Initialize all labels to 0
+  def aligned_labels(self, golden_labels):
     labels = [0] * len(self.words)
-    
+
     index = 0
-    for sentence in self.sentences:
+    split_indexes = set()
+    for sentence in self.aligned_sentences:
       length = len(sentence)
       index += length
-      # labels[index - 1] = 1
+      split_indexes.add(index)
+    
+    index = 0
+    for i, word in enumerate(self.words):
+      length = len(word)
+      index += length
+      if index in split_indexes:
+        labels[i] = 1
+
+    # The last word can be a 1 or a 0,
+    # the model is not asked to predict the last word, so we use the golden labels
+    labels[-1] = golden_labels[-1]
     
     return labels
