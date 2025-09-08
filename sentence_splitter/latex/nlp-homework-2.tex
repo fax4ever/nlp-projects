@@ -13,9 +13,10 @@
 \usepackage{numprint}
 \usepackage{listings}
 \usepackage{natbib}
-\bibliographystyle{unsrtnat}
+\usepackage{hyphenat}
+%\bibliographystyle{unsrtnat}%
 
-\title{%
+\title{
 	Sentence Splitter\\
 	\large Multilingual Natural Language Processing \\
 	Homework 2}
@@ -33,21 +34,16 @@ Della Porta Nicolò \\
 \section{Introduction}
 
 Quoting \cite{redaelli-sprugnoli-2024-sentence} "Sentence splitting, that is the segmentation of the raw input text into sentences, is a fundamental step in text processing".  According to \cite{frohmann2024segmenttextuniversalapproach} the main challenges are:
-
 \begin{itemize}
 	\item Robustness to missing punctuation
 	\item Effective adaptability to new domains
 	\item High efficiency
 \end{itemize}
-
 According to \cite{redaelli-sprugnoli-2024-sentence} we can add to the list:
-
 \begin{itemize}
 	\item Multilinguality
 \end{itemize}
-A sentence splitting approach that works well for English may not work well for splitting text in another language.
-
-In this project we implemented two types of models for sentence splitting, using an Italian corpus as train and validation set.
+A sentence splitting approach that works well for English may not work well for splitting text in another language. \newline In this project we implemented two types of models for sentence splitting, using an Italian corpus as train and validation set.
 The first kind is based on embedding models, the second is based on generative LLMs.
 We aim to analyze and compare the two approaches. 
 We also plan to test the models out of the original domain of training. 
@@ -56,69 +52,26 @@ The training data consists of golden-annotated text from I Promessi Sposi (Quara
 \section{Methodology}
 
 \subsection{Embedding-based}
-
-We fine-tuned a series of pretrained embedding models using the train and validation datasets provided by the homework guide.
-
-The original dataset provides two large texts (one to use as train and the other as validation) along with the golden labels to mark the end of sentence (1) and all the rest of the words (0).
-
-In order to make the datasets suitable for training, we had to apply some transformations. 
-We needed to group words into sequences, and to tokenize words into tokens, aligning the golden labels consistently.
-With the constraint that the number of tokens of each sequence must fit the max length of the embedding models,
-for instance 512.
-
-We generated a dataset using sequences of 192 words each. Notice that the number of tokens for each sequence will be strictly greater,
-since for each word the tokenizer of the model will produce one or more tokens.
-
-Before using the datasets, we still need to align (as mentioned above) the labels to the tokens.
-The alignment strategy we applied consists of keeping 1 as the first token generated from a word
-having label 1, and using 0 for all the other cases.
-
-One aspect that we had to address was the fact that the label distribution is very unbalanced
-for this use case. Most of the labels are 0s, and few are 1s. We applied 2 different strategies.
-
-First, we set the \textbf{load\_best\_model\_at\_end} training argument to \textbf{true},
-using \textbf{metric\_for\_best\_model} set to F1. This implements early stopping based on F1,
-rather than on accuracy (which would be misleading for such an unbalanced dataset).
-
-Second, we overrode the loss function to weight misclassification of class 1 (end of sentence) 30× more than class 0.
-This weighting factor was motivated by the label distribution (96.7\% class 0 vs 3.3\% class 1). 
-We implemented this using a custom weighted trainer. 
-
+We fine-tuned a series of pretrained embedding models using the train and validation datasets provided by the homework guide. \newline The original dataset provides two large texts (one to use as train and the other as validation) along with the golden labels to mark the end of sentence (1) and all the rest of the words (0). \newline In order to make the datasets suitable for training, we had to apply some transformations. \newline We needed to group words into sequences, and to tokenize words into tokens, aligning the golden labels consistently. \newline With the constraint that the number of tokens of each sequence must fit the max length of the embedding models, for instance 512. \newline We generated a dataset using sequences of 192 words each. Notice that the number of tokens for each sequence will be strictly greater, since for each word the tokenizer of the model will produce one or more tokens. \newline Before using the datasets, we still need to align (as mentioned above) the labels to the tokens. \newline The alignment strategy we applied consists of keeping 1 as the first token generated from a word having label 1, and using 0 for all the other cases. \newline One aspect that we had to address was the fact that the label distribution is very unbalanced for this use case. Most of the labels are 0s, and few are 1s. We applied 2 different strategies:
+\begin{enumerate}
+    \item first, we set the \textbf{load\_best\_model\_at\_end} training argument to \textbf{true}, using \textbf{metric\_for\_best\_model} set to F1. This implements early stopping based on F1, rather than on accuracy (which would be misleading for such an unbalanced dataset).
+    \item Second, we overrode the loss function to weight misclassification of class 1 (end of sentence) 30× more than class 0. This weighting factor was motivated by the label distribution (96.7\% class 0 vs 3.3\% class 1). We implemented this using a custom weighted trainer. 
+\end{enumerate}
 During inference, we don't need to align the labels, since the labels are generated by the model.
 
 \subsection{LLM-based}
-
-Fine-tuning LLMs is often prohibitive on modest hardware, such as a single GPU with 16 GB or 24 GB RAM. Therefore, we applied two techniques to reduce the memory requirements and training time: LoRA (Low-Rank Adaptation) and parameter quantization.
-
-LoRA works by freezing the original model weights and introducing trainable low-rank decomposition matrices, significantly reducing the number of trainable parameters. We used 4-bit quantization (BNB-4bit) to further reduce memory usage by representing model weights with lower precision while maintaining performance.
-
-A special focus was given to creating good prompts for both the training and inference phases.
-We first generated new datasets from the ones we used for the embedding-based solution, in which 
-for every sequence we have:
-
+Fine-tuning LLMs is often prohibitive on modest hardware, such as a single GPU with 16 GB or 24 GB RAM. Therefore, we applied two techniques to reduce the memory requirements and training time: LoRA (Low-Rank Adaptation) and parameter quantization. \newline LoRA works by freezing the original model weights and introducing trainable low-rank decomposition matrices, significantly reducing the number of trainable parameters. We used 4-bit quantization (BNB-4bit) to further reduce memory usage by representing model weights with lower precision while maintaining performance. \newline A special focus was given to creating good prompts for both the training and inference phases. \newline We first generated new datasets from the ones we used for the embedding-based solution, in which for every sequence we have:
  \begin{itemize}
  	\item \emph{input\_text}: here we simply concatenate all words of the sequence into a single text
  	\item \emph{output\_text}: here we group all the words that belong to the same sentence on different lines, numbered sequentially
  \end{itemize}
- 
  In the process also we add the spaces between the words, paying attention to
- not introduce a space before a punctuation sign or after an apostrophe.
- 
- This is not a prompt yet. To create the final prompts, we created dictionaries of roles (system / user / assistant) with contents (we called them conversations) and passed them to the LLM tokenizer in order to have them converted into the proper chat templates. 
- 
- We used the Supervised Fine-Tuning (TRL SFT) Trainer to train the model.
-
-The fine-tuned models are (as usual) pushed to the Hugging Face repository, so that they can be used for inference from anywhere.
+ not introduce a space before a punctuation sign or after an apostrophe. \newline This is not a prompt yet. To create the final prompts, we created dictionaries of roles (system / user / assistant) with contents (we called them conversations) and passed them to the LLM tokenizer in order to have them converted into the proper chat templates. \newline We used the Supervised Fine-Tuning (TRL SFT) Trainer to train the model. \newline The fine-tuned models are (as usual) pushed to the Hugging Face repository, so that they can be used for inference from anywhere.
 
 \section{Experiments}
 
 \subsection{Embedding-based: Training Evaluation}
-
-The performance goal we set is to maximize the F1 score on the validation set. Our expectation is that a good result on the
-validation set can generalize nicely on the test set.
-
-For the embedding-based solution, we tested the following base models:
-
+The performance goal we set is to maximize the F1 score on the validation set. Our expectation is that a good result on the validation set can generalize nicely on the test set. \newline For the embedding-based solution, we tested the following base models:
  \begin{itemize}
  	\item BERT base cased
 	\item ModernBERT-base-ita (Dec 2024)
@@ -127,46 +80,26 @@ For the embedding-based solution, we tested the following base models:
 	\item XLM-RoBERTa large
 	\item Italian ELECTRA
 \end{itemize}
-
 For the LLM-based solution, we tested the following base models:
-
  \begin{itemize}
  	\item Qwen3 4B
 	\item Meta Llama 3.1 8B Instruct
 	\item Mistral 7B Instruct v0.3 bnb 4bit
 	\item Minerva 7B Instruct v1.0
 \end{itemize}
-
 As we said, both test and validation set come from the same novel: \emph{I Promessi Sposi}. 
 
 \subsection{Out of Domain Evaluation: Eval Dataset}
-
 We designed experiments to test the same models on different authors.
-For this purpose, we planned to use the dataset from \cite{redaelli-sprugnoli-2024-sentence}, in which different authors
-from the same century are used.
-The dataset has already the gold results annotated by the authors of the paper.
-
-We evaluated the f1 score of the predictions, having the annotated
-novels as ground truth.
-
-We produced labels from both the annotated novels and 
-from predictions. For simplicity of the implementation,
-for this phase, we produce a label for each character, instead of a label for each token.
-
-The golden-annotated novel rows were grouped in chunks of equal size of lines, to produce sequences.
-
-We tested the in-domain novel (Quarantana) and 3 novels (Pinocchio, I Malavoglia and Cuore) from different authors of the same period.
+For this purpose, we planned to use the dataset from \cite{redaelli-sprugnoli-2024-sentence}, in which different authors from the same century are used. \newline The dataset has already the gold results annotated by the authors of the paper. \newline We evaluated the f1 score of the predictions, having the annotated
+novels as ground truth. \newline We produced labels from both the annotated novels and from predictions. For simplicity of the implementation, for this phase, we produce a label for each character, instead of a label for each token. \newline The golden-annotated novel rows were grouped in chunks of equal size of lines, to produce sequences. \newline We tested the in-domain novel (Quarantana) and 3 novels (Pinocchio, I Malavoglia and Cuore) from different authors of the same period.
 
 \subsection{Out of Domain Evaluation: Test Dataset}
-
-We'll try the test set on the two best embedding-based models
-(according to the eval dataset results), Italian BERT XXL and Italian ELECTRA and
-one LLM-based model (Minerva 7B Instruct v1.0).
+We'll try the test set on the two best embedding-based models (according to the eval dataset results), Italian BERT XXL and Italian ELECTRA and one LLM-based model (Minerva 7B Instruct v1.0).
 
 \section{Results}
 
 \subsection{Embedding-based: Training Evaluation}
-
 \begin{table}[]
 	\small
 	\caption{Embedding-based Models: Best Epoch Performance on Validation Set}
@@ -181,13 +114,7 @@ one LLM-based model (Minerva 7B Instruct v1.0).
 	\end{tabular}
 	\label{t1}
 \end{table}
-
-Table \ref{t1} reports the F1 scores and the losses on validation set 
-for the best-F1 epoch, training the network with 30 epochs.
-This is of course an in-domain evaluation, since the validation set
-is from the same author (Manzoni) and even also the same novel
-(I Promessi Sposi).
-On training, the F1s on the validation set look very good.
+Table \ref{t1} reports the F1 scores and the losses on validation set for the best-F1 epoch, training the network with 30 epochs. \newline This is of course an in-domain evaluation, since the validation set is from the same author (Manzoni) and even also the same novel (I Promessi Sposi). \newline On training, the F1s on the validation set look very good.
 
 \subsection{Out of Domain Evaluation: Eval Dataset}
 
@@ -205,33 +132,13 @@ On training, the F1s on the validation set look very good.
 	\end{tabular}
 	\label{t2}
 \end{table}
-
 When we evaluate the same models on different novels we got the
-result reported in table \ref{t2}.
-
-According to our tests, multilingual models (XLM-RoBERTa base and large) performed poorly, even in the same domain (Quarantana).
-This poor performance might be attributed to the multilingual models' distributed attention across many languages,
-making them less effective for language-specific tasks compared to monolingual or Italian-specific models.
-
-Interestingly, BERT base (not specifically trained on Italian) outperformed the multilingual models,
-suggesting that the general language understanding capabilities of BERT transfer better to Italian sentence splitting than the multilingual approach.
-This base model, like ModernBERT ITA, works very well in domain (Quarantana) and
-decently out of domain (other novels).
-
-BERT ITA XXL and Electra ITA XXL got great results both in domain and out of domain.
-
-Among the out-of-domain novels, I Malavoglia appears to be the most challenging for sentence splitting across all models.
-This could be due to Verga's distinctive writing style, which includes frequent use of dialogue and regional expressions that may differ significantly from Manzoni's more formal narrative style used in training.
-
-As expected, the best results are consistently achieved on the in-domain novel (Quarantana),
-demonstrating the importance of domain similarity for optimal performance.
+result reported in table \ref{t2}. \newline According to our tests, multilingual models (XLM-RoBERTa base and large) performed poorly, even in the same domain (Quarantana). \newline This poor performance might be attributed to the multilingual models' distributed attention across many languages, making them less effective for language-specific tasks compared to monolingual or Italian-specific models. \newline Interestingly, BERT base (not specifically trained on Italian) outperformed the multilingual models, suggesting that the general language understanding capabilities of BERT transfer better to Italian sentence splitting than the multilingual approach. \newline This base model, like ModernBERT ITA, works very well in domain (Quarantana) and decently out of domain (other novels). \newline BERT ITA XXL and Electra ITA XXL got great results both in domain and out of domain. \newline Among the out-of-domain novels, I Malavoglia appears to be the most challenging for sentence splitting across all models. \newline This could be due to Verga's distinctive writing style, which includes frequent use of dialogue and regional expressions that may differ significantly from Manzoni's more formal narrative style used in training. \newline As expected, the best results are consistently achieved on the in-domain novel (Quarantana), demonstrating the importance of domain similarity for optimal performance.
 
 \subsection{Out of Domain Evaluation: Test Dataset}
-
 A special focus was given to the evaluation of the performance on the test set.
 Not to make any design choice but to provide a final evaluation of the 
 trained models (seeing those as immutable instances).
-
 \begin{table}[]
 	\small
 	\caption{Out-Of-Domain Evaluation: Test Dataset}
@@ -243,12 +150,7 @@ trained models (seeing those as immutable instances).
 	\end{tabular}
 	\label{t3}
 \end{table}
-
-From the F1 scores we computed (see table \ref{t3}),
-carefully chosen embedding-based models consistently outperform the LLM-based approach.
-The Italian ELECTRA model achieved the highest F1 score of 0.8994, followed closely by Italian BERT XXL at 0.8770,
-while the Minerva 7B model reached 0.7445.
-
+From the F1 scores we computed (see table \ref{t3}), carefully chosen embedding-based models consistently outperform the LLM-based approach. \newline The Italian ELECTRA model achieved the highest F1 score of 0.8994, followed closely by Italian BERT XXL at 0.8770, while the Minerva 7B model reached 0.7445. \newline
 Furthermore, LLM-based models have a series of further issues:
 
 \begin{itemize}
@@ -258,62 +160,30 @@ Furthermore, LLM-based models have a series of further issues:
 \end{itemize}
 
 \subsection{What are the recurrent errors committed by the models?}
-
 As inference notebooks output we have the three cvs files:
-
 \begin{itemize}
  	\item Lost\_in\_language\_recognition-hw2\_split-bert-base-italian-xxl-cased.csv
 	\item Lost\_in\_language\_recognition-hw2\_split-electra-base-italian-xxl-cased.csv
 	\item Lost\_in\_language\_recognition-hw2\_split-Minerva-7B-based.csv
 \end{itemize}
-
-Thanks to these files, we can analyze the missclassification of the models.
-
-Looking at the errors it seems that the models tend most of the
-time to split the sentence where it is not necessary.
-
-For instance, "C'era una volta…" or "C'era una volta… -" has been misclassifed by all our
-trained models as a sentence.
-
-A rare case in which the models do not recognize a new sentence, is:
-
-"guardò dentro un armadio che stava sempre chiuso, e nessuno;"
-
-All the models classified `;` as 0. Other cases are still about
-the presence of the sign `;`.
-
-Looking at the log of the `sentence\_splitter\_out\_of\_domain\_test\_generative.ipynb'
-we can see a few hallucinations (not possible with embedding-based models).
-
-Some words have been transformed by the model, for instance 
-`messe` has been reported in the output as `mise` or `trasfigurito`
-in `trasfigurato` or `imprestezziti` in `impresciuttiti`. We can say that the model may use
-a more-common-used word in the output (violating the fact that
-the output only should refer to the input words!)
-
-One allucination is about portion of the sequence
-are not present (they were not reported in the output),
-but this fenoumenon seems to be quite rare.
-A word (`Sì! –`) in the input has been completed forgotten
-by the model to produce the output.
+Thanks to these files, we can analyze the missclassification of the models. \newline Looking at the errors it seems that the models tend most of the time to split the sentence where it is not necessary. \newline For instance, "C'era una volta…" or "C'era una volta… -" has been misclassifed by all our trained models as a sentence. \newpage
+A rare case in which the models do not recognize a new sentence, is: 
+\begin{itemize}
+    \item \texttt{"guardò dentro un armadio che stava sempre
+chiuso, e nessuno;"}
+\end{itemize}
+All the models classified `;` as 0. \newline Other cases are still about
+the presence of the sign `;`. \newline Looking at the log of the `sentence\_splitter\_out\_of\_domain\_test\_generative.ipynb', we can see a few hallucinations (not possible with embedding-based models). \newline In the output it can be seen how some words have been transformed by the model, for instance:
+\begin{itemize}
+    \item \texttt{messe} $\rightarrow$ \texttt{mise}
+    \item \texttt{trasfigurito} $\rightarrow$ \texttt{trasfigurato}
+    \item \texttt{imprestezziti} $\rightarrow$ \texttt{impresciuttiti}.
+\end{itemize} 
+We can say that the model may use a more-common-used word in the output (violating the fact that the output should only refer to the input words!) \newline One allucination is about portion of the sequence are not present (they were not reported in the output), but this phenomenon seems to be quite rare. \newline A word (`Sì! –`) in the input has been completed forgotten by the model to produce the output.
 
 \section{Conclusions}
-
-The embedding-based models demonstrate superior efficiency, requiring at least one order of magnitude fewer parameters than LLM-based approaches. When a well-suited Italian model is chosen (such as BERT ITA XXL or Italian ELECTRA), results are excellent both in-domain and out-of-domain, with F1 scores consistently above 0.87 on the test set.
-
-The LLM-based approaches also provide reasonable results in terms of quality, but they suffer from hallucination issues, which are impossible with embedding-based approaches due to their discriminative nature.
-
-Moreover, LLMs are significantly more resource-intensive to train and deploy, requiring specialized hardware even for inference.
-
-With the only exception of qwen3-4b-unsloth-bnb-4bit that takes 5 minutes
-to be trained the other take from 40 minutes to 1 hour to be trained,
-on a max memory GPU of 22.069 GB.
-
-Moreover, we had to use LoRA and parameter quantization in order to train the models on modest hardware.
-
-All in all, the team thinks that using an embedding-based model would be the natural choice to address the sentence splitting use case.
-
-This follows the common software engineering principle: there is no universal solution for everything. LLMs work great for many use cases, but not in all cases.
+The embedding-based models demonstrate superior efficiency, requiring at least one order of magnitude fewer parameters than LLM-based approaches. When a well-suited Italian model is chosen (such as BERT ITA XXL or Italian ELECTRA), results are excellent both in-domain and out-of-domain, with F1 scores consistently above 0.87 on the test set. \newline 
+The LLM-based approaches also provide reasonable results in terms of quality, but they suffer from hallucination issues, which are impossible with embedding-based approaches due to their discriminative nature. \newline Moreover, LLMs are significantly more resource-intensive to train and deploy, requiring specialized hardware even for inference. \newline With the only exception of qwen3-4b-unsloth-bnb-4bit that takes 5 minutes to be trained the other take from 40 minutes to 1 hour to be trained, on a max memory GPU of 22.069 GB. \newline Moreover, we had to use LoRA and parameter quantization in order to train the models on modest hardware. \newline All in all, the team thinks that using an embedding-based model would be the natural choice to address the sentence splitting use case. \newline This follows the common software engineering principle: there is no universal solution for everything. LLMs work great for many use cases, but not in all cases.
 
 \appendix
 
@@ -321,27 +191,16 @@ This follows the common software engineering principle: there is no universal so
 \label{sec:appendix1}
 
 \subsection{Notebook  List}
-
 We have produced 5 notebooks:
-
-\noindent \textbf{sentence\_splitter\_discriminative\_training.ipynb}: it trains several embedding-based
-	models.
-    
+\noindent \textbf{sentence\_splitter\_discriminative\_training.ipynb}: it trains several embedding-based models.    
 \noindent  \textbf{sentence\_splitter\_generative\_training.ipynb}: it trains some LLM-based models.
-
-\noindent \textbf{ss\_out\_of\_domain\_eval\_discriminative.ipynb}: it performs the out of domain evaluations for (already deployed) embedding-based models on evaluation dataset.
-    
+\noindent \textbf{ss\_out\_of\_domain\_eval\_discriminative.ipynb}: it performs the out of domain evaluations for (already deployed) embedding-based models on evaluation dataset.    
 \noindent \textbf{ss\_out\_of\_domain\_test\_discriminative.ipynb}: it performs the out of domain evaluations for (already deployed) embedding-based models on test dataset.
-
 \noindent \textbf{ss\_out\_of\_domain\_test\_generative.ipynb}: it performs the out of domain evaluations for (already deployed) generative models on test dataset.
 
 \subsection{Google Colab Execution}
-
 The notebooks have been developed to be run on a \href{https://jupyterlab.readthedocs.io/en/latest/#}{JupiterLab}
-environment. 
-
-To run those on Google Colab, you should replace:
-
+environment. \newline To run those on Google Colab, you shall replace:
 \begin{verbatim}
 	os.environ['HF_TOKEN']
 \end{verbatim}
@@ -351,25 +210,18 @@ with
 \begin{verbatim}
 	userdata.get('HF_TOKEN')
 \end{verbatim}
-
-and also you need to add the following line to the input:
-
+You will also need to add the following line to the input:
 \begin{verbatim}
 	from google.colab import userdata
 \end{verbatim}
-
-Moreover, if you want to run the trainings part, you need to change 
-the Hugging Face repository (in the notebook \emph{fax4ever}),
-providing consistently your Hugging Face token.
-
-While you don't need to set the Hugging Face token to
+Moreover, if you want to run the trainings part, you will need to change the Hugging Face repository (in the notebook \emph{fax4ever}),
+providing consistently your Hugging Face token. 
+Differently, you will not need to set the Hugging Face token in order to
 run the inference notebooks.
 
 \section{Models and Datasets Appendix}
 \label{sec:appendix2}
-
-All the fine tuned models and the datasets were published to Hugging Face 
-hub.
+All the fine tuned models and the datasets were published to Hugging Face hub.
 
 \subsection{Embedding-based released models}
 
@@ -406,16 +258,8 @@ The main Dataset to train the embedding-based models and LLM-based model are:
 
 \section{Indeterminism Appendix}
 \label{sec:appendix3}
-
 We tried to make the runs as deterministic as possible, but without affecting the
-performance.
-It means that some output derived from indeterministic algorithms may change with the executions.
-Making all deterministic would have affected too much the performance.
-So, it means that if you run everything from scratch, you could find slightly different results.
-
-For instance the second time we re-trained everything from scratch we got different results
-for the out of domain evaluations, see Table \ref{t4}.
-
+performance. \newline It means that some output derived from indeterministic algorithms may change with the executions. \newline Making all deterministic would have affected too much the performance. \newline So, it means that if you run everything from scratch, you could find slightly different results. \newline For instance the second time we re-trained everything from scratch we got different results for the out of domain evaluations, see Table \ref{t4}.
 \begin{table}[]
 	\small
 	\caption{Out-Of-Domain Evaluation: F1 Scores on Different Novels (Second Run)}
